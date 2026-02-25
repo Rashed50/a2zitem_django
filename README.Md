@@ -91,14 +91,12 @@ python manage.py staffuser
 - 123456ra
 
 
-
-
 ## 10. Now can run the Django server 
 ```bash
 python manage.py runserver
 ```
 
-
+# =========== If Tailwind CSS and Vue JS are needed ===========
 ## 11. Install Tailwind CSS
 ```bash
 python manage.py tailwind install
