@@ -97,3 +97,36 @@ python manage.py staffuser
 ```bash
 python manage.py runserver
 ```
+
+
+## 11. Install Tailwind CSS
+```bash
+python manage.py tailwind install
+```
+
+## 12. Run Tailwind CSS
+```bash
+python manage.py tailwind start
+```
+```bash
+python manage.py tailwind build
+```
+
+## 13. Vue JS Installation
+```bash
+cd frontend
+```
+```bash
+npm install
+```
+```bash
+yarn
+```
+
+## 14. Run Vue JS
+```bash
+npm run serve
+```
+```bash
+yarn dev
+```
