@@ -74,58 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =================================================================
-    // 3. SIDEBAR TOGGLE (Mobile & Desktop)
-    // =================================================================
-    // sidebarToggleMobile?.addEventListener('click', () => {
-    //     body.classList.toggle("mobile-open");
-    //     overlay?.classList.toggle("hidden");
-
-    //     if (body.classList.contains("mobile-open")) {
-    //         sidebarToggleIconMobile.className = 'fas fa-chevron-left text-slate-800 dark:text-slate-900 text-sm';
-    //     } else {
-    //         sidebarToggleIconMobile.className = 'fas fa-chevron-right text-slate-800 dark:text-slate-900 text-sm';
-    //     }
-    // });
-
-    // sidebarToggleDesktop?.addEventListener('click', () => {
-    //     if (window.innerWidth <= 872) return; // 872px এর নিচে টগল বন্ধ
-
-    //     body.classList.toggle("sidebar-collapsed");
-
-    //     const isCollapsed = body.classList.contains("sidebar-collapsed");
-    //     sidebarToggleIconDesktop.className = isCollapsed
-    //         ? 'fas fa-chevron-right text-slate-800 dark:text-slate-900 text-sm'
-    //         : 'fas fa-chevron-left text-slate-800 dark:text-slate-900 text-sm';
-
-    //     // ক্লোজ করলে সব মেনু বন্ধ করো
-    //     if (isCollapsed) {
-    //         document.querySelectorAll(".submenu").forEach(s => s.classList.add("hidden"));
-    //         document.querySelectorAll("[id^='arrow-']").forEach(a => a.classList.remove("rotate-90"));
-    //         localStorage.removeItem("openMenus");
-    //     }
-    // });
-
-    // // Auto collapsed at 872px and below
-    // function handleResponsiveCollapse() {
-    //     if (window.innerWidth <= 872 && window.innerWidth > 738) {
-    //         body.classList.add("sidebar-collapsed");
-    //         document.querySelectorAll(".submenu").forEach(s => s.classList.add("hidden"));
-    //         document.querySelectorAll("[id^='arrow-']").forEach(a => a.classList.remove("rotate-90"));
-    //         localStorage.removeItem("openMenus");
-    //     } else if (window.innerWidth > 872) {
-    //         body.classList.remove("sidebar-collapsed");
-    //     }
-    // }
-    // handleResponsiveCollapse();
-    // window.addEventListener('resize', () => {
-    //     handleResponsiveCollapse();
-    //     // রিসাইজে স্টেট সেভ করো (কিন্তু ক্লোজ থাকলে সেভ করো না)
-    //     if (!body.classList.contains("sidebar-collapsed")) {
-    //         saveOpenMenus();
-    //     }
-    // });
-
-    // =================================================================
     // 4. MOBILE OVERLAY CLOSE
     // =================================================================
     overlay?.addEventListener("click", () => {

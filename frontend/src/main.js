@@ -89,44 +89,6 @@ app.component("table-test-component", TableTestComponent);
 import { HomeComponent } from '../../apps/dashboard/assets/js/app';
 app.component("dashboard-home-component", HomeComponent);
 
-
-
-
-//! 👉 Import Company-Component
-import {
-    SubscriptionListComponent,
-    SubscriptionCreateComponent,
-    SubscriptionDetailsComponent,
-    SubscriptionUpdateComponent,
-    CompanyListComponent,
-    CompanyCreateComponent,
-    CompanyDetailsComponent,
-    DesignationListComponent,
-    DepartmentListComponent,
-} from '../../apps/company/assets/js/app';
-app.component("subscription-list-component", SubscriptionListComponent);
-app.component("subscription-create-component", SubscriptionCreateComponent);
-app.component("subscription-details-component", SubscriptionDetailsComponent);
-app.component("subscription-update-component", SubscriptionUpdateComponent);
-app.component("company-list-component", CompanyListComponent);
-app.component("company-create-component", CompanyCreateComponent);
-app.component("company-details-component", CompanyDetailsComponent);
-app.component("designation-list-component", DesignationListComponent);
-app.component("department-list-component", DepartmentListComponent);
-// app.use(router);
-
-
-//! Import Employee-Component
-import { 
-    EmployeeListComponent,
-    EmployeeCreateComponent,
-    EmployeeDetailsComponent,
- } from '../../apps/employee/assets/js/app';
-app.component("employee-list-component", EmployeeListComponent);
-app.component("employee-create-component", EmployeeCreateComponent);
-app.component("employee-details-component", EmployeeDetailsComponent);
-
-
 //! Import Roles-Component
 import { 
     RolesListComponent,

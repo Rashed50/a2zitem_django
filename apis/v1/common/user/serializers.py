@@ -6,8 +6,6 @@ from django.db.models import Q
 User = get_user_model()
 from django.contrib.auth.models import Group, Permission
 from core.models.religion_model import Religion, ReligionDenomination
-from users.models import UserAddress, UserDocument, UserImageGallery, UserDetails
-from apps.company.models.company import Company
 from core.constants import UserChoices, BangladeshConstants
 
 
@@ -61,12 +59,6 @@ class UserChoicesSerializer(serializers.Serializer):
     def get_auth_provider_choices(self, obj):
         return [{"value": choice[0], "label": choice[1]} for choice in User.AuthProvider.choices]
 
-    def get_image_type_choices(self, obj):
-        return [{"value": choice[0], "label": choice[1]} for choice in UserImageGallery.ImageType.choices]
-
-    def get_address_type_choices(self, obj):
-        return [{"value": choice[0], "label": choice[1]} for choice in UserAddress.AddressType.choices]
-
     def get_religions(self, obj):
         religions = Religion.objects.prefetch_related('denominations').all()
         return [
@@ -80,9 +72,6 @@ class UserChoicesSerializer(serializers.Serializer):
             }
             for religion in religions
         ]
-        
-    def get_company_types(self, obj):
-        return [{"value": choice[0], "label": choice[1]} for choice in Company.CompanyType.choices]
     
     def get_company_currency_choices(self, obj):
         return [{"value": choice[0], "label": choice[1]} for choice in BangladeshConstants.CurrencyChoices.choices]
