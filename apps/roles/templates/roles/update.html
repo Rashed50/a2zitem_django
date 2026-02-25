@@ -1,0 +1,43 @@
+{% extends 'layouts/master.html' %}
+{% load static %}
+{% block title %}Employee{% endblock title %}
+
+{% block styles %}{% endblock styles %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="border-b border-gray-200 dark:border-gray-700 pb-2 mb-2 flex flex-col gap-1">
+    <ul class="flex items-center text-sm text-gray-500 dark:text-gray-400 space-x-2">
+        <li class="flex items-center">
+            <a href="#" class="hover:text-blue-600 flex items-center gap-1">
+                <i class="fa-solid fa-house text-gray-400"></i>
+                Home
+            </a>
+        </li>
+        <li><i class="fa-solid fa-angle-right text-gray-400"></i></li>
+        <li class="flex items-center">
+            <a href="#" class="hover:text-blue-600 flex items-center gap-1">
+                Role
+            </a>
+        </li>
+        <li><i class="fa-solid fa-angle-right text-gray-400"></i></li>
+        <li class="text-blue-600 font-semibold">Update</li>
+    </ul>
+</div>
+
+<role-create-component :item-id="'{% if object.id %}{{ object.id }}{% else %}null{% endif %}'"></role-create-component>
+
+<!-- <employee-create-component
+    :item-id="'{% if object.id %}{{ object.id }}{% endif %}'"
+    :gender-choices='{{ gender_json|safe }}'
+    :blood-group-choices='{{ blood_group_json|safe }}'
+    :religion-choices='{{ religion_json|safe }}'
+    :department-choices='{{ department_json|safe }}'
+    :designation-choices='{{designation_json|safe}}'
+    :emp-status-choices='{{emp_status_json|safe}}'
+    :role-choices='{{role_json|safe}}'
+    :company-choices='{{company_json|safe}}'
+></employee-create-component> -->
+{% endblock content %}
+
+{% block js %}{% endblock js %}

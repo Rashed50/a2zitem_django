@@ -1,0 +1,267 @@
+{% load static tailwind_tags %}
+<aside id="sidebar"
+    class="fixed top-0 left-0 h-full bg-gradient-to-b {{ sidebar_colors.sidebar_bg_from }} {{ sidebar_colors.sidebar_bg_to }} dark:from-gray-900 dark:to-gray-800 shadow-xl z-30 transition-colors duration-300">
+
+    <!-- Logo -->
+    <div class="h-16 flex items-center gap-3 px-4 {{ sidebar_colors.menu_text }} dark:text-gray-100 font-semibold">
+        <div class="bg-white dark:bg-gray-700 p-1.5 rounded-[4px] shadow-sm">
+            <img src="{% static 'assets/logo/demo_logo.png' %}" alt="Logo" class="h-7 w-7" />
+        </div>
+        <span class="sidebar-logo-text text-lg dark:text-gray-100">Astha Admin</span>
+    </div>
+
+    <!-- User Profile -->
+    <div class="px-4 py-2 border-b {{sidebar_colors.border_color}} dark:border-gray-700">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 {{sidebar_colors.menu_icon_bg}} dark:bg-gray-700 rounded-full flex items-center justify-center {{sidebar_colors.menu_text}} dark:text-gray-100 font-semibold">
+                {{ request.user.email|first|upper }}
+            </div>
+            <div class="sidebar-text">
+                <p class="{{ sidebar_colors.menu_text }} dark:text-gray-100 text-sm font-medium">
+                    {{ request.user.get_full_name|default:request.user.email }}
+                </p>
+                <p class="{{ sidebar_colors.menu_text }} dark:text-gray-400 text-xs">Administrator</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu -->
+    <nav class="p-3 space-y-1 text-sm">
+        <!-- Dashboard -->
+        <a href=""
+           data-menu="dashboard"
+           class="sidebar-link flex items-center gap-3 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 transition-colors">
+            <i class="fas fa-home w-5 text-center"></i>
+            <span class="sidebar-text">Dashboard</span>
+        </a>
+
+        <!-- Products (Level 1) -->
+        <div class="menu-group">
+            <button class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 transition-colors" data-menu="products">
+                <span class="flex items-center gap-3">
+                    <i class="fas fa-box w-5 text-center"></i>
+                    <span class="sidebar-text">Products</span>
+                </span>
+                <i id="arrow-products" class="fas fa-chevron-right text-xs transition-transform duration-200 dark:text-gray-400"></i>
+            </button>
+            <div id="submenu-products" class="submenu hidden pl-10 mt-1 space-y-1">
+                <a href="#" data-menu="all-products"
+                   class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-box-open w-4 text-center"></i>
+                    <span class="sidebar-text">All Products</span>
+                </a>
+                <a href="#" data-menu="add-product"
+                   class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-plus w-4 text-center"></i>
+                    <span class="sidebar-text">Add Product</span>
+                </a>
+
+                <!-- Categories (Level 2) -->
+                <div class="menu-group">
+                    <button class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700" data-menu="categories">
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-tags w-4 text-center"></i>
+                            <span class="sidebar-text">Categories</span>
+                        </span>
+                        <i id="arrow-categories" class="fas fa-chevron-right text-xs transition-transform duration-200 dark:text-gray-400"></i>
+                    </button>
+                    <div id="submenu-categories" class="submenu hidden pl-8 mt-1 space-y-1">
+                        <a href="#" data-menu="all-categories"
+                           class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                            <i class="fas fa-list w-4 text-center"></i>
+                            <span class="sidebar-text">All Categories</span>
+                        </a>
+                        <a href="#" data-menu="add-category"
+                           class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                            <i class="fas fa-plus-circle w-4 text-center"></i>
+                            <span class="sidebar-text">Add Category</span>
+                        </a>
+                        
+                        <!-- Category Types (Level 3) -->
+                        <div class="menu-group">
+                            <button class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700" data-menu="category-types">
+                                <span class="flex items-center gap-2">
+                                    <i class="fas fa-layer-group w-4 text-center"></i>
+                                    <span class="sidebar-text">Category Types</span>
+                                </span>
+                                <i id="arrow-category-types" class="fas fa-chevron-right text-xs transition-transform duration-200 dark:text-gray-400"></i>
+                            </button>
+                            <div id="submenu-category-types" class="submenu hidden pl-6 mt-1 space-y-1">
+                                <a href="#" data-menu="all-types"
+                                   class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                                    <i class="fas fa-table w-4 text-center"></i>
+                                    <span class="sidebar-text">All Types</span>
+                                </a>
+                                <a href="#" data-menu="new-type"
+                                   class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                                    <i class="fas fa-plus-square w-4 text-center"></i>
+                                    <span class="sidebar-text">New Type</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders (Level 1) -->
+        <div class="menu-group">
+            <button class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700" data-menu="orders">
+                <span class="flex items-center gap-3">
+                    <i class="fas fa-shopping-cart w-5 text-center"></i>
+                    <span class="sidebar-text">Orders</span>
+                </span>
+                <i id="arrow-orders" class="fas fa-chevron-right text-xs transition-transform duration-200 dark:text-gray-400"></i>
+            </button>
+            <div id="submenu-orders" class="submenu hidden pl-10 mt-1 space-y-1">
+                <a href="#" data-menu="all-orders"
+                   class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-list-alt w-4 text-center"></i>
+                    <span class="sidebar-text">All Orders</span>
+                </a>
+                <a href="#" data-menu="pending-orders"
+                   class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-clock w-4 text-center"></i>
+                    <span class="sidebar-text">Pending Orders</span>
+                </a>
+                <a href="#" data-menu="completed-orders"
+                   class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-check-circle w-4 text-center"></i>
+                    <span class="sidebar-text">Completed Orders</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Customers (Level 1) -->
+        <div class="menu-group">
+            <button class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700" data-menu="customers">
+                <span class="flex items-center gap-3">
+                    <i class="fas fa-users w-5 text-center"></i>
+                    <span class="sidebar-text">Customers</span>
+                </span>
+                <i id="arrow-customers" class="fas fa-chevron-right text-xs transition-transform duration-200 dark:text-gray-400"></i>
+            </button>
+            <div id="submenu-customers" class="submenu hidden pl-10 mt-1 space-y-1">
+                <a href="#" data-menu="all-customers"
+                   class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-user-friends w-4 text-center"></i>
+                    <span class="sidebar-text">All Customers</span>
+                </a>
+                <a href="#" data-menu="new-customer"
+                   class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-user-plus w-4 text-center"></i>
+                    <span class="sidebar-text">Add Customer</span>
+                </a>
+                
+                <!-- Customer Groups (Level 2) -->
+                <div class="menu-group">
+                    <button class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700" data-menu="customer-groups">
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-object-group w-4 text-center"></i>
+                            <span class="sidebar-text">Customer Groups</span>
+                        </span>
+                        <i id="arrow-customer-groups" class="fas fa-chevron-right text-xs transition-transform duration-200 dark:text-gray-400"></i>
+                    </button>
+                    <div id="submenu-customer-groups" class="submenu hidden pl-8 mt-1 space-y-1">
+                        <a href="#" data-menu="all-groups"
+                           class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                            <i class="fas fa-users-cog w-4 text-center"></i>
+                            <span class="sidebar-text">All Groups</span>
+                        </a>
+                        <a href="#" data-menu="vip-customers"
+                           class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                            <i class="fas fa-crown w-4 text-center"></i>
+                            <span class="sidebar-text">VIP Customers</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics (Level 1) -->
+        <div class="menu-group">
+            <button class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700" data-menu="analytics">
+                <span class="flex items-center gap-3">
+                    <i class="fas fa-chart-line w-5 text-center"></i>
+                    <span class="sidebar-text">Analytics</span>
+                </span>
+                <i id="arrow-analytics" class="fas fa-chevron-right text-xs transition-transform duration-200 dark:text-gray-400"></i>
+            </button>
+            <div id="submenu-analytics" class="submenu hidden pl-10 mt-1 space-y-1">
+                <a href="#" data-menu="sales-report"
+                   class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-chart-bar w-4 text-center"></i>
+                    <span class="sidebar-text">Sales Reports</span>
+                </a>
+                <a href="#" data-menu="customer-analytics"
+                   class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-user-chart w-4 text-center"></i>
+                    <span class="sidebar-text">Customer Analytics</span>
+                </a>
+                <a href="#" data-menu="product-analytics"
+                   class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-chart-pie w-4 text-center"></i>
+                    <span class="sidebar-text">Product Analytics</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Settings (Level 1) -->
+        <div class="menu-group">
+            <button class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700" data-menu="settings">
+                <span class="flex items-center gap-3">
+                    <i class="fas fa-cog w-5 text-center"></i>
+                    <span class="sidebar-text">Settings</span>
+                </span>
+                <i id="arrow-settings" class="fas fa-chevron-right text-xs transition-transform duration-200 dark:text-gray-400"></i>
+            </button>
+            <div id="submenu-settings" class="submenu hidden pl-10 mt-1 space-y-1">
+                <a href="#" data-menu="general-settings"
+                   class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-sliders-h w-4 text-center"></i>
+                    <span class="sidebar-text">General Settings</span>
+                </a>
+                <a href="#" data-menu="payment-settings"
+                   class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-credit-card w-4 text-center"></i>
+                    <span class="sidebar-text">Payment Settings</span>
+                </a>
+                
+                <!-- User Management (Level 2) -->
+                <div class="menu-group">
+                    <button class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700" data-menu="user-management">
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-user-shield w-4 text-center"></i>
+                            <span class="sidebar-text">User Management</span>
+                        </span>
+                        <i id="arrow-user-management" class="fas fa-chevron-right text-xs transition-transform duration-200 dark:text-gray-400"></i>
+                    </button>
+                    <div id="submenu-user-management" class="submenu hidden pl-8 mt-1 space-y-1">
+                        <a href="#" data-menu="all-users"
+                           class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                            <i class="fas fa-users w-4 text-center"></i>
+                            <span class="sidebar-text">All Users</span>
+                        </a>
+                        <a href="#" data-menu="roles-permissions"
+                           class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+                            <i class="fas fa-key w-4 text-center"></i>
+                            <span class="sidebar-text">Roles & Permissions</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help & Support -->
+        <a href="#" data-menu="support"
+           class="sidebar-link flex items-center gap-3 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700">
+            <i class="fas fa-question-circle w-5 text-center"></i>
+            <span class="sidebar-text">Help & Support</span>
+        </a>
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <div class="absolute bottom-0 left-0 right-0 p-4 border-t {{sidebar_colors.border_color}} dark:border-gray-700 text-xs {{ sidebar_colors.menu_text }} dark:text-gray-400 text-center">
+        © 2025 Astha Admin
+    </div>
+</aside>

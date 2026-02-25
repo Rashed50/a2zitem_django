@@ -1,0 +1,54 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "question-1"
+msgstr "Adınız nedir?"
+
+msgid "Email address"
+msgstr "E-posta adresi"
+
+msgid "Phone number"
+msgstr "Telefon numarası"
+
+msgid "First name"
+msgstr "Ad"
+
+msgid "Last name"
+msgstr "Soyad"
+
+msgid "Gender"
+msgstr "Cinsiyet"
+
+msgid "Religion"
+msgstr "Din"
+
+msgid "Date of birth"
+msgstr "Doğum tarihi"
+
+msgid "Profile Image"
+msgstr "Profil Resmi"
+
+msgid "Active"
+msgstr "Aktif"
+
+msgid "Admin"
+msgstr "Yönetici"
+
+msgid "User"
+msgstr "Kullanıcı"
+
+msgid "Users"
+msgstr "Kullanıcılar"
+
+msgid "Enter a valid email address."
+msgstr "Geçerli bir e-posta adresi girin."
+
+msgid "This field is required."
+msgstr "Bu alan zorunludur."
+
+msgid "Welcome to our application"
+msgstr "Uygulamamıza hoş geldiniz"
+
+msgid "Please fill in all required fields"
+msgstr "Lütfen tüm zorunlu alanları doldurun"

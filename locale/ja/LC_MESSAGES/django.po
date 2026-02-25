@@ -1,0 +1,54 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "question-1"
+msgstr "お名前は何ですか？"
+
+msgid "Email address"
+msgstr "メールアドレス"
+
+msgid "Phone number"
+msgstr "電話番号"
+
+msgid "First name"
+msgstr "名"
+
+msgid "Last name"
+msgstr "姓"
+
+msgid "Gender"
+msgstr "性別"
+
+msgid "Religion"
+msgstr "宗教"
+
+msgid "Date of birth"
+msgstr "生年月日"
+
+msgid "Profile Image"
+msgstr "プロフィール画像"
+
+msgid "Active"
+msgstr "アクティブ"
+
+msgid "Admin"
+msgstr "管理者"
+
+msgid "User"
+msgstr "ユーザー"
+
+msgid "Users"
+msgstr "ユーザーたち"
+
+msgid "Enter a valid email address."
+msgstr "有効なメールアドレスを入力してください。"
+
+msgid "This field is required."
+msgstr "このフィールドは必須です。"
+
+msgid "Welcome to our application"
+msgstr "私たちのアプリケーションへようこそ"
+
+msgid "Please fill in all required fields"
+msgstr "すべての必須フィールドに入力してください"

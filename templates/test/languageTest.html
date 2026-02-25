@@ -1,0 +1,49 @@
+<!-- templates/translation_test.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Translation Test</title>
+</head>
+<body>
+    <h1>🌍 Multi-Language Translation Test</h1>
+    
+    <!-- Language Switcher -->
+    <form action="{% url 'set_language' %}" method="post" style="margin-bottom: 20px;">
+        {% csrf_token %}
+        <select name="language" onchange="this.form.submit()">
+            <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+            <option value="bn" {% if LANGUAGE_CODE == 'bn' %}selected{% endif %}>বাংলা</option>
+            <option value="hi" {% if LANGUAGE_CODE == 'hi' %}selected{% endif %}>हिन्दी</option>
+            <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>Français</option>
+            <option value="es" {% if LANGUAGE_CODE == 'es' %}selected{% endif %}>Español</option>
+            <option value="de" {% if LANGUAGE_CODE == 'de' %}selected{% endif %}>Deutsch</option>
+            <option value="zh-hans" {% if LANGUAGE_CODE == 'zh-hans' %}selected{% endif %}>简体中文</option>
+            <option value="zh-hant" {% if LANGUAGE_CODE == 'zh-hant' %}selected{% endif %}>繁體中文</option>
+            <option value="ko" {% if LANGUAGE_CODE == 'ko' %}selected{% endif %}>한국어</option>
+            <option value="ja" {% if LANGUAGE_CODE == 'ja' %}selected{% endif %}>日本語</option>
+            <option value="ru" {% if LANGUAGE_CODE == 'ru' %}selected{% endif %}>Русский</option>
+            <option value="pt" {% if LANGUAGE_CODE == 'pt' %}selected{% endif %}>Português</option>
+            <option value="tr" {% if LANGUAGE_CODE == 'tr' %}selected{% endif %}>Türkçe</option>
+            <option value="ar" {% if LANGUAGE_CODE == 'ar' %}selected{% endif %}>العربية</option>
+        </select>
+        <input type="hidden" name="next" value="{{ request.path }}">
+    </form>
+
+    <div style="background: #f5f5f5; padding: 20px; border-radius: 10px;">
+        <h2>Current Language: {{ LANGUAGE_CODE }}</h2>
+        
+        <table border="1" style="width: 100%; border-collapse: collapse;">
+            <tr style="background: #e0e0e0;">
+                <th style="padding: 10px;">Field</th>
+                <th style="padding: 10px;">Translated Text</th>
+            </tr>
+            {% for key, value in translations.items %}
+            <tr>
+                <td style="padding: 10px; font-weight: bold;">{{ key }}</td>
+                <td style="padding: 10px;">{{ value }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

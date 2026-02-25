@@ -1,0 +1,22 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en" class="{% if request.session.is_dark %}dark{% endif %}">
+  <head>
+    <meta charset="UTF-8">
+    <title>Django Tailwind Dark Mode</title>
+    {% tailwind_css %}
+  </head>
+  <body class="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-500 min-h-screen flex items-center justify-center">
+    <div class="text-center">
+      <h1 class="text-4xl font-bold mb-4">🌗 Django + Tailwind Dark Mode</h1>
+      <p class="mb-6">Click below to toggle theme</p>
+      <a href="{% url 'toggle_theme' %}"
+         class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded text-gray-800 dark:text-yellow-300 hover:opacity-80 transition">
+         Toggle Theme
+      </a>
+    </div>
+    {% if debug %}
+      <script src="{% static 'django-browser-reload/reload-listener.js' %}"></script>
+    {% endif %}
+  </body>
+</html>

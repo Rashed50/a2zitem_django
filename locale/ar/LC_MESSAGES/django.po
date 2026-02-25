@@ -1,0 +1,54 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "question-1"
+msgstr "ما اسمك؟"
+
+msgid "Email address"
+msgstr "عنوان البريد الإلكتروني"
+
+msgid "Phone number"
+msgstr "رقم الهاتف"
+
+msgid "First name"
+msgstr "الاسم الأول"
+
+msgid "Last name"
+msgstr "اسم العائلة"
+
+msgid "Gender"
+msgstr "الجنس"
+
+msgid "Religion"
+msgstr "الدين"
+
+msgid "Date of birth"
+msgstr "تاريخ الميلاد"
+
+msgid "Profile Image"
+msgstr "صورة الملف الشخصي"
+
+msgid "Active"
+msgstr "نشط"
+
+msgid "Admin"
+msgstr "مسؤول"
+
+msgid "User"
+msgstr "مستخدم"
+
+msgid "Users"
+msgstr "المستخدمون"
+
+msgid "Enter a valid email address."
+msgstr "أدخل عنوان بريد إلكتروني صالح."
+
+msgid "This field is required."
+msgstr "هذا الحقل مطلوب."
+
+msgid "Welcome to our application"
+msgstr "مرحبًا بك في تطبيقنا"
+
+msgid "Please fill in all required fields"
+msgstr "يرجى ملء جميع الحقول المطلوبة"

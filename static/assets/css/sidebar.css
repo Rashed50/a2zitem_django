@@ -1,0 +1,219 @@
+/* Sidebar Base */
+#sidebar {
+   width: 260px;
+   height: 100vh;
+   position: fixed;
+   top: 0;
+   left: 0;
+   z-index: 100;
+   overflow-y: auto;
+   overflow-x: hidden;
+   transition: width 0.2s ease, transform 0.2s ease;
+   scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar for Sidebar - Modern Design */
+#sidebar::-webkit-scrollbar {
+   width: 6px;
+}
+
+#sidebar::-webkit-scrollbar-track {
+   background: rgba(255, 255, 255, 0.1);
+   border-radius: 10px;
+   margin: 10px 0;
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+   background: rgba(255, 255, 255, 0.3);
+   border-radius: 10px;
+   transition: background 0.3s ease;
+}
+
+#sidebar::-webkit-scrollbar-thumb:hover {
+   background: rgba(255, 255, 255, 0.5);
+}
+
+#sidebar::-webkit-scrollbar-thumb:active {
+   background: rgba(255, 255, 255, 0.7);
+}
+
+/* Dark Mode Sidebar Scrollbar */
+.dark #sidebar::-webkit-scrollbar-track {
+   background: rgba(0, 0, 0, 0.2);
+}
+
+.dark #sidebar::-webkit-scrollbar-thumb {
+   background: rgba(255, 255, 255, 0.2);
+}
+
+.dark #sidebar::-webkit-scrollbar-thumb:hover {
+   background: rgba(255, 255, 255, 0.4);
+}
+
+/* Firefox Scrollbar Styling */
+#sidebar {
+   scrollbar-width: thin;
+   scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+}
+
+.dark #sidebar {
+   scrollbar-color: rgba(255, 255, 255, 0.2) rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Width */
+@media (max-width: 1400px) {
+   #sidebar {
+      width: 220px;
+   }
+}
+@media (max-width: 1280px) {
+   #sidebar {
+      width: 200px;
+   }
+}
+@media (max-width: 1024px) {
+   #sidebar {
+      width: 180px;
+   }
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+   #sidebar {
+      transform: translateX(-100%);
+   }
+
+   body.mobile-open #sidebar {
+      transform: translateX(0);
+   }
+
+   body.mobile-open #sidebar .sidebar-text,
+   body.mobile-open #sidebar .sidebar-logo-text,
+   body.mobile-open #sidebar .menu-group > button > span:last-child i,
+   body.mobile-open #sidebar .submenu {
+      display: block !important;
+   }
+
+   #mainWrapper {
+      margin-left: 0 !important;
+   }
+
+   #overlay {
+      display: none;
+   }
+
+   body.mobile-open #overlay {
+      display: block;
+   }
+
+   /* Disable sidebar-collapsed effect on mobile */
+   body.sidebar-collapsed #sidebar {
+      width: 260px !important;
+   }
+   body.sidebar-collapsed .sidebar-text,
+   body.sidebar-collapsed .submenu,
+   body.sidebar-collapsed .sidebar-logo-text,
+   body.sidebar-collapsed .sidebar-footer {
+      display: block !important;
+   }
+   body.sidebar-collapsed #mainWrapper {
+      margin-left: 0 !important;
+   }
+}
+
+/* Desktop collapsed sidebar (above 900px) */
+body.sidebar-collapsed #sidebar {
+   width: 80px;
+}
+
+body.sidebar-collapsed .sidebar-text,
+body.sidebar-collapsed .submenu,
+body.sidebar-collapsed .sidebar-logo-text,
+body.sidebar-collapsed .sidebar-footer {
+   display: none;
+}
+
+body.sidebar-collapsed .sidebar-link,
+body.sidebar-collapsed .menu-group > button {
+   justify-content: center !important;
+}
+
+/* Main Wrapper */
+#mainWrapper {
+   margin-left: 260px;
+   min-height: 100vh;
+   transition: margin-left 0.3s ease;
+}
+@media (max-width: 1400px) {
+   #mainWrapper {
+      margin-left: 220px;
+   }
+}
+@media (max-width: 1280px) {
+   #mainWrapper {
+      margin-left: 200px;
+   }
+}
+@media (max-width: 1024px) {
+   #mainWrapper {
+      margin-left: 180px;
+   }
+}
+
+body.sidebar-collapsed #mainWrapper {
+   margin-left: 80px;
+}
+
+/* Overlay */
+#overlay {
+   display: none;
+   position: fixed;
+   inset: 0;
+   background-color: rgba(0, 0, 0, 0.5);
+   z-index: 25;
+}
+
+
+
+
+
+/* ============ If sidebar close then Hidden Submenu =========== */
+/* collapsed sidebar hides text */
+/* body.sidebar-collapsed .sidebar-text {
+   display: none;
+} */
+/* collapsed sidebar hides submenu */
+/* body.sidebar-collapsed .submenu {
+   display: none !important;
+} */
+/* collapsed sidebar hides arrows in main menu */
+body.sidebar-collapsed .menu-group > .sidebar-link > i {
+   display: none;
+}
+
+/* Hover show submenu for collapsed sidebar */
+body.sidebar-collapsed.sidebar-hover .submenu,
+body.sidebar-collapsed.sidebar-hover .submenu .sidebar-link {
+   display: block !important;
+   position: absolute;
+   left: 60px;
+   top: 0;
+   min-width: 180px;
+   background: white;
+   color: black;
+   border-radius: 6px;
+   padding: 6px 0;
+   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+   z-index: 1000;
+}
+
+/* Menu group styling */
+.menu-group {
+   position: relative;
+}
+
+/* Ensure proper spacing for nested menus */
+.submenu .submenu {
+   margin-left: 0.5rem;
+}
+/* ============================================================== */

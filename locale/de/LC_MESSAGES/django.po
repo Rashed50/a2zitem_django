@@ -1,0 +1,54 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "question-1"
+msgstr "Wie ist Ihr Name?"
+
+msgid "Email address"
+msgstr "E-Mail-Adresse"
+
+msgid "Phone number"
+msgstr "Telefonnummer"
+
+msgid "First name"
+msgstr "Vorname"
+
+msgid "Last name"
+msgstr "Nachname"
+
+msgid "Gender"
+msgstr "Geschlecht"
+
+msgid "Religion"
+msgstr "Religion"
+
+msgid "Date of birth"
+msgstr "Geburtsdatum"
+
+msgid "Profile Image"
+msgstr "Profilbild"
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Admin"
+msgstr "Administrator"
+
+msgid "User"
+msgstr "Benutzer"
+
+msgid "Users"
+msgstr "Benutzer"
+
+msgid "Enter a valid email address."
+msgstr "Geben Sie eine gültige E-Mail-Adresse ein."
+
+msgid "This field is required."
+msgstr "Dieses Feld ist erforderlich."
+
+msgid "Welcome to our application"
+msgstr "Willkommen in unserer Anwendung"
+
+msgid "Please fill in all required fields"
+msgstr "Bitte füllen Sie alle erforderlichen Felder aus"

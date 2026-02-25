@@ -1,0 +1,188 @@
+/* =================== Header Stiky and Scrollable ================= */
+header {
+   position: sticky;
+   top: 0;
+   z-index: 100!important;
+   backdrop-filter: blur(8px);
+   background-color: rgba(255, 255, 255, 0.95);
+}
+
+.dark header {
+   background-color: rgba(17, 24, 39, 0.95);
+}
+
+main {
+   margin-top: 10px;
+}
+
+html {
+   scroll-behavior: smooth;
+}
+/* ============================================================= */
+
+/* ========================= Active Menu ====================== */
+.sidebar-link.active {
+   background-color: var(--active-class, rgba(255, 255, 255, 0.2)) !important;
+   color: var(--active-text, white) !important;
+}
+.sidebar-link.active i {
+   color: var(--active-text, white) !important;
+}
+/* ============================================================ */
+
+/* ======================= Submenu animation =================== */
+.submenu {
+   transition: max-height 0.3s ease, opacity 0.3s ease;
+   max-height: 0;
+   opacity: 0;
+   overflow: hidden;
+}
+
+.submenu:not(.hidden) {
+   max-height: 500px;
+   opacity: 1;
+}
+
+/* Rotate arrow for open menus */
+.rotate-90 {
+   transform: rotate(90deg);
+   transition: transform 0.3s ease;
+}
+/* ============================================================= */
+
+/* ========= Notification Dropdown Responsive Styles =========== */
+#notificationMenu {
+   max-height: 80vh;
+   overflow-y: auto;
+}
+
+/* Mobile responsiveness for notification dropdown */
+@media (max-width: 640px) {
+   #notificationMenu {
+      position: fixed;
+      top: 4rem;
+      left: 0.5rem;
+      right: 0.5rem;
+      width: auto;
+      max-width: calc(100vw - 1rem);
+      margin: 0;
+   }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+   #notificationMenu {
+      position: fixed;
+      top: 4rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90vw;
+      max-width: 400px;
+   }
+}
+
+/* Fullscreen mode adjustments */
+:fullscreen #notificationMenu,
+:-webkit-full-screen #notificationMenu,
+:-moz-full-screen #notificationMenu,
+:-ms-fullscreen #notificationMenu {
+   position: fixed;
+   z-index: 9999;
+}
+
+/* Ensure dropdown stays within viewport */
+#notificationMenu {
+   max-height: min(80vh, 500px);
+}
+
+/* Scrollbar styling for notification dropdown */
+#notificationMenu::-webkit-scrollbar {
+   width: 6px;
+}
+
+#notificationMenu::-webkit-scrollbar-track {
+   background: #f1f1f1;
+   border-radius: 3px;
+}
+
+#notificationMenu::-webkit-scrollbar-thumb {
+   background: #c1c1c1;
+   border-radius: 3px;
+}
+
+#notificationMenu::-webkit-scrollbar-thumb:hover {
+   background: #a8a8a8;
+}
+
+.dark #notificationMenu::-webkit-scrollbar-track {
+   background: #374151;
+}
+
+.dark #notificationMenu::-webkit-scrollbar-thumb {
+   background: #6b7280;
+}
+
+.dark #notificationMenu::-webkit-scrollbar-thumb:hover {
+   background: #9ca3af;
+}
+
+/* Animation for notification badge */
+@keyframes pulse {
+   0%,
+   100% {
+      opacity: 1;
+   }
+   50% {
+      opacity: 0.5;
+   }
+}
+
+#notificationBtn .bg-red-500 {
+   animation: pulse 2s infinite;
+}
+/* ================================================================= */
+
+/* Mobile search button for small screens */
+@media (max-width: 767px) {
+   .mobile-search-btn {
+      display: block !important;
+   }
+
+   .mobile-search-btn i {
+      font-size: 1.1rem;
+   }
+}
+
+/* ===================== Header User Menu Dropdown animation */
+
+.animate-fadeIn {
+   animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+   from {
+      opacity: 0;
+      transform: translateY(10px);
+   }
+
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}
+
+/* Vue-Multiselect Customize */
+.multiselect__input:focus {
+   outline: none !important;
+   box-shadow: none !important;
+   border-color: transparent !important;
+}
+
+.multiselect {
+   border: 1px solid #d1d5db;
+   /* border-radius: 0.375rem; */
+}
+
+.multiselect:focus-within {
+   border-color: #4f39f6;
+   box-shadow: 0 0 0 1px #4f39f6;
+}

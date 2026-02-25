@@ -1,0 +1,54 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "question-1"
+msgstr "你叫什么名字？"
+
+msgid "Email address"
+msgstr "电子邮件地址"
+
+msgid "Phone number"
+msgstr "电话号码"
+
+msgid "First name"
+msgstr "名字"
+
+msgid "Last name"
+msgstr "姓氏"
+
+msgid "Gender"
+msgstr "性别"
+
+msgid "Religion"
+msgstr "宗教"
+
+msgid "Date of birth"
+msgstr "出生日期"
+
+msgid "Profile Image"
+msgstr "个人资料图片"
+
+msgid "Active"
+msgstr "活跃"
+
+msgid "Admin"
+msgstr "管理员"
+
+msgid "User"
+msgstr "用户"
+
+msgid "Users"
+msgstr "用户们"
+
+msgid "Enter a valid email address."
+msgstr "请输入有效的电子邮件地址。"
+
+msgid "This field is required."
+msgstr "此字段为必填项。"
+
+msgid "Welcome to our application"
+msgstr "欢迎使用我们的应用程序"
+
+msgid "Please fill in all required fields"
+msgstr "请填写所有必填字段"

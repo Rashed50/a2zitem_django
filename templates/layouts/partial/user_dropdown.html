@@ -1,0 +1,30 @@
+{% load static tailwind_tags %}
+<div class="relative">
+    <button id="userBtn"
+        class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+        <div class="relative">
+            <img src="https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&color=fff"
+                class="w-8 h-8 rounded-full" alt="user" />
+            <span class="absolute bottom-0 right-0 h-2 w-2 bg-green-500 rounded-full border border-white"></span>
+        </div>
+        <span class="hidden md:inline text-sm font-medium">{{ request.user.get_full_name }}</span>
+        <i class="fas fa-chevron-down ml-1 text-xs"></i>
+    </button>
+
+    <div id="userMenu"
+        class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-40 animate-fadeIn">
+        <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+            <p class="text-sm font-medium">{{ request.user.get_full_name }}</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">{{ request.user.email}}</p>
+        </div>
+        <a class="flex items-center px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            href="#"><i class="fas fa-user mr-3 text-gray-500"></i>Profile</a>
+        <a class="flex items-center px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            href="#"><i class="fas fa-cog mr-3 text-gray-500"></i>Settings</a>
+        <a class="flex items-center px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            href="#"><i class="fas fa-bell mr-3 text-gray-500"></i>Notifications</a>
+        <div class="border-t border-gray-100 dark:border-gray-700 my-1"></div>
+        <a class="flex items-center px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            href="{% url 'auth:logout' %}"><i class="fas fa-sign-out-alt mr-3"></i>Sign out</a>
+    </div>
+</div>

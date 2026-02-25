@@ -1,0 +1,204 @@
+{% load static tailwind_tags %}
+{% load menu_tags %}
+
+<aside id="sidebar"
+   class="flex flex-col justify-between h-full bg-gradient-to-b {{ sidebar_colors.sidebar_bg_from }} {{ sidebar_colors.sidebar_bg_to }} dark:from-gray-900 dark:to-gray-800 shadow-xl z-30 transition-colors duration-300">
+
+   <div>
+      <!-- Logo & User Profile (same as before) -->
+      <div class="{{ sidebar_colors.menu_text }} h-14 md:h-16 flex items-center gap-2 px-3 md:px-4">
+         <a href="{% url 'dashboard:home' %}" class="flex items-center gap-2">
+            <div class="bg-white dark:bg-gray-700 p-1.5 rounded-[4px] shadow-sm">
+               <img src="{% static 'assets/logo/demo_logo.png' %}" alt="Logo" class="h-6 w-6 md:h-7 md:w-7" />
+            </div>
+            <span class="sidebar-logo-text text-sm md:text-base lg:text-lg font-semibold dark:text-gray-100">Astha
+               Admin</span>
+         </a>
+      </div>
+
+      <!-- User Profile -->
+      <div class="px-3 md:px-4 py-2 border-b {{sidebar_colors.border_color}} dark:border-gray-700">
+         <div class="flex items-center gap-2 text-xs md:text-sm">
+            <div
+               class="w-8 h-8 md:w-9 md:h-9 {{sidebar_colors.menu_icon_bg}} dark:bg-gray-700 rounded-full flex items-center justify-center {{sidebar_colors.menu_text}} dark:text-gray-100 text-xs md:text-sm font-semibold">
+               {{ request.user.email|first|upper }}
+            </div>
+            <div class="sidebar-text">
+               <p class="{{ sidebar_colors.menu_text }} dark:text-gray-100 font-medium truncate max-w-24 md:max-w-32">
+                  {{ request.user.get_full_name|default:request.user.email }}
+               </p>
+               <p class="{{ sidebar_colors.menu_text }} dark:text-gray-400 text-xs">{{ request.user.email }}</p>
+            </div>
+         </div>
+      </div>
+
+      <!-- Menu -->
+      <nav class="p-2 md:p-3 space-y-1 text-xs md:text-sm">
+         <!-- Dashboard -->
+         <a href="{% url 'dashboard:home' %}" data-menu="dashboard" onclick="closeAllMenus()"
+            class="sidebar-link flex items-center gap-2 md:gap-3 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 transition-colors {% active_menu request 'dashboard:home' %}">
+            <i class="fa-regular fa-house w-4 md:w-5 text-center"></i>
+            <span class="sidebar-text">Dashboard</span>
+         </a>
+
+         <!-- UI Elements Section Title -->
+         {% if user.is_superuser %}
+         <div class="px-3 md:px-4 py-1 md:py-2 mt-4">
+            <h3
+               class="text-xs font-semibold {{ sidebar_colors.menu_text }} dark:text-gray-400 uppercase tracking-wider opacity-70 sidebar-text">
+               UI Elements
+            </h3>
+         </div>
+
+         <!-- Components -->
+         <div class="menu-group">
+            <button
+               class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 transition-colors {% active_menu request 'components:form_template,components:table_template,components:button_template' %}"
+               data-menu="components"
+               data-open="{% is_menu_open request 'components:form_template,components:table_template,components:button_template,components:badges_template' %}">
+               <span class="flex items-center gap-2 md:gap-3">
+                  <i class="fa-regular fa-folder w-4 md:w-5 text-center"></i>
+                  <span class="sidebar-text text-xs md:text-sm">Components</span>
+               </span>
+               <i id="arrow-components"
+                  class="fas fa-chevron-right text-xs transition-transform duration-200 dark:text-gray-400"></i>
+            </button>
+            <div id="submenu-components" class="submenu hidden pl-4 md:pl-5 mt-1 space-y-1">
+               <a href="{% url 'components:form_template' %}" data-menu="form_template"
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'components:form_template' %}">
+                  <i class="fa-regular fa-file w-4 text-center"></i>
+                  <span class="sidebar-text">Form</span>
+               </a>
+               <a href="{% url 'components:table_template' %}" data-menu="table_template"
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'components:table_template' %}">
+                  <i class="fa-regular fa-file w-4 text-center"></i>
+                  <span class="sidebar-text">Table</span>
+               </a>
+               <a href="{% url 'components:button_template' %}" data-menu="button_template"
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'components:button_template' %}">
+                  <i class="fa-regular fa-file w-4 text-center"></i>
+                  <span class="sidebar-text">Button</span>
+               </a>
+               <!-- Badges -->
+               <a href="{% url 'components:badges_template' %}" data-menu="badges_template"
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'components:badges_template' %}">
+                  <i class="fa-regular fa-file w-4 text-center"></i>
+                  <span class="sidebar-text">Badges</span>
+               </a>
+            </div>
+         </div>
+         {% endif %}
+
+         <!-- Business Modules Section Title -->
+         <div class="px-3 md:px-4 py-1 md:py-2 mt-6">
+            <h3
+               class="text-xs font-semibold {{ sidebar_colors.menu_text }} dark:text-gray-400 uppercase tracking-wider opacity-70 sidebar-text">
+               Admin Modules
+            </h3>
+         </div>
+
+         <!-- Super Admin -->
+         {% if user.is_superuser %}
+         <div class="menu-group">
+            <button
+               class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 transition-colors {% active_menu request 'company:subscription_list_page,company:subscription_create_page,company:subscription_details_page,company:subscription_update_page,company:company_list_page,company:company_create_page,company:company_details_page' %}"
+               data-menu="company"
+               data-open="{% is_menu_open request 'company:subscription_list_page,company:subscription_create_page,company:subscription_details_page,company:subscription_update_page,company:company_list_page,company:company_create_page,company:company_details_page' %}">
+               <span class="flex items-center gap-2 md:gap-3">
+                  <i class="fa-regular fa-folder w-4 md:w-5 text-center"></i>
+                  <span class="sidebar-text text-xs md:text-sm">Super Admin</span>
+               </span>
+               <i id="arrow-company"
+                  class="fas fa-chevron-right text-xs transition-transform duration-200 dark:text-gray-400"></i>
+            </button>
+            <div id="submenu-company" class="submenu hidden pl-4 md:pl-5 mt-1 space-y-1">
+               <a href="{% url 'company:subscription_list_page' %}" data-menu="subscription_list_page"
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'company:subscription_list_page,company:subscription_create_page,company:subscription_details_page,company:subscription_update_page' %}">
+                  <i class="fa-regular fa-file w-4 text-center"></i>
+                  <span class="sidebar-text">Subscription</span>
+               </a>
+               <a href="{% url 'company:company_list_page' %}" data-menu="company_list_page"
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'company:company_list_page,company:company_create_page,company:company_details_page' %}">
+                  <i class="fa-regular fa-file w-4 text-center"></i>
+                  <span class="sidebar-text">Company</span>
+               </a>
+            </div>
+         </div>
+         {% endif %}
+
+         <!-- Moderator -->
+         <div class="menu-group">
+            <button
+               class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 transition-colors {% active_menu request 'company:designation_list_page,company:department_list_page,employee:employee_list_page' %}"
+               data-menu="moderator"
+               data-open="{% is_menu_open request 'company:designation_list_page,company:department_list_page,employee:employee_list_page' %}">
+               <span class="flex items-center gap-2 md:gap-3">
+                  <i class="fa-regular fa-folder w-4 md:w-5 text-center"></i>
+                  <span class="sidebar-text text-xs md:text-sm">Hr/Moderator</span>
+               </span>
+               <i id="arrow-moderator"
+                  class="fas fa-chevron-right text-xs transition-transform duration-200 dark:text-gray-400"></i>
+            </button>
+            <div id="submenu-moderator" class="submenu hidden pl-4 md:pl-5 mt-1 space-y-1">
+               <a href="#" data-menu="subscription_list_page"
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request '' %}">
+                  <i class="fa-regular fa-file w-4 text-center"></i>
+                  <span class="sidebar-text">Company</span>
+               </a>
+               <a href="{% url 'company:department_list_page' %}" data-menu="department_list_page"
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'company:department_list_page' %}">
+                  <i class="fa-regular fa-file w-4 text-center"></i>
+                  <span class="sidebar-text">Department</span>
+               </a>
+               <a href="{% url 'company:designation_list_page' %}" data-menu="designation_list_page"
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'company:designation_list_page' %}">
+                  <i class="fa-regular fa-file w-4 text-center"></i>
+                  <span class="sidebar-text">Designation</span>
+               </a>
+               <a href="#" data-menu="subscription_list_page"
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request '' %}">
+                  <i class="fa-regular fa-file w-4 text-center"></i>
+                  <span class="sidebar-text">Shop</span>
+               </a>
+               <a href="{% url 'employee:employee_list_page' %}" data-menu="company_list_page"
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'employee:employee_list_page' %}">
+                  <i class="fa-regular fa-file w-4 text-center"></i>
+                  <span class="sidebar-text">Employee</span>
+               </a>
+            </div>
+         </div>
+
+         <!-- Role/Permission -->
+         <div class="menu-group">
+            <button
+               class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 transition-colors {% active_menu request 'roles:roles_list_page,roles:role_create_page,roles:role_details_page,roles:role_update_page,roles:permissions_list_page' %}"
+               data-menu="role_permission" data-open="{% is_menu_open request 'roles:roles_list_page,roles:role_create_page,roles:role_details_page,roles:role_update_page,roles:permissions_list_page' %}">
+               <span class="flex items-center gap-2 md:gap-3">
+                  <i class="fa-regular fa-folder w-4 md:w-5 text-center"></i>
+                  <span class="sidebar-text text-xs md:text-sm">Role/Permission</span>
+               </span>
+               <i id="arrow-role_permission"
+                  class="fas fa-chevron-right text-xs transition-transform duration-200 dark:text-gray-400"></i>
+            </button>
+            <div id="submenu-role_permission" class="submenu hidden pl-4 md:pl-5 mt-1 space-y-1">
+               <a href="{% url 'roles:roles_list_page' %}" data-menu="roles:roles_list_page"
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'roles:roles_list_page,roles:role_create_page,roles:role_details_page,roles:role_update_page' %}">
+                  <i class="fa-regular fa-file w-4 text-center"></i>
+                  <span class="sidebar-text">Roles</span>
+               </a>
+               <a href="{% url 'roles:permissions_list_page' %}" data-menu="company_list_page"
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'roles:permissions_list_page' %}">
+                  <i class="fa-regular fa-file w-4 text-center"></i>
+                  <span class="sidebar-text">Permissions</span>
+               </a>
+            </div>
+         </div>
+      </nav>
+   </div>
+
+   <!-- Sidebar Footer -->
+   <div
+      class="sidebar-footer p-4 border-t {{sidebar_colors.border_color}} dark:border-gray-700 text-xs {{ sidebar_colors.menu_text }} dark:text-gray-400 text-center">
+      © 2025 Astha Admin
+   </div>
+</aside>

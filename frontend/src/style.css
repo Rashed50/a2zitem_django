@@ -1,0 +1,18 @@
+
+
+/* src/style.css বা global CSS এ যোগ করো */
+.swal2-popup {
+   width: 380px !important;
+   /* padding: 1rem !important; */
+   font-size: 0.95rem !important;
+}
+
+.swal2-title {
+   font-size: 1.50rem !important;
+   margin-bottom: 0.5rem !important;
+}
+
+.swal2-html-container {
+   font-size: 0.95rem !important;
+}
+

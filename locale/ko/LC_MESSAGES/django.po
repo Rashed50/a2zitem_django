@@ -1,0 +1,54 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "question-1"
+msgstr "이름이 무엇인가요?"
+
+msgid "Email address"
+msgstr "이메일 주소"
+
+msgid "Phone number"
+msgstr "전화번호"
+
+msgid "First name"
+msgstr "이름"
+
+msgid "Last name"
+msgstr "성"
+
+msgid "Gender"
+msgstr "성별"
+
+msgid "Religion"
+msgstr "종교"
+
+msgid "Date of birth"
+msgstr "생년월일"
+
+msgid "Profile Image"
+msgstr "프로필 이미지"
+
+msgid "Active"
+msgstr "활성"
+
+msgid "Admin"
+msgstr "관리자"
+
+msgid "User"
+msgstr "사용자"
+
+msgid "Users"
+msgstr "사용자들"
+
+msgid "Enter a valid email address."
+msgstr "유효한 이메일 주소를 입력하세요."
+
+msgid "This field is required."
+msgstr "이 필드는 필수입니다."
+
+msgid "Welcome to our application"
+msgstr "우리 애플리케이션에 오신 것을 환영합니다"
+
+msgid "Please fill in all required fields"
+msgstr "모든 필수 필드를 작성해 주세요"

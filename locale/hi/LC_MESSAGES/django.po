@@ -1,0 +1,54 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "question-1"
+msgstr "आपका नाम क्या है?"
+
+msgid "Email address"
+msgstr "ईमेल पता"
+
+msgid "Phone number"
+msgstr "फोन नंबर"
+
+msgid "First name"
+msgstr "पहला नाम"
+
+msgid "Last name"
+msgstr "उपनाम"
+
+msgid "Gender"
+msgstr "लिंग"
+
+msgid "Religion"
+msgstr "धर्म"
+
+msgid "Date of birth"
+msgstr "जन्म तिथि"
+
+msgid "Profile Image"
+msgstr "प्रोफाइल छवि"
+
+msgid "Active"
+msgstr "सक्रिय"
+
+msgid "Admin"
+msgstr "व्यवस्थापक"
+
+msgid "User"
+msgstr "उपयोगकर्ता"
+
+msgid "Users"
+msgstr "उपयोगकर्ताओं"
+
+msgid "Enter a valid email address."
+msgstr "एक वैध ईमेल पता दर्ज करें।"
+
+msgid "This field is required."
+msgstr "यह फ़ील्ड आवश्यक है।"
+
+msgid "Welcome to our application"
+msgstr "हमारे आवेदन में आपका स्वागत है"
+
+msgid "Please fill in all required fields"
+msgstr "कृपया सभी आवश्यक फ़ील्ड भरें"

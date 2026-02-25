@@ -1,0 +1,525 @@
+/* ============================================
+   RESPONSIVE GRID SYSTEM
+   ============================================ */
+
+/* Base Grid Container */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+  padding: 0;
+}
+
+/* Gap Variations */
+.responsive-grid.gap-xs {
+  gap: 0.25rem;
+}
+
+.responsive-grid.gap-sm {
+  gap: 0.5rem;
+}
+
+.responsive-grid.gap-md {
+  gap: 0.75rem;
+}
+
+.responsive-grid.gap-lg {
+  gap: 1rem;
+}
+
+.responsive-grid.gap-xl {
+  gap: 1.5rem;
+}
+
+.responsive-grid.gap-2xl {
+  gap: 2rem;
+}
+
+/* Column Spans - Desktop */
+.grid-col-span-1 { grid-column: span 1; }
+.grid-col-span-2 { grid-column: span 2; }
+.grid-col-span-3 { grid-column: span 3; }
+.grid-col-span-4 { grid-column: span 4; }
+.grid-col-span-5 { grid-column: span 5; }
+.grid-col-span-full { grid-column: 1 / -1; }
+
+/* Specific Column Start Positions */
+.grid-col-start-1 { grid-column-start: 1; }
+.grid-col-start-2 { grid-column-start: 2; }
+.grid-col-start-3 { grid-column-start: 3; }
+.grid-col-start-4 { grid-column-start: 4; }
+.grid-col-start-5 { grid-column-start: 5; }
+.grid-col-start-6 { grid-column-start: 6; }
+
+/* Specific Column End Positions */
+.grid-col-end-2 { grid-column-end: 2; }
+.grid-col-end-3 { grid-column-end: 3; }
+.grid-col-end-4 { grid-column-end: 4; }
+.grid-col-end-5 { grid-column-end: 5; }
+.grid-col-end-6 { grid-column-end: 6; }
+
+/* Row Spans */
+.grid-row-span-1 { grid-row: span 1; }
+.grid-row-span-2 { grid-row: span 2; }
+.grid-row-span-3 { grid-row: span 3; }
+.grid-row-span-4 { grid-row: span 4; }
+.grid-row-span-full { grid-row: 1 / -1; }
+
+/* Specific Row Start Positions */
+.grid-row-start-1 { grid-row-start: 1; }
+.grid-row-start-2 { grid-row-start: 2; }
+.grid-row-start-3 { grid-row-start: 3; }
+.grid-row-start-4 { grid-row-start: 4; }
+
+/* Specific Row End Positions */
+.grid-row-end-2 { grid-row-end: 2; }
+.grid-row-end-3 { grid-row-end: 3; }
+.grid-row-end-4 { grid-row-end: 4; }
+.grid-row-end-5 { grid-row-end: 5; }
+
+/* Grid Area (Shortcut for row-start/column-start/row-end/column-end) */
+.grid-area-1 { grid-area: 1 / 1 / 2 / 2; }
+.grid-area-2 { grid-area: 1 / 1 / 2 / 3; }
+.grid-area-3 { grid-area: 1 / 1 / 3 / 2; }
+.grid-area-4 { grid-area: 1 / 1 / 3 / 3; }
+
+/* Alignment Utilities */
+.grid-self-start { align-self: start; }
+.grid-self-center { align-self: center; }
+.grid-self-end { align-self: end; }
+.grid-self-stretch { align-self: stretch; }
+
+.grid-justify-start { justify-self: start; }
+.grid-justify-center { justify-self: center; }
+.grid-justify-end { justify-self: end; }
+.grid-justify-stretch { justify-self: stretch; }
+
+/* Order Utilities */
+.grid-order-first { order: -1; }
+.grid-order-1 { order: 1; }
+.grid-order-2 { order: 2; }
+.grid-order-3 { order: 3; }
+.grid-order-4 { order: 4; }
+.grid-order-5 { order: 5; }
+.grid-order-last { order: 999; }
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+/* Extra Large devices (xl) - 5 columns */
+@media (min-width: 1601px) {
+  .responsive-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* Large devices (lg) - 4 columns */
+@media (max-width: 1600px) {
+  .responsive-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  /* Adjust column spans for 4-column layout */
+  .grid-col-span-5 { grid-column: span 4; }
+}
+
+/* Medium-Large devices (ml) - 3 columns */
+@media (max-width: 1300px) {
+  .responsive-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  /* Adjust column spans for 3-column layout */
+  .grid-col-span-4 { grid-column: span 3; }
+  .grid-col-span-5 { grid-column: span 3; }
+}
+
+/* Medium devices (md) - 2 columns */
+@media (max-width: 1200px) {
+  .responsive-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* Adjust column spans for 2-column layout */
+  .grid-col-span-3 { grid-column: span 2; }
+  .grid-col-span-4 { grid-column: span 2; }
+  .grid-col-span-5 { grid-column: span 2; }
+}
+
+@media (max-width: 992px) {
+  .responsive-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Small devices (sm) - 2 columns */
+@media (max-width: 768px) {
+  .responsive-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* For small screens, make most spans full width */
+  .sm\:grid-col-span-full {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Extra small devices (xs) - 1 column */
+@media (max-width: 576px) {
+  .responsive-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* On mobile, make all spans full width */
+  .grid-col-span-2,
+  .grid-col-span-3,
+  .grid-col-span-4,
+  .grid-col-span-5 {
+    grid-column: 1 / -1;
+  }
+  
+  /* Mobile-specific row adjustments */
+  .xs\:grid-row-span-1 { grid-row: span 1; }
+  .xs\:grid-col-span-full { grid-column: 1 / -1; }
+  
+  /* Reset specific positions for mobile */
+  .grid-col-start-1,
+  .grid-col-start-2,
+  .grid-col-start-3,
+  .grid-col-start-4,
+  .grid-col-start-5,
+  .grid-col-start-6,
+  .grid-row-start-1,
+  .grid-row-start-2,
+  .grid-row-start-3,
+  .grid-row-start-4 {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ============================================
+   SPECIAL GRID LAYOUTS
+   ============================================ */
+
+/* 2 Column Layout */
+.grid-2-col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+/* 3 Column Layout */
+.grid-3-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+/* 4 Column Layout */
+.grid-4-col {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+/* Auto-fit responsive grid */
+.grid-auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+/* Auto-fill responsive grid */
+.grid-auto-fill {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+/* Sidebar + Content Layout */
+.grid-sidebar {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 1rem;
+}
+
+/* Form Layout (Label + Input) */
+.grid-form {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+/* Card Grid */
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* ============================================
+   RESPONSIVE UTILITY CLASSES
+   ============================================ */
+
+/* Hide/Show based on screen size */
+.hide-on-mobile { display: block; }
+.show-on-mobile { display: none; }
+
+@media (max-width: 768px) {
+  .hide-on-mobile { display: none; }
+  .show-on-mobile { display: block; }
+}
+
+/* Stack items vertically on mobile */
+.stack-on-mobile {
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 768px) {
+  .stack-on-mobile {
+    flex-direction: column;
+  }
+  
+  .stack-on-mobile > * {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* ============================================
+   PRACTICAL EXAMPLE CLASSES
+   ============================================ */
+
+/* Form field with label taking 1/3 and input taking 2/3 */
+.form-field-label-1-3 {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+/* Dashboard widget layouts */
+.dashboard-2-col {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+}
+
+.dashboard-3-col {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Image gallery */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.5rem;
+}
+
+/* Pricing cards */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Product grid */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+/* Statistics cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+/* ============================================
+   BREAKPOINT SPECIFIC COLUMN SPANS
+   ============================================ */
+
+/* Large screens only */
+@media (min-width: 1201px) {
+  .lg\:grid-col-span-2 { grid-column: span 2; }
+  .lg\:grid-col-span-3 { grid-column: span 3; }
+  .lg\:grid-col-span-full { grid-column: 1 / -1; }
+}
+
+/* Medium screens only */
+@media (min-width: 769px) and (max-width: 1200px) {
+  .md\:grid-col-span-2 { grid-column: span 2; }
+  .md\:grid-col-span-full { grid-column: 1 / -1; }
+}
+
+/* Small screens only */
+@media (min-width: 577px) and (max-width: 768px) {
+  .sm\:grid-col-span-2 { grid-column: span 2; }
+  .sm\:grid-col-span-full { grid-column: 1 / -1; }
+}
+
+/* ============================================
+   GRID TEMPLATE EXAMPLES
+   ============================================ */
+
+/* Example: Complex form layout */
+.grid-form-complex {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+/* Example: Dashboard layout */
+.grid-dashboard {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  grid-template-rows: auto 1fr auto;
+  gap: 1rem;
+  grid-template-areas:
+    "header header"
+    "main sidebar"
+    "footer footer";
+}
+
+.grid-area-header { grid-area: header; }
+.grid-area-main { grid-area: main; }
+.grid-area-sidebar { grid-area: sidebar; }
+.grid-area-footer { grid-area: footer; }
+
+/* Example: Card with icon and text */
+.grid-card-icon-text {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+/* Example: Profile layout */
+.grid-profile {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .grid-profile {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+/* ============================================
+   HELPER CLASSES
+   ============================================ */
+
+/* Ensure grid items don't overflow */
+.grid-item {
+  min-width: 0; /* Prevent overflow */
+}
+
+/* Add padding to grid items */
+.grid-p-2 { padding: 0.5rem; }
+.grid-p-3 { padding: 0.75rem; }
+.grid-p-4 { padding: 1rem; }
+
+/* Add margin to grid items */
+.grid-m-2 { margin: 0.5rem; }
+.grid-m-3 { margin: 0.75rem; }
+.grid-m-4 { margin: 1rem; }
+
+/* Border utilities for debugging */
+.grid-debug * {
+  border: 1px dashed #f87171;
+}
+
+.grid-debug .grid-item {
+  background-color: rgba(248, 113, 113, 0.1);
+} 
+
+/* ============================================
+============ 📦 ব্যবহারের উদাহরণ: ==============
+উদাহরণ ১: সাধারণ Form Layout
+
+<div class="responsive-grid gap-md">
+  <!-- Single column -->
+  <InputeComponent class="grid-col-span-1" ... />
+  
+  <!-- Double column -->
+  <div class="grid-col-span-2">
+    <InputeComponent ... />
+  </div>
+  
+  <!-- Full width -->
+  <InputeComponent class="grid-col-span-full" ... />
+</div>
+
+
+-----------------------------------------------
+উদাহরণ ২: Complex Layout
+
+<div class="responsive-grid gap-lg">
+  <!-- Sidebar -->
+  <div class="grid-col-span-1 grid-row-span-2">
+    <!-- Sidebar content -->
+  </div>
+  
+  <!-- Main content -->
+  <div class="grid-col-span-3">
+    <!-- Main content -->
+  </div>
+  
+  <!-- Stats -->
+  <div class="grid-col-span-2">
+    <!-- Stats 1 -->
+  </div>
+  
+  <div class="grid-col-span-2">
+    <!-- Stats 2 -->
+  </div>
+</div>
+
+------------------------------------------------
+উদাহরণ ৩: Responsive Layout
+
+<div class="responsive-grid">
+  <!-- Desktop: 2 columns, Mobile: Full width -->
+  <div class="grid-col-span-2 xs:grid-col-span-full">
+    <!-- Content -->
+  </div>
+  
+  <!-- Desktop: 3 columns, Tablet: 2 columns, Mobile: Full width -->
+  <div class="lg:grid-col-span-3 md:grid-col-span-2 xs:grid-col-span-full">
+    <!-- Content -->
+  </div>
+</div>
+
+
+--------------------------------------------------
+উদাহরণ ৪: Dashboard Layout
+
+<div class="grid-dashboard">
+  <header class="grid-area-header">Header</header>
+  <main class="grid-area-main">Main Content</main>
+  <aside class="grid-area-sidebar">Sidebar</aside>
+  <footer class="grid-area-footer">Footer</footer>
+</div>
+
+-------------------------------------------------
+উদাহরণ ৫: Form with Label Alignment
+
+<div class="grid-form">
+  <label for="name">Name:</label>
+  <InputeComponent id="name" ... />
+  
+  <label for="email">Email:</label>
+  <InputeComponent id="email" ... />
+</div>
+   ============================================ */

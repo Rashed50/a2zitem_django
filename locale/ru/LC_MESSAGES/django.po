@@ -1,0 +1,54 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "question-1"
+msgstr "Как вас зовут?"
+
+msgid "Email address"
+msgstr "Адрес электронной почты"
+
+msgid "Phone number"
+msgstr "Номер телефона"
+
+msgid "First name"
+msgstr "Имя"
+
+msgid "Last name"
+msgstr "Фамилия"
+
+msgid "Gender"
+msgstr "Пол"
+
+msgid "Religion"
+msgstr "Религия"
+
+msgid "Date of birth"
+msgstr "Дата рождения"
+
+msgid "Profile Image"
+msgstr "Изображение профиля"
+
+msgid "Active"
+msgstr "Активный"
+
+msgid "Admin"
+msgstr "Администратор"
+
+msgid "User"
+msgstr "Пользователь"
+
+msgid "Users"
+msgstr "Пользователи"
+
+msgid "Enter a valid email address."
+msgstr "Введите действительный адрес электронной почты."
+
+msgid "This field is required."
+msgstr "Это поле обязательно для заполнения."
+
+msgid "Welcome to our application"
+msgstr "Добро пожаловать в наше приложение"
+
+msgid "Please fill in all required fields"
+msgstr "Пожалуйста, заполните все обязательные поля"

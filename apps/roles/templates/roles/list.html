@@ -1,0 +1,30 @@
+{% extends 'layouts/master.html' %}
+{% load static %}
+{% block title %}Role{% endblock title %}
+
+{% block styles %}{% endblock styles %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="border-b border-gray-200 dark:border-gray-700 pb-2 mb-2 flex flex-col gap-1">
+    <ul class="flex items-center text-sm text-gray-500 dark:text-gray-400 space-x-2">
+        <li class="flex items-center">
+            <a href="#" class="hover:text-blue-600 flex items-center gap-1">
+                <i class="fa-solid fa-house text-gray-400"></i>
+                Home
+            </a>
+        </li>
+        <li><i class="fa-solid fa-angle-right text-gray-400"></i></li>
+        <li class="text-blue-600 font-semibold">Roles</li>
+    </ul>
+</div>
+<!-- <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+    <div>
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Roles List</h2>
+        <p class="text-gray-600 dark:text-gray-300 mt-1"></p>
+    </div>
+</div> -->
+<roles-list-component></roles-list-component>
+{% endblock content %}
+
+{% block js %}{% endblock js %}
