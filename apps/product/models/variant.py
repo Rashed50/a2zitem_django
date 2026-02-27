@@ -29,7 +29,7 @@ class ProductVariant(TimestampedModel):
 
     sku = models.CharField(max_length=50, unique=True, db_index=True, verbose_name=_("Stock Keeping Unit (SKU)"))
     
-    quantity  = models.PositiveIntegerField(default=0, verbose_name=_("Quantity"))
+    stock     = models.PositiveIntegerField(default=0, verbose_name=_("Stock Quantity"))
     min_stock = models.PositiveIntegerField(default=0, verbose_name=_("Minimum Stock"))
 
     color = models.ForeignKey(Color, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_("Color"))
@@ -40,6 +40,7 @@ class ProductVariant(TimestampedModel):
     selling_price  = models.DecimalField(max_digits=10, decimal_places=2, verbose_name=_("Selling Price"))
 
     is_default = models.BooleanField(default=False)
+    
     
     class Meta:
         verbose_name        = _("Product Variant")
@@ -76,4 +77,4 @@ class ProductVariant(TimestampedModel):
     
     @property
     def is_low_stock(self):
-        return self.quantity <= self.min_stock
+        return self.stock <= self.min_stock
