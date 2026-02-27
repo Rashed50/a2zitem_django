@@ -47,10 +47,11 @@ class User(AbstractBaseUser, TimestampedModel, PermissionsMixin):
         )
     
     slug = models.SlugField(
-            verbose_name = _("Slug"), 
+            max_length   = 255,
             unique       = True, 
-            null         = True,
+            db_index     = True,
             blank        = True, 
+            verbose_name = _("Slug"), 
         )
 
     email = models.EmailField(

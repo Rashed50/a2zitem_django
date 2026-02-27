@@ -15,15 +15,15 @@ from core.models.time_stamped import TimestampedModel
 from core.utils.generator import generate_unique_slug, generate_unique_code
 
 
-
 class Brand(TimestampedModel):
-    slug = models.SlugField(max_length=255, unique=True, blank=True, verbose_name=_("Slug"))
-    name = models.CharField(max_length=255, unique=True, verbose_name=_("Brand Name"))
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, blank=True, verbose_name=_("Slug"))
+    name = models.CharField(max_length=255, unique=True, db_index=True, verbose_name=_("Brand Name"))
     logo = models.ImageField(upload_to='brands/logos/', null=True, blank=True, verbose_name=_("Brand Logo"))
     
     class Meta:
         verbose_name = _("Brand")
         verbose_name_plural = _("Brands")
+        ordering = ['name']
         
     def __str__(self):
         return self.name

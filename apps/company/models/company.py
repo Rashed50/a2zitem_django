@@ -22,21 +22,31 @@ class Company(TimestampedModel):
         PUBLIC      = "public",     _("Public")
         GOVERNMENT  = "government", _("Government")
         
-    slug       = models.SlugField(unique=True, blank=True, verbose_name=_("Slug"))
-    name       = models.CharField(max_length=255, unique=True, verbose_name=_("Company Name"))
-    short_name = models.CharField(max_length=255, unique=True, null=True, verbose_name=_("Company Short Name"))
-    code       = models.CharField(max_length=20, unique=True, db_index=True, verbose_name=_("Company Code Number"),
-                        help_text=_("Short unique company identifier (e.g. ABCD, AB001)")
-                    )
+    slug       = models.SlugField(max_length=255, unique=True, db_index=True, blank=True, verbose_name=_("Slug"))
+    name       = models.CharField(max_length=255, unique=True, db_index=True, verbose_name=_("Company Name"))
+    short_name = models.CharField(max_length=255, unique=True, db_index=True, null=True, verbose_name=_("Company Short Name"))
+    
+    code = models.CharField(
+            max_length   = 20, 
+            unique       = True, 
+            db_index     = True, 
+            verbose_name = _("Company Code Number"),
+            help_text    = _("Short unique company identifier (e.g. ABCD, AB001)")
+        )
 
-    company_type = models.CharField(max_length=20, choices=CompanyType.choices, default=CompanyType.PRIVATE, verbose_name=_("Company Type"))
+    company_type = models.CharField(
+            max_length   = 20, 
+            choices      = CompanyType.choices, 
+            default      = CompanyType.PRIVATE, 
+            verbose_name = _("Company Type")
+        )
         
-    email   = models.EmailField(null=True, blank=True, verbose_name=_("Company Email"))
-    phone   = models.CharField(max_length=20, null=True, blank=True, verbose_name=_("Company Phone"))
-    website = models.URLField(null=True, blank=True, verbose_name=_("Company Website"))
-    logo    = models.ImageField(upload_to="company/logo/", null=True, blank=True, verbose_name=_("Company Logo"))
+    email       = models.EmailField(max_length=255, null=True, blank=True, verbose_name=_("Company Email"))
+    phone       = models.CharField(max_length=20, null=True, blank=True, verbose_name=_("Company Phone"))
+    website     = models.URLField(null=True, blank=True, verbose_name=_("Company Website"))
+    logo        = models.ImageField(upload_to="company/logo/", null=True, blank=True, verbose_name=_("Company Logo"))
     gov_license = models.CharField(max_length=50, null=True, blank=True, verbose_name=_("Government License Number"))
-    address = models.TextField(null=True, blank=True, verbose_name=_("Company Address"))
+    address     = models.TextField(null=True, blank=True, verbose_name=_("Company Address"))
     
     established_at = models.DateField(blank=True, null=True, verbose_name=_("Established At"))
 

@@ -9,9 +9,26 @@ from core.models.time_stamped import TimestampedModel2
 
 
 class Country(TimestampedModel2):
-    slug       = models.SlugField(unique=True, verbose_name = _("Slug"))
-    name       = models.CharField(max_length=100, verbose_name = _("Country Name"))
-    code       = models.CharField(max_length=2, unique=True, verbose_name = _("Country Code"))
+    slug       = models.SlugField(
+        max_length   = 255,
+        unique       = True,
+        db_index     = True,
+        blank        = True, 
+        verbose_name = _("Slug")
+    )
+    
+    name       = models.CharField(
+        max_length   = 100,  
+        unique       = True,
+        db_index     = True,
+        verbose_name = _("Country Name")
+    )
+    
+    code = models.CharField(
+        max_length   = 10, 
+        unique       = True, 
+        verbose_name = _("Country Code")
+    )
 
     capital    = models.CharField(max_length=100, blank=True, null=True, verbose_name = _("Capital"))
     region     = models.CharField(max_length=5, blank=True, null=True, verbose_name = _("Region"))

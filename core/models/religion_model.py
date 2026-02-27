@@ -10,9 +10,11 @@ class Religion(models.Model):
         unique       = True
     )
     slug = models.SlugField(
-        verbose_name = _("Slug"),
+        max_length   = 255,
         unique       = True,
-        blank        = True
+        db_index     = True,
+        blank        = True,
+        verbose_name = _("Slug"),
     )
 
     def save(self, *args, **kwargs):
@@ -31,7 +33,13 @@ class ReligionDenomination(models.Model):
         on_delete    = models.CASCADE,
         verbose_name = _("Religion")
     )
-    slug = models.SlugField(blank=True, verbose_name=_("Slug"))
+    slug = models.SlugField(
+            max_length   = 255, 
+            unique       = True, 
+            db_index     = True,
+            blank        = True, 
+            verbose_name = _("Slug")
+        )
     name = models.CharField(max_length=50, verbose_name=_("Denomination Name"))
 
     class Meta:
