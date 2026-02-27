@@ -21,6 +21,8 @@ class Catagory(TimestampedModel):
     slug   = models.SlugField(max_length=255, unique=True, db_index=True, blank=True, verbose_name=_("Slug"))
     name   = models.CharField(max_length=255, unique=True, db_index=True, verbose_name=_("Name"))
     logo   = models.ImageField(upload_to='catagories/logos/', null=True, blank=True, verbose_name=_("Logo"))
+    
+    ##? Recursive Relationship
     parent = models.ForeignKey(
             'self', 
             on_delete    = models.SET_NULL, 
