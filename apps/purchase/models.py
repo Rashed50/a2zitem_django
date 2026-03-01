@@ -45,7 +45,7 @@ class Purchase(TimestampedModel):
         self.save(update_fields=['grand_total'])
     
     
-class PurchaseItem(models.Model):
+class PurchaseItem(TimestampedModel2):
     purchase = models.ForeignKey(
         Purchase,
         on_delete    = models.CASCADE,

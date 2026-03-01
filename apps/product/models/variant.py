@@ -11,7 +11,7 @@ from core.utils.generator import generate_unique_slug, generate_unique_code
 
 ##? Models Import
 User = get_user_model() 
-from core.models.time_stamped import TimestampedModel
+from core.models.time_stamped import TimestampedModel, TimestampedModel2
 from apps.product.models.product import Product
 from apps.product.models.catagory import Catagory
 from apps.product.models.brand import Brand
@@ -20,7 +20,7 @@ from apps.product.models.color import Color
 from apps.product.models.size import Size
 
 
-class ProductVariant(TimestampedModel):
+class ProductVariant(TimestampedModel2):
     product = models.ForeignKey(
         Product,
         on_delete    = models.CASCADE,

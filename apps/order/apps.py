@@ -1,10 +1,10 @@
 from django.apps import AppConfig
 
 
-class StockConfig(AppConfig):
+class OrderConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name         = 'apps.stock'
-    verbose_name = 'Stock'
+    name         = 'apps.order'
+    verbose_name = 'Order'
     
     def ready(self):
         pass

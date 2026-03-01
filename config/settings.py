@@ -82,6 +82,13 @@ CORS_ALLOW_HEADERS = [
 CUSTOM_APPS = [
     'core.apps.CoreConfig',                ## core
     'users.apps.UsersConfig',              ## users
+    'apps.company.apps.CompanyConfig',     ## company
+    'apps.supplier.apps.SupplierConfig',    ## supplier
+    'apps.product.apps.ProductConfig',     ## product
+    'apps.purchase.apps.PurchaseConfig',   ## purchase
+    'apps.stock.apps.StockConfig',         ## stock
+    'apps.sales.apps.SalesConfig',         ## sales
+    'apps.order.apps.OrderConfig',         ## order
 ]
 
 

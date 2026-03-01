@@ -67,10 +67,10 @@ class SaleItem(TimestampedModel2):
             )
 
             StockMovement.objects.create(
-                variant=self.variant,
-                movement_type=movement_type,
-                quantity=abs(diff),
-                note=f"Sale {self.sale.invoice_no}"
+                variant       = self.variant,
+                movement_type = movement_type,
+                quantity      = abs(diff),
+                note          = f"Sale {self.sale.invoice_no}"
             )
 
             ## Update actual stock field
@@ -83,15 +83,15 @@ class SaleItem(TimestampedModel2):
 
     def delete(self, *args, **kwargs):
 
-        # Stock ফেরত যাবে
+        ## Stock ফেরত যাবে
         self.variant.stock += self.quantity
         self.variant.save(update_fields=["stock"])
 
         StockMovement.objects.create(
-            variant=self.variant,
-            movement_type=StockMovement.MovementType.IN,
-            quantity=self.quantity,
-            note=f"Deleted Sale {self.sale.invoice_no}"
+            variant       = self.variant,
+            movement_type = StockMovement.MovementType.IN,
+            quantity      = self.quantity,
+            note          = f"Deleted Sale {self.sale.invoice_no}"
         )
 
         super().delete(*args, **kwargs)

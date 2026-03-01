@@ -3,4 +3,8 @@ from django.apps import AppConfig
 
 class SupplierConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'supplier'
+    name         = 'apps.supplier'
+    verbose_name = 'Supplier'
+    
+    def ready(self):
+        pass
