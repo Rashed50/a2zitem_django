@@ -101,4 +101,15 @@ app.component("role-details-component", RoleDetailsComponent);
 app.component("role-create-component", RoleCreateComponent);
 app.component("permissions-list-component", PermissionsListComponent);
 
+
+//! Import Supplier Component
+import { 
+    SupplierCreateComponent,
+    SupplierListComponent,
+    // SupplierDetailsComponent,
+} from '../../apps/supplier/assets/js/app';
+app.component("supplier-create-component", SupplierCreateComponent);
+app.component("supplier-list-component", SupplierListComponent);
+// app.component("supplier-details-component", SupplierDetailsComponent);
+
 app.mount("#app");

@@ -14,7 +14,7 @@ class SupplierQueryService:
             created_by_name = F('created_by__email'),
             updated_by_name = F('updated_by__email'),
         ).filter(
-            is_active  = True,
+            # is_active  = True,
             is_deleted = False
         )
 
