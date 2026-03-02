@@ -16,7 +16,7 @@
          </template>
 
          <!-- Header Title -->
-         <template #title> Supplier Create </template>
+         <template #title> Supplier {{ isEditMode ? 'Update' : 'Create' }}</template>
 
          <!-- Header Right Side -->
          <template #header-right>
@@ -37,12 +37,12 @@
                   </h4>
                   <div class="responsive-grid gap-md">
                      <!-- Name -->
-                     <InputeComponent label="Supplier Name" placeholder="Enter supplier name" id="name" name="name" type="text"
-                        v-model="formData.name" :error="formErrors.name" required/>
+                     <InputeComponent label="Supplier Name" placeholder="Enter supplier name" id="name" name="name"
+                        type="text" v-model="formData.name" :error="formErrors.name"/>
 
                      <!-- Contact Person -->
-                     <InputeComponent label="Contact Person Name" placeholder="Enter contact person name" id="contact" name="contact" type="text"
-                        v-model="formData.contact" :error="formErrors.contact" required/>
+                     <InputeComponent label="Contact Person Name" placeholder="Enter contact person name" id="contact"
+                        name="contact" type="text" v-model="formData.contact" :error="formErrors.contact"/>
 
                      <!-- Email -->
                      <InputeComponent label="Email" placeholder="Enter email" id="email" name="email" type="email"
@@ -50,7 +50,7 @@
 
                      <!-- Phone -->
                      <InputeComponent label="Phone" placeholder="+8801000000000" id="phone" name="phone" type="text"
-                        v-model="formData.phone" :error="formErrors.phone"  required/>
+                        v-model="formData.phone" :error="formErrors.phone"/>
 
                      <!-- Is Active -->
                      <div>
@@ -74,7 +74,8 @@
                   <ActionButton action="back" @click="handleBack" variant="outline-secondary" size="sm" label="Back" />
 
                   <!-- Save Button -->
-                  <ActionButton action="create" :loading="loadingStates.save" size="sm" label="Create" type="submit" />
+                  <ActionButton :action="isEditMode ? 'edit' : 'create'" :loading="loadingStates.save" size="sm"
+                     :label="isEditMode ? 'Update' : 'Create'" type="submit" />
                </div>
             </form>
          </template>
@@ -83,7 +84,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, reactive, inject } from 'vue';
+import { inject, ref, onMounted, computed, reactive, watch } from 'vue';
 import { SupplierApiURL, SupplierPageURL } from '../../routes';
 
 // ===================================================================
@@ -100,7 +101,10 @@ const userId = ref(window.user_id);
 // =========================== 2. PROPS =============================
 // ===================================================================
 const props = defineProps({
-
+   itemId: {
+      type: [Number, String],
+      default: null
+   }
 });
 
 // ===================================================================
@@ -132,11 +136,10 @@ const formErrors = reactive({
    is_active: '',
 });
 const formSubmitted = ref(false);
-
 // ===================================================================
-// =========================== 4. WATCH =============================
+// =========================== 4. COMPUTED ============================
 // ===================================================================
-// ************* Here haven't any watchers *********
+const isEditMode = computed(() => !!props.itemId && props.itemId !== 'null');
 
 // ===================================================================
 // =========================== 5. ON MOUNTED ========================
@@ -150,7 +153,29 @@ const formSubmitted = ref(false);
 // ===================================================================
 // =========================== 6. METHODS ===========================
 // ===================================================================
+const fetchDetails = async () => {
+   if (!props.itemId || props.itemId === 'null') return;
 
+   loadingStates.loading = true;
+   try {
+      const response = await axios.get(`${SupplierApiURL.Details}/${props.itemId}/`);
+      if (response.data.success) {
+         console.log(response.data.results);
+         const detailsData = response.data.results;
+         formData.value.name = detailsData.name;
+         formData.value.contact = detailsData.contact;
+         formData.value.email = detailsData.email;
+         formData.value.phone = detailsData.phone;
+         formData.value.address = detailsData.address;
+         formData.value.is_active = detailsData.is_active;
+      }
+   } catch (err) {
+      console.error(err);
+      // toast.error('Failed to load details');
+   } finally {
+      loadingStates.loading = false;
+   }
+};
 // ------------------------- Navigation ------------------------------
 const handleBack = () => {
    loadingStates.back = true;
@@ -167,7 +192,7 @@ const clearErrors = () => {
 const validateFormData = () => {
    let isValid = true;
    clearErrors();
-   
+
    const required = ['name', 'contact', 'phone'];
    required.forEach((field) => {
       if (!formData.value[field] && formData.value[field] !== 0) {
@@ -196,99 +221,69 @@ const resetForm = () => {
 const handleSubmit = async (e) => {
    e.preventDefault();
    loadingStates.save = true;
-   clearErrors();
 
+   clearErrors();
    if (!validateFormData()) {
       loadingStates.save = false;
       return;
    }
 
+   const payload = {
+      name: formData.value.name,
+      contact: formData.value.contact,
+      email: formData.value.email,
+      phone: formData.value.phone,
+      address: formData.value.address,
+      is_active: formData.value.is_active,
+   };
+
    //================== [API Call] ==================//
    try {
-      const result = await createApiCall(formData.value);
-
-      if (result.success) {
-         toast.success(result.message || 'Successfully created!');
-         resetForm();
+      let response;
+      if (isEditMode.value) {
+         response = await axios.put(`${SupplierApiURL.Update}/${props.itemId}/`, payload);
       } else {
-         toast.error(result.message || 'Something went wrong. Please try again.');
-         mapApiErrorsToForm(result.errors);
+         response = await axios.post(`${SupplierApiURL.Create}/`, payload);
+      }
+
+      if (response.data.success) {
+         toast.success(isEditMode.value ? 'successfully updated' : 'successfully created');
+         setTimeout(() => {
+            // goBack();
+            window.location.href = `${SupplierPageURL.Details}/${response.data.results.id}/`;
+         }, 2000);
+
+      } else {
+         toast.error(response.data.message || 'Failed to save!');
+         console.error(response.data.message || 'Failed to save!');
       }
    } catch (err) {
-      console.error('Unexpected exception:', err);
-      toast.error('Something went wrong. Please try again.');
+      console.log(err.response.data.errors.name[0]);
+      toast.error(err.response.data.message || 'Something went wrong. Please try again.');
+      mapApiErrorsToForm(err.response.data.errors);
    } finally {
       loadingStates.save = false;
    }
 };
 
-const createApiCall = async (formDataToSend) => {
-   try {
-      const res = await axios.post(
-         `${SupplierApiURL.Create}/`,
-         formDataToSend,
-         {}
-      );
-      if (res.status >= 200 && res.status < 300) {
-         return {
-            success: true,
-            message: res.data.message || 'Successfully created!',
-            data: res.data.results || res.data,
-         };
-      } else {
-         return {
-            success: false,
-            message: res.data.message || 'Request failed',
-            errors: res.data.errors || res.data.error || res.data,
-         };
-      }
-   } catch (error) {
-      // console.error('API Error:', error);
-
-      let errorMessage = 'Unexpected error occurred';
-      let errors = {};
-
-      if (error.response) {
-         errorMessage = error.response.data.message || 'Validation failed';
-         errors = error.response.data.errors || error.response.data.error || error.response.data;
-      } else if (error.request) {
-         errorMessage = 'No response from server';
-      }
-
-      return {
-         success: false,
-         message: errorMessage,
-         errors,
-      };
-   }
-};
-
-
 const mapApiErrorsToForm = (errors) => {
    if (!errors) return;
-
    Object.keys(errors).forEach((key) => {
       const value = errors[key];
-
-      // ===== Nested employee errors =====
-      if (key === 'employee' && typeof value === 'object') {
-         Object.keys(value).forEach((nestedKey) => {
-            if (formErrors[nestedKey] !== undefined) {
-               formErrors[nestedKey] = Array.isArray(value[nestedKey])
-                  ? value[nestedKey][0]
-                  : value[nestedKey];
-            }
-         });
-      }
-
       // ===== Normal field errors =====
-      else {
-         if (formErrors[key] !== undefined) {
-            formErrors[key] = Array.isArray(value) ? value[0] : value;
-         }
+      if (formErrors[key] !== undefined) {
+         formErrors[key] = Array.isArray(value) ? value[0] : value;
       }
    });
 };
 
+// ===================================================================
+// =========================== 7. WATCHERS ============================
+// ===================================================================
+watch(() => props.itemId, (newVal) => {
+   if (newVal && newVal !== 'null') {
+      fetchDetails();
+   }
+}, { immediate: true });
 </script>
 <style scoped></style>

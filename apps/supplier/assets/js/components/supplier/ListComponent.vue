@@ -34,7 +34,7 @@
                   <!-- Name (Sticky) -->
                   <template #cell-name="{ row }">
                      <div class="font-medium text-gray-900 dark:text-white">
-                        {{ row.name || '' }} 
+                        {{ row.name || '' }}
                      </div>
                   </template>
 
@@ -53,7 +53,34 @@
 
                   <!-- Address -->
                   <template #cell-address="{ row }">
-                     {{ row.address || '' }}
+                     <div class="max-h-20 overflow-y-auto whitespace-normal break-words pr-2">
+                        {{ row.address || '-' }}
+                        <!-- {{getTruncatedAddress(row.address)}} -->
+                     </div>
+                  </template>
+
+                  <template #cell-activity_dates="{ row }">
+                     <div class="space-y-2 text-xs">
+                        <div>
+                           <div class="font-medium text-gray-700 dark:text-gray-300">Created</div>
+                           <div class="text-gray-500 dark:text-gray-400">
+                              {{ formatLocalDateTimeExtended(row.created_at).formattedDate }}
+                           </div>
+                           <div class="text-gray-400 dark:text-gray-500">
+                              {{ formatLocalDateTimeExtended(row.created_at).formattedTime }}
+                           </div>
+                        </div>
+
+                        <div>
+                           <div class="font-medium text-gray-700 dark:text-gray-300">Updated</div>
+                           <div class="text-gray-500 dark:text-gray-400">
+                              {{ formatLocalDateTimeExtended(row.updated_at).formattedDate }}
+                           </div>
+                           <div class="text-gray-400 dark:text-gray-500">
+                              {{ formatLocalDateTimeExtended(row.updated_at).formattedTime }}
+                           </div>
+                        </div>
+                     </div>
                   </template>
 
                   <!-- Status -->
@@ -105,6 +132,7 @@ import DataTableTopControls from '@/components/data-table/DataTableTopControls.v
 import DataTablePagination from '@/components/data-table/DataTablePagination.vue';
 import DataTablePcBody from '@/components/data-table/DataTablePcBody.vue'
 import { formatLocalDateTimeExtended } from '@/utils/dateFormatter';
+import { truncateText, needsTruncation, getTruncatedWithFull } from '@/utils/textFormatter';
 import {
    ref,
    computed,
@@ -114,14 +142,19 @@ import {
    getCurrentInstance,
 } from 'vue';
 
+// ===================================================================
+// =========================== 1. INJECTIONS =========================
+// ===================================================================
 const toast = inject('toast');
 const axios = inject('axios');
 const swal = inject('swal');
 const { deleteItem } = useDelete();
-
 const today = new Date().toISOString().split('T')[0];
 const { proxy } = getCurrentInstance();
 
+// ===================================================================
+// =========================== 2. DATA ================================
+// ===================================================================
 const accessToken = ref(window.accessToken);
 const userId = ref(window.user_id);
 const loading = ref(false);
@@ -142,9 +175,14 @@ const tableColumns = [
    { field: 'name', title: 'Name', width: '20%', sticky: true, sortable: true },
    { field: 'contact', title: 'Contact Information', width: '20%', sticky: true, sortable: false },
    { field: 'address', title: 'Address', width: '20%', sticky: false, sortable: false },
+   { field: 'activity_dates', title: 'Activity Dates', width: '20%', sortable: false },
    { field: 'status', title: 'Status', width: '10%', sticky: true, sortable: false },
 ]
 
+
+// ===================================================================
+// =========================== 3. COMPUTED ============================
+// ===================================================================
 const tableFooterData = computed(() => {
    if (!apiData.value?.results?.length) {
       return {}
@@ -158,7 +196,13 @@ const tableFooterData = computed(() => {
    }
 })
 
-// Methods ============================================================================
+const getTruncatedAddress = (address) => {
+   return truncateText(address, 50);
+};
+
+// ===================================================================
+// =========================== 4. METHODS ============================
+// ===================================================================
 const fetchData = async () => {
    loading.value = true;
    try {
@@ -272,7 +316,10 @@ function debounce(func, wait) {
    };
 }
 
-// Watch ===========================================================================
+
+// ===================================================================
+// =========================== 1. WATCH =========================
+// ===================================================================
 watch(selectAll, (newVal) => {
    if (newVal && apiData.value?.results) {
       selectedRows.value = apiData.value.results.map((item) => item.id);
@@ -290,28 +337,9 @@ watch(selectedRows, (newVal) => {
    }
 });
 
-// Computed properties ===============================================================
-const visiblePages = computed(() => {
-   if (!apiData.value?.pagination) return [];
-
-   const totalPages = apiData.value.pagination.total_pages;
-   const maxVisible = window.innerWidth < 640 ? 3 : 5;
-   let startPage = Math.max(1, currentPage.value - Math.floor(maxVisible / 2));
-   let endPage = Math.min(totalPages, startPage + maxVisible - 1);
-
-   if (endPage - startPage + 1 < maxVisible) {
-      startPage = Math.max(1, endPage - maxVisible + 1);
-   }
-
-   const pages = [];
-   for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
-   }
-
-   return pages;
-});
-
-// Mounted ===========================================================================
+// ===================================================================
+// =========================== 5. MOUNTED ============================
+// ===================================================================
 onMounted(() => {
    fetchData();
 });

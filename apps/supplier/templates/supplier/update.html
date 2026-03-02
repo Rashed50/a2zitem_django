@@ -25,20 +25,7 @@
     </ul>
 </div>
 
-<h1>Supplier Update</h1>
-
-
-<!-- <employee-create-component
-    :item-id="'{% if object.id %}{{ object.id }}{% endif %}'"
-    :gender-choices='{{ gender_json|safe }}'
-    :blood-group-choices='{{ blood_group_json|safe }}'
-    :religion-choices='{{ religion_json|safe }}'
-    :department-choices='{{ department_json|safe }}'
-    :designation-choices='{{designation_json|safe}}'
-    :emp-status-choices='{{emp_status_json|safe}}'
-    :role-choices='{{role_json|safe}}'
-    :company-choices='{{company_json|safe}}'
-></employee-create-component> -->
+<supplier-create-and-update-component :item-id="'{% if object.id %}{{ object.id }}{% endif %}'"></supplier-create-and-update-component>
 {% endblock content %}
 
 {% block js %}{% endblock js %}

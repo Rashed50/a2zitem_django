@@ -1,11 +1,11 @@
 
 //! Employee
-import SupplierCreateComponent from "./components/supplier/CreateComponent.vue";
+import SupplierCreateUpdateComponent from "./components/supplier/CreateComponent.vue";
 import SupplierListComponent from "./components/supplier/ListComponent.vue";
-// import ShopDetailsComponent from "./components/shop/DetailsComponent.vue";
+import SupplierDetailsComponent from "./components/supplier/DetailsComponent.vue";
 
 export {
-    SupplierCreateComponent,
+    SupplierCreateUpdateComponent,
     SupplierListComponent,
-    // ShopDetailsComponent,
+    SupplierDetailsComponent,
 }

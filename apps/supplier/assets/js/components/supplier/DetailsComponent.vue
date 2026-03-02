@@ -17,7 +17,8 @@
 
          <!-- Header Title -->
          <template #title>
-            {{ detailsData.name }}
+            <span class="me-2">{{ detailsData.name }}</span>
+            <ActionBadge :status="detailsData.is_active ? 'active' : 'inactive'" size="md" rounded="md" />
          </template>
 
          <!-- Header Right Side -->
@@ -27,26 +28,28 @@
 
          <template #body>
             <!-- Card Body -->
-            <div class="flex-1 overflow-y-auto px-3 py-3 sm:px-6 sm:py-6 space-y-6">
-               <!-- Permissions Grouped by Module -->
-               <div v-for="(permissions, module) in groupedPermissions" :key="module"
-                  class="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800">
-                  <!-- Module Title -->
-                  <h4
-                     class="text-blue-600 dark:text-white font-bold text-lg mb-4 flex items-center gap-2 border-b pb-2">
-                     <i class="fa-solid fa-shield-alt"></i>
-                     {{ makeCapital(module) }}
+            <div class="flex-1 overflow-y-auto px-3 py-3 sm:px-6 sm:py-6 space-y-3">
+               <!-- Supplier Information -->
+               <div>
+                  <h4 class="text-blue-600 font-bold text-lg mb-4 flex items-center gap-2">
+                     <i class="fa-solid fa-info-circle"></i>
+                     Supplier Information
                   </h4>
-
-                  <!-- Permissions Grid -->
-                  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-                     <div v-for="permission in permissions" :key="permission.id"
-                        class="flex items-center gap-2 p-2 bg-white dark:bg-gray-700 rounded shadow-sm hover:shadow transition">
-                        <i class="fa-solid fa-check-circle text-green-500 text-sm"></i>
-                        <span class="text-sm text-gray-700 dark:text-gray-200">{{ permission.name }}</span>
-                     </div>
+                  <div v-if="detailsData" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                     <InfoCard label="Suupplier Name" :value="detailsData.name" icon="fa-solid fa-user" />
+                     <InfoCard label="Contact Person Name" :value="detailsData.contact" icon="fa-solid fa-user" />
+                     <InfoCard label="Contact Email" :value="detailsData.email" icon="fa-solid fa-at" />
+                     <InfoCard label="Contact Phone" :value="detailsData.phone" icon="fa-solid fa-phone" />
+                     <InfoCard class="col-span-2" label="Address" :value="detailsData.address" icon="fa-solid fa-location-dot" />
                   </div>
                </div>
+
+               <!-- Audit Information - Enhanced Design -->
+               <AuditInfoCard 
+                  :created-by="detailsData?.created_by?.name"
+                  :created-at="formatLocalDateTimeExtended(detailsData.created_at).fullDateTime"
+                  :updated-by="detailsData?.updated_by?.name"
+                  :updated-at="formatLocalDateTimeExtended(detailsData.updated_at).fullDateTime" />
             </div>
          </template>
       </MainContentCard>
@@ -55,7 +58,7 @@
 
 <script setup>
 import { ref, onMounted, reactive, inject, computed } from 'vue';
-import { RoleApiURL, RolePageURL, EmployeeApiURL, EmployeePageURL } from '../../routes';
+import { SupplierApiURL, SupplierPageURL } from '../../routes';
 import { formatLocalDateTimeExtended } from '@/utils/dateFormatter';
 import AuditInfoCard from '@/components/card/AuditTrailCard.vue';
 
@@ -128,7 +131,7 @@ const fetchDetailsData = async () => {
 
    try {
       const response = await axios.get(
-         `${RoleApiURL.Details}/${props.itemId}/`
+         `${SupplierApiURL.Details}/${props.itemId}/`
       );
 
       if (response.data.success) {
@@ -146,7 +149,7 @@ const fetchDetailsData = async () => {
 };
 
 const goUpdatePage = () => {
-   window.location.href = `${EmployeePageURL.Update}/${props.itemId}/`;
+   window.location.href = `${SupplierPageURL.Update}/${props.itemId}/`;
 }
 
 // Helper Labels ----------------------------------------------------

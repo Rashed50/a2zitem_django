@@ -26,9 +26,7 @@
     </ul>
 </div>
 
-<h1>Supplier Details</h1>
-
-<!-- <role-details-component :item-id="'{% if object.id %}{{ object.id }}{% else %}null{% endif %}'"></role-details-component> -->
+<supplier-details-component :item-id="'{% if object.id %}{{ object.id }}{% else %}null{% endif %}'"></supplier-details-component>
 {% endblock content %}
 
 {% block js %}{% endblock js %}

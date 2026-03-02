@@ -104,12 +104,12 @@ app.component("permissions-list-component", PermissionsListComponent);
 
 //! Import Supplier Component
 import { 
-    SupplierCreateComponent,
+    SupplierCreateUpdateComponent,
     SupplierListComponent,
-    // SupplierDetailsComponent,
+    SupplierDetailsComponent,
 } from '../../apps/supplier/assets/js/app';
-app.component("supplier-create-component", SupplierCreateComponent);
+app.component("supplier-create-and-update-component", SupplierCreateUpdateComponent);
 app.component("supplier-list-component", SupplierListComponent);
-// app.component("supplier-details-component", SupplierDetailsComponent);
+app.component("supplier-details-component", SupplierDetailsComponent);
 
 app.mount("#app");

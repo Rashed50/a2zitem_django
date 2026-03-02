@@ -43,6 +43,7 @@ class SupplierSerializer(serializers.ModelSerializer):
                 },
             'contact' : {
                     'required': True, 
+                    'allow_null': False,
                     'allow_blank': False, 
                     'error_messages': get_field_error_messages('Contact Person', 'CharField')
                 },
@@ -53,6 +54,7 @@ class SupplierSerializer(serializers.ModelSerializer):
                 },
             'phone' : {
                     'required': True, 
+                    'allow_null': False,
                     'allow_blank': False, 
                     'error_messages': get_field_error_messages('Phone', 'CharField')
                 },
