@@ -52,9 +52,10 @@ def generate_unique_code(model_class, prefix="CMP", field_name="code_no", paddin
             next_id += 1
             self.code_no = f"{prefix}{str(next_id).zfill(4)}"
     """
-    last_obj = model_class.objects.order_by("id").last()
-    next_id = (last_obj.id + 1) if last_obj else 1
-    code = f"{prefix}{str(next_id).zfill(padding)}"
+    # last_obj = model_class.objects.order_by("id").last()
+    last_obj = model_class.objects.order_by("-id").first()
+    next_id  = (last_obj.id + 1) if last_obj else 1
+    code     = f"{prefix}{str(next_id).zfill(padding)}"
 
     # Ensure uniqueness
     while model_class.objects.filter(**{field_name: code}).exists():

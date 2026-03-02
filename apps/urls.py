@@ -5,4 +5,5 @@ urlpatterns = [
     path('', include('apps.dashboard.urls',  namespace='dashboard')),
     path('components/', include('apps.components.urls',  namespace='components')),
     path('roles/', include('apps.roles.urls',  namespace='roles')),
+    path('supplier/', include('apps.supplier.urls',  namespace='supplier')),
 ]

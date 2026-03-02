@@ -25,7 +25,7 @@ class UserAdmin(BaseUserAdmin):
         (None, {'fields': ['email', 'password', 'created_at', 'updated_at']}),
         ('Personal info', {'fields': [
             'first_name', 'last_name', 'phone', 'image', 'dob', 'blood_group', 'gender',
-            'nid', 'passport_no', 'metadata'
+            'metadata'
         ]}),
         ('Religious info', {'fields': [
             'religion',

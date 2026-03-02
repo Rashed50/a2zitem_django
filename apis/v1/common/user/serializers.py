@@ -85,3 +85,8 @@ class UserChoicesSerializer(serializers.Serializer):
     def get_blood_group_choices(self, obj):
         return [{"value": choice[0], "label": choice[1]} for choice in UserChoices.BloodGroupChoices.choices]
     
+
+class UserMiniListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model  = User
+        fields = ["id", "slug", "name", "email"]

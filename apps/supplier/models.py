@@ -17,7 +17,8 @@ from core.utils.generator import generate_unique_slug, generate_unique_code
 
 class Supplier(TimestampedModel):
     slug    = models.SlugField(max_length=255, unique=True, db_index=True, blank=True, verbose_name=_("Slug"))
-    name    = models.CharField(max_length=255, unique=True, db_index=True, verbose_name=_("Supplier Name"))
+    name    = models.CharField(max_length=255, unique=True, db_index=True, verbose_name=_("Supplier Company Name"))
+    contact = models.CharField(max_length=255, blank=True, null=True, verbose_name=_("Contact Person"))
     email   = models.EmailField(max_length=255, blank=True, null=True, verbose_name=_("Supplier Email"))
     phone   = models.CharField(max_length=20, blank=True, null=True, verbose_name=_("Supplier Phone"))
     address = models.TextField(blank=True, null=True, verbose_name=_("Supplier Address"))
@@ -32,5 +33,5 @@ class Supplier(TimestampedModel):
     
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = generate_unique_slug(Supplier, self.name)
+            self.slug = generate_unique_slug(self, self.name)
         super().save(*args, **kwargs)

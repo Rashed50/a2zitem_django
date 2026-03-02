@@ -67,8 +67,8 @@ class Company(TimestampedModel):
             self.slug = generate_unique_slug(self, self.name)
             
         ##? Code Auto Generate
-        if not self.code:
-            prefix = (self.short_name.upper()if self.short_name else self.name[:2].upper())
-            prefix = prefix.replace(" ", "").replace("-", "") ## Clean prefix (safe)
-            self.code = generate_unique_code(Company, prefix=prefix, field_name="code", padding=6)
+        # if not self.code:
+        #     prefix = (self.short_name.upper()if self.short_name else self.name[:2].upper())
+        #     prefix = prefix.replace(" ", "").replace("-", "") ## Clean prefix (safe)
+        #     self.code = generate_unique_code(Company, prefix=prefix, field_name="code", padding=6)
         super().save(*args, **kwargs)
