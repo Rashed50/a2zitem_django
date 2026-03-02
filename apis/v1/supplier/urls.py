@@ -3,7 +3,7 @@ from django.urls import path, include
 app_name = 'supplier_api' 
 
 ##? APIs Import 
-from apis.v1.supplier.views.supplier import (
+from apis.v1.supplier.views.supplierApiView import (
     SupplierListCreateAPIView, 
     SupplierRetrieveUpdateDestroyAPIView
 )

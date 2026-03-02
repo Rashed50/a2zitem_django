@@ -11,7 +11,7 @@ from core.utils.generator import generate_unique_slug, generate_unique_code
 ##? Models Import
 User = get_user_model() 
 from core.models.time_stamped import TimestampedModel, TimestampedModel2
-from apps.product.models.catagory import Catagory
+from apps.product.models.category import Catagory
 from apps.product.models.brand import Brand 
 
 class Product(TimestampedModel):

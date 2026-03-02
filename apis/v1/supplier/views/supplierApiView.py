@@ -32,7 +32,7 @@ User = get_user_model()
 from apps.supplier.models import Supplier
 
 ##? Serializer Import 
-from apis.v1.supplier.serializers.supplier import SupplierSerializer
+from apis.v1.supplier.serializers.supplierSerializer import SupplierSerializer
 
 
 """
