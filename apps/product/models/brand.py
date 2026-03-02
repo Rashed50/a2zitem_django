@@ -30,5 +30,5 @@ class Brand(TimestampedModel):
     
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = generate_unique_slug(Brand, self.name)
+            self.slug = generate_unique_slug(self, self.name)
         super().save(*args, **kwargs)

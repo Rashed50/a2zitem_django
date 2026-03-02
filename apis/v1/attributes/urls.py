@@ -1,30 +1,44 @@
 from django.urls import path, include 
 
-#app_name = 'Your APP Name' 
+app_name = 'attributes_api' 
+
+# {{BaseUrl}}/product-attributes/
 
 ##? APIs Import 
+from apis.v1.attributes.views.brandApiView import BrandListCreateAPIView, BrandRetrieveUpdateDestroyAPIView
+from apis.v1.attributes.views.colorApiView import ColorListCreateAPIView, ColorRetrieveUpdateDestroyAPIView
+from apis.v1.attributes.views.sizeApiView import SizeListCreateAPIView, SizeRetrieveUpdateDestroyAPIView
+from apis.v1.attributes.views.unitApiView import UnitOfMeasureListCreateAPIView, UnitOfMeasureRetrieveUpdateDestroyAPIView
 
 urlpatterns = [ 
-#    path('', YourCreateAPIView.as_view(), name='your_app_name.create'), # POST (Create)
-#    path('', YourListAPIView.as_view(), name='your_app_name.list'), # GET (List) 
-#    path('<int:id>/', YourDetailAPIView.as_view(), name='your_app_name.details'), # GET (Details) 
-#    path('<int:id>/update/', YourUpdateAPIView.as_view(), name='your_app_name.update'), # PUT/PATCH (Update) 
-#    path('<int:id>/delete/', YourDeleteAPIView.as_view(), name='your_app_name.delete'), # DELETE (Delete) 
-#    ##? Combined APIs 
-#    path('', YourListCreateAPIView.as_view(), name='your_app_name.list_create'), # GET (List) & POST (Create) 
-#    path('<int:id>/', YourRetrieveUpdateDestroyAPIView.as_view(), name='your_app_name.retrieve_update_destroy'), # GET (Details), PUT/PATCH (Update), DELETE (Delete) 
-
-
-#    path( 
-#        'your_path' 
-#        include([ 
-#            path('create/', YourCreateAPIView.as_view(), name='your_app_name.create'), 
-#            path('list/', YourListAPIView.as_view(), name='your_app_name.list'), 
-#            path('<int:id>/', YourDetailAPIView.as_view(), name='your_app_name.details'), 
-#            path('<int:id>/update/', YourUpdateAPIView.as_view(), name='your_app_name.update'), 
-#            path('<int:id>/delete/', YourDeleteAPIView.as_view(), name='your_app_name.delete'), 
-#        ]) 
-#    ), 
+   path( 
+       'brand/', 
+       include([ 
+           path('', BrandListCreateAPIView.as_view()),  
+           path('<int:pk>/', BrandRetrieveUpdateDestroyAPIView.as_view()), 
+       ]) 
+   ), 
+   path( 
+       'color/', 
+       include([ 
+           path('', ColorListCreateAPIView.as_view()),  
+           path('<int:pk>/', ColorRetrieveUpdateDestroyAPIView.as_view()), 
+       ]) 
+   ), 
+   path( 
+       'size/', 
+       include([ 
+           path('', SizeListCreateAPIView.as_view()),  
+           path('<int:pk>/', SizeRetrieveUpdateDestroyAPIView.as_view()), 
+       ]) 
+   ),
+   path( 
+       'unit/', 
+       include([ 
+           path('', UnitOfMeasureListCreateAPIView.as_view()),  
+           path('<int:pk>/', UnitOfMeasureRetrieveUpdateDestroyAPIView.as_view()), 
+       ]) 
+   ),
 ] 
 
 
