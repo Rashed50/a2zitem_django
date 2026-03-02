@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 
+from mptt.models import MPTTModel, TreeForeignKey
 
 ##? Import Users
 User = get_user_model() 
@@ -17,24 +18,28 @@ from core.models.time_stamped import TimestampedModel
 from core.utils.generator import generate_unique_slug, generate_unique_code
 
 
-class Catagory(TimestampedModel):
+class Category(MPTTModel, TimestampedModel):
     slug   = models.SlugField(max_length=255, unique=True, db_index=True, blank=True, verbose_name=_("Slug"))
     name   = models.CharField(max_length=255, unique=True, db_index=True, verbose_name=_("Name"))
     logo   = models.ImageField(upload_to='catagories/logos/', null=True, blank=True, verbose_name=_("Logo"))
     
-    ##? Recursive Relationship
-    parent = models.ForeignKey(
-            'self', 
-            on_delete    = models.SET_NULL, 
-            null         = True, 
-            blank        = True, 
-            related_name = 'children', 
-            verbose_name = _("Parent Catagory")
-        )
+    ##? Recursive Relationship 
+    parent = TreeForeignKey(
+        'self',
+        on_delete = models.SET_NULL,
+        null      = True,
+        blank     = True,
+        related_name = 'children',
+        verbose_name = _("Parent Category")
+    )
+    
+    class MPTTMeta:
+        order_insertion_by = ['name']
 
     class Meta:
-        verbose_name = _("Catagory")
-        verbose_name_plural = _("Catagories")
+        verbose_name = _("Category")
+        verbose_name_plural = _("Categories")
+        ordering = ['name']
         
     def __str__(self):
         return self.name
@@ -46,6 +51,6 @@ class Catagory(TimestampedModel):
     def save(self, *args, **kwargs):
         self.full_clean()
         if not self.slug:
-            self.slug = generate_unique_slug(Catagory, self.name)
+            self.slug = generate_unique_slug(self, self.name)
         super().save(*args, **kwargs)
     

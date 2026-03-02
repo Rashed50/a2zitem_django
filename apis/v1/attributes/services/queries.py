@@ -5,7 +5,7 @@ from apps.product.models.brand import Brand
 from apps.product.models.color import Color
 from apps.product.models.size import Size
 from apps.product.models.unit import UnitOfMeasure
-from apps.product.models.category import Catagory
+from apps.product.models.category import Category
 
 
 ##TODO:- Query Services

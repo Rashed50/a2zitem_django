@@ -95,6 +95,7 @@ CUSTOM_APPS = [
 ##? For Third Party Apps
 THIRD_PARTY_APPS = [
     'django_cleanup.apps.CleanupConfig',   ## Django Cleanup
+    'mptt',                                ## MPTT [ Recursive Tree ]
 ]
 
 ## Only add tailwind and theme if they exist

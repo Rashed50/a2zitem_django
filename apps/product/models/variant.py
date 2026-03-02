@@ -13,7 +13,7 @@ from core.utils.generator import generate_unique_slug, generate_unique_code
 User = get_user_model() 
 from core.models.time_stamped import TimestampedModel, TimestampedModel2
 from apps.product.models.product import Product
-from apps.product.models.category import Catagory
+from apps.product.models.category import Category
 from apps.product.models.brand import Brand
 from apps.product.models.unit import UnitOfMeasure
 from apps.product.models.color import Color

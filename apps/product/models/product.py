@@ -11,7 +11,7 @@ from core.utils.generator import generate_unique_slug, generate_unique_code
 ##? Models Import
 User = get_user_model() 
 from core.models.time_stamped import TimestampedModel, TimestampedModel2
-from apps.product.models.category import Catagory
+from apps.product.models.category import Category
 from apps.product.models.brand import Brand 
 
 class Product(TimestampedModel):
@@ -20,13 +20,13 @@ class Product(TimestampedModel):
     name  = models.CharField(max_length=255, unique=True, db_index=True, verbose_name=_("Item Name"))
     title = models.CharField(max_length=255, db_index=True, verbose_name=_("Title"))
     
-    catagory = models.ForeignKey(
-            Catagory, 
+    Category = models.ForeignKey(
+            Category, 
             on_delete = models.SET_NULL, 
             null      = True, 
             blank     = True, 
             related_name = 'products', 
-            verbose_name = _("Catagory")
+            verbose_name = _("Category")
         )
     
     brand = models.ForeignKey(

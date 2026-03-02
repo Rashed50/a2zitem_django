@@ -14,19 +14,6 @@ def create_default_users(sender, **kwargs):
     users_data = [
         # 1️⃣ Superuser
         {
-            "email"             : "rakibhassan@dekkoisho.com",
-            "phone"             : "+8801515612682",
-            "password"          : "rakib8123",
-            "first_name"        : "Mr.",
-            "last_name"         : "Rakib",
-            "is_active"         : True,
-            "is_superuser"      : True,
-            "is_admin"          : True,
-            "is_email_verified" : True,
-            "is_phone_verified" : True,
-            "group"             : "SuperAdmin",
-        },
-        {
             "email"             : "superuser@test.com",
             "phone"             : "+8801500000001",
             "password"          : "123456ra",
@@ -83,20 +70,7 @@ def create_default_users(sender, **kwargs):
             "is_email_verified" : True,
             "is_phone_verified" : True,
             "group"             : "Customer",
-        },
-        {
-            "email"             : "hello@nusratgeek.com",
-            "phone"             : "+8801500000005",
-            "password"          : "123456ra",
-            "first_name"        : "Ms.",
-            "last_name"         : "Nusrat",
-            "is_active"         : True,
-            "is_superuser"      : False,
-            "is_admin"          : False,
-            "is_email_verified" : True,
-            "is_phone_verified" : True,
-            "group"             : "Customer",
-        },
+        }
     ]
 
     for data in users_data:
