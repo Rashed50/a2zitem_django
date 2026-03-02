@@ -30,6 +30,7 @@ env.bak/
 venv.bak/
 /venv
 .env.development
+/va2z
 
 # Package files
 *.jar
