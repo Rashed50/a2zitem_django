@@ -4,10 +4,12 @@ app_name = 'product'
 
 ##? Import Views 
 from apps.product.views.brandView import BrandListPageView
+from apps.product.views.colorView import ColorListPageView
 
 
 urlpatterns = [ 
     path('brand/', BrandListPageView.as_view(), name='brand_list_page'),
+    path('color/', ColorListPageView.as_view(), name='color_list_page'),
     
     # ##? Subscription
     # path(

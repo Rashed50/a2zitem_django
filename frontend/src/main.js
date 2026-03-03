@@ -115,9 +115,11 @@ app.component("supplier-details-component", SupplierDetailsComponent);
 
 //! Product Component
 import { 
-    BrandListComponent
+    BrandListComponent,
+    ColorListComponent,
 } from '../../apps/product/assets/js/app';
 app.component("brand-list-component", BrandListComponent);
+app.component("color-list-component", ColorListComponent);
 
 
 //! Client Pages =========================================

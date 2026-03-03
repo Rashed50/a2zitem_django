@@ -99,11 +99,11 @@
                      <!-- Action Column (Custom) -->
                      <template #cell-action="{ row }">
                         <div class="flex flex-col items-center gap-1">
-                           <button @click="viewItem(row)"
+                           <!-- <button @click="viewItem(row)"
                               class="p-1 text-green-600 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-lg transition-colors"
                               title="View">
                               <i class="fa-solid fa-eye text-lg"></i>
-                           </button>
+                           </button> -->
                            <button @click="editItem(row)"
                               class="p-1 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
                               title="Edit">
@@ -130,7 +130,7 @@
                class="px-3 py-2 sm:px-4 sm:py-3 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center gap-2 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
             </div>
 
-            <!-- ========= [ MODAL ] ============ -->
+            <!-- ========= [ ADD MODAL ] ============ -->
             <CustomModal :isOpen="showAddItemModal" @update:isOpen="showAddItemModal = $event" title="Add New Brand"
                size="sm">
                <template #body>
@@ -159,6 +159,41 @@
                      <div class="flex justify-end border-t border-default space-x-3 pt-2 md:pt-5">
                         <ActionButton action="cancel" @click="showAddItemModal = false" size="sm" label="Cancel" />
                         <ActionButton action="save" size="sm" label="Save" type="submit" />
+                     </div>
+                  </form>
+               </template>
+            </CustomModal>
+
+            <!-- ========= [ EDIT MODAL ] ============ -->
+            <CustomModal :isOpen="showEditItemModal" @update:isOpen="showEditItemModal = $event" title="Edit Brand"
+               size="sm">
+               <template #body>
+                  <form @submit.prevent="handleUpdateItem" class="space-y-5">
+                     <div class="space-y-3">
+                        <!-- Name -->
+                        <InputeComponent label="Brand Name" id="edit_name" name="edit_name" label-for="edit_name"
+                           placeholder="Enter Brand Name" v-model="editForm.name" :error="editFormErrors.name" />
+
+                        <!-- Logo -->
+                        <FileInputComponent label="Brand Logo" v-model="editForm.logo"
+                           :current-image-url="editForm?.current_logo" :error="editFormErrors.logo" :accept="['image/*']"
+                           help-text="Square logo (1:1 ratio) - Leave empty to keep current logo"
+                           :max-size="2 * 1024 * 1024" />
+
+                        <!-- Is Active -->
+                        <div>
+                           <label for="edit_is_active"
+                              class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">
+                              Active Status
+                           </label>
+                           <Checkbox label="Is active ?" v-model="editForm.is_active" />
+                        </div>
+                     </div>
+
+                     <!-- Footer Buttons -->
+                     <div class="flex justify-end border-t border-default space-x-3 pt-2 md:pt-5">
+                        <ActionButton action="cancel" @click="showEditItemModal = false" size="sm" label="Cancel" />
+                        <ActionButton action="save" size="sm" label="Update" type="submit" />
                      </div>
                   </form>
                </template>
@@ -232,13 +267,21 @@ const tableColumns = [
 
 // Modal configuration
 const showAddItemModal = ref(false);
+const showEditItemModal = ref(false);
 const addForm = ref({
    name: null,
    logo: null,
    is_active: true
 });
+const editForm = ref({
+   id: null,
+   name: null,
+   logo: null,
+   current_logo: null,
+   is_active: true
+});
 const addFormErrors = ref({});
-
+const editFormErrors = ref({});
 
 // ===================================================================
 // =========================== 3. COMPUTED ============================
@@ -293,7 +336,7 @@ const fetchData = async () => {
    }
 };
 
-// Actions ------------------------------------------
+// ------------ Start Modals -------------------------
 const resetAddFrom = () => {
    addForm.value = {};
    addFormErrors.value = {};
@@ -336,42 +379,89 @@ const handleAddItem = async () => {
          fetchData();
       } else {
          if (response.data.errors) {
-            // handleBackendErrors(response.data.errors)
             console.log(response.data.errors)
          }
          toast.error(response.data.message || 'Failed to add owner')
       }
    } catch (err) {
       console.log(err.response.data.message);
-      // const backendErrors = err?.response?.data?.errors
-      // const errorMessage = err?.response?.data?.message || 'Request failed'
-
-      // if (backendErrors) {
-      //    handleBackendErrors(backendErrors)
-      //    toast.error(errorMessage)
-      // } else {
-      //    console.error('API error without validation details:', err)
-      //    toast.error('Something went wrong. Please check your connection.')
-      // }
-
-      // console.log(err.response.data.message);
-      // const e = err.response.data.errors
-      // if (e) {
-      //    Object.keys(e).forEach(field => {
-      //       console.log(`→ ${field}:`, e[field].join(" | "));
-      //    });
-      // }
-      // toast.error('Failed to add owner');
    }
 };
 
+const resetEditForm = () => {
+   editForm.value = {
+      id: null,
+      name: null,
+      logo: null,
+      is_active: true
+   };
+   editFormErrors.value = {};
+};
+const handleUpdateItem = async () => {
+   editFormErrors.value = {}
+   const requiredFields = ['name']; 
+   let hasError = false;
 
+   requiredFields.forEach((field) => {
+      if (!editForm.value[field]) {
+         editFormErrors.value[field] = `${field.replace(/_/g, ' ')} is required`;
+         hasError = true;
+      }
+   });
 
+   if (hasError) {
+      toast.error('Required fields must be entry');
+      return;
+   }
 
+   const formDataToSend = new FormData();
+   formDataToSend.append('name', editForm.value.name);
+   formDataToSend.append('is_active', editForm.value.is_active);
+   if (editForm.value.logo && typeof editForm.value.logo !== 'string') {
+      formDataToSend.append('logo', editForm.value.logo);
+   }
 
+   try {
+      const response = await axios.put(
+         `${BrandApiURL.Update}/${editForm.value.id}/`, 
+         formDataToSend,
+         {}
+      );
+
+      if (response.data.success) {
+         toast.success('Brand updated successfully');
+         // Modal Close & Reset
+         showEditItemModal.value = false;
+         resetEditForm();
+         fetchData();  // Table reload
+      } else {
+         if (response.data.errors) {
+            editFormErrors.value = response.data.errors;
+            console.log(response.data.errors)
+         }
+         toast.error(response.data.message || 'Failed to update brand')
+      }
+   } catch (err) {
+      console.log(err.response?.data?.message);
+      if (err.response?.data?.errors) {
+         editFormErrors.value = err.response.data.errors;
+      }
+      toast.error(err.response?.data?.message || 'Failed to update brand');
+   }
+};
+// --------------- End Modals -----------------------
+
+// Actions ------------------------------------------
 const editItem = (item) => {
-   // console.log('Edit item:', item);
    // window.location = `${SupplierPageURL.Update}/${item.id}`;
+   editForm.value = {
+      id: item.id,
+      name: item.name,
+      logo: null,
+      current_logo: item.logo,
+      is_active: item.is_active
+   };
+   showEditItemModal.value = true;
 };
 
 const viewItem = (item) => {

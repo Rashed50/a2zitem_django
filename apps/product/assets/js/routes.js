@@ -5,7 +5,6 @@ const PRODUCT_ATTRIBUTE_API_URL = `${BASE_API_URL}/product-attributes`;
 const PAGE_URL = `${BASE_URL}/product`;
 
 //! Brand URL =====================================
-//? Shop API URL
 export const BrandApiURL = {
     List: `${PRODUCT_ATTRIBUTE_API_URL}/brand`,
     Create: `${PRODUCT_ATTRIBUTE_API_URL}/brand`,
@@ -14,6 +13,14 @@ export const BrandApiURL = {
     Delete: `${PRODUCT_ATTRIBUTE_API_URL}/brand`,
 };
 //! ====================================================
-
+//! Color URL =====================================
+export const ColorApiURL = {
+    List: `${PRODUCT_ATTRIBUTE_API_URL}/color`,
+    Create: `${PRODUCT_ATTRIBUTE_API_URL}/color`,
+    Details: `${PRODUCT_ATTRIBUTE_API_URL}/color`,
+    Update: `${PRODUCT_ATTRIBUTE_API_URL}/color`,
+    Delete: `${PRODUCT_ATTRIBUTE_API_URL}/color`,
+};
+//! ====================================================
 
 

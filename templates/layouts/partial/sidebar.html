@@ -134,9 +134,9 @@
 
          <div class="menu-group">
             <button
-               class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 transition-colors {% active_menu request 'product:brand_list_page' %}"
+               class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 transition-colors {% active_menu request 'product:brand_list_page,product:color_list_page' %}"
                data-menu="products"
-               data-open="{% is_menu_open request 'product:brand_list_page' %}">
+               data-open="{% is_menu_open request 'product:brand_list_page,product:color_list_page' %}">
                <span class="flex items-center gap-2 md:gap-3">
                   <i class="fa-regular fa-folder w-4 md:w-5 text-center"></i>
                   <span class="sidebar-text text-xs md:text-sm">Attribute</span>
@@ -149,6 +149,11 @@
                   class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'product:brand_list_page' %}">
                   <i class="fa-regular fa-file w-4 text-center"></i>
                   <span class="sidebar-text">Brand</span>
+               </a>
+               <a href="{% url 'product:color_list_page' %}" data-menu="color_list_page"
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'product:color_list_page' %}">
+                  <i class="fa-regular fa-file w-4 text-center"></i>
+                  <span class="sidebar-text">Color</span>
                </a>
             </div>
          </div>
