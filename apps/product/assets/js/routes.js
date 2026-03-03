@@ -13,6 +13,7 @@ export const BrandApiURL = {
     Delete: `${PRODUCT_ATTRIBUTE_API_URL}/brand`,
 };
 //! ====================================================
+
 //! Color URL =====================================
 export const ColorApiURL = {
     List: `${PRODUCT_ATTRIBUTE_API_URL}/color`,
@@ -23,4 +24,22 @@ export const ColorApiURL = {
 };
 //! ====================================================
 
+//! Size URL =====================================
+export const SizeApiURL = {
+    List: `${PRODUCT_ATTRIBUTE_API_URL}/size`,
+    Create: `${PRODUCT_ATTRIBUTE_API_URL}/size`,
+    Details: `${PRODUCT_ATTRIBUTE_API_URL}/size`,
+    Update: `${PRODUCT_ATTRIBUTE_API_URL}/size`,
+    Delete: `${PRODUCT_ATTRIBUTE_API_URL}/size`,
+};
+//! ====================================================
 
+//! Unit URL =====================================
+export const UnitApiURL = {
+    List: `${PRODUCT_ATTRIBUTE_API_URL}/unit`,
+    Create: `${PRODUCT_ATTRIBUTE_API_URL}/unit`,
+    Details: `${PRODUCT_ATTRIBUTE_API_URL}/unit`,
+    Update: `${PRODUCT_ATTRIBUTE_API_URL}/unit`,
+    Delete: `${PRODUCT_ATTRIBUTE_API_URL}/unit`,
+};
+//! ====================================================

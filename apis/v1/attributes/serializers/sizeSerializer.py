@@ -24,7 +24,7 @@ class SizeSerializer(serializers.ModelSerializer):
     updated_by = UserMiniListSerializer(read_only=True)
     class Meta:
         model  = Size
-        fields = ['id', 'name', 'created_by', 'updated_by']
+        fields = ['id', 'name', 'is_active', 'created_at', 'updated_at', 'created_by', 'updated_by']
         read_only_fields = ['id', 'created_by', 'updated_by']
         extra_kwargs = {
             'name' : {

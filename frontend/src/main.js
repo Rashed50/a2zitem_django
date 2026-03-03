@@ -117,9 +117,13 @@ app.component("supplier-details-component", SupplierDetailsComponent);
 import { 
     BrandListComponent,
     ColorListComponent,
+    SizeListComponent,
+    UnitListComponent,
 } from '../../apps/product/assets/js/app';
 app.component("brand-list-component", BrandListComponent);
 app.component("color-list-component", ColorListComponent);
+app.component("size-list-component", SizeListComponent);
+app.component("unit-list-component", UnitListComponent);
 
 
 //! Client Pages =========================================
