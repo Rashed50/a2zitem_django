@@ -22,6 +22,7 @@ class UnitOfMeasure(TimestampedModel):
     class Meta:
         verbose_name = _("Unit of Measure")
         verbose_name_plural = _("Units of Measure")
+        unique_together = ['name', 'full_name']
     
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.full_name})"

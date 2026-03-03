@@ -96,7 +96,7 @@ python manage.py staffuser
 python manage.py runserver
 ```
 
-# =========== If Tailwind CSS and Vue JS are needed ===========
+# ===If Tailwind CSS and Vue JS are needed ===
 ## 11. Install Tailwind CSS
 ```bash
 python manage.py tailwind install
@@ -127,4 +127,35 @@ npm run serve
 ```
 ```bash
 yarn dev
+```
+
+# ======= Bulk Import =======
+## 1. Supplier Bulk Import
+```bash
+python manage.py BulkSupplier
+```
+
+## 2. Brand Bulk Import
+```bash
+python manage.py BulkBrand
+```
+
+## 3. Category Bulk Import
+```bash
+python manage.py BulkCategory
+```
+
+## 4. Color Bulk Import
+```bash
+python manage.py BulkColor
+```
+
+## 5. Size Bulk Import
+```bash
+python manage.py BulkSize
+```
+
+## 6. Unit Of Measure Bulk Import
+```bash
+python manage.py BulkUnit
 ```

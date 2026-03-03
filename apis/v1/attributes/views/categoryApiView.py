@@ -82,20 +82,20 @@ class CategoryListCreateAPIView(generics.ListCreateAPIView):
         return response_create(serializer.data,item_name="Category") 
 
     ##! List
-    # def list(self, request, *args, **kwargs):
-    #     queryset = self.filter_queryset(self.get_queryset())
-    #     response_data = get_paginated_response(
-    #         queryset = queryset,
-    #         request  = request,
-    #         serializer_class = self.get_serializer
-    #     )
-    #     return response_list(response_data, item_name="Category")
-    
     def list(self, request, *args, **kwargs):
-        queryset = Category.objects.all()
-        tree = cache_tree_children(queryset)
-        serializer = self.get_serializer(tree, many=True)
-        return Response(serializer.data)
+        queryset = self.filter_queryset(self.get_queryset())
+        response_data = get_paginated_response(
+            queryset = queryset,
+            request  = request,
+            serializer_class = self.get_serializer
+        )
+        return response_list(response_data, item_name="Category")
+    
+    # def list(self, request, *args, **kwargs):
+    #     queryset = Category.objects.all()
+    #     tree = cache_tree_children(queryset)
+    #     serializer = self.get_serializer(tree, many=True)
+    #     return Response(serializer.data)
 
 
 
