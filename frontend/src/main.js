@@ -112,4 +112,15 @@ app.component("supplier-create-and-update-component", SupplierCreateUpdateCompon
 app.component("supplier-list-component", SupplierListComponent);
 app.component("supplier-details-component", SupplierDetailsComponent);
 
+
+
+
+
+//! Client Pages =========================================
+import {
+    HomePageComponent
+} from '../../clientpage/assets/js/app.js';
+
+app.component("client-home-page-component", HomePageComponent);
+
 app.mount("#app");
