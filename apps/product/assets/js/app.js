@@ -1,11 +1,7 @@
 
 //! Employee
-import SupplierCreateUpdateComponent from "./components/supplier/CreateComponent.vue";
-import SupplierListComponent from "./components/supplier/ListComponent.vue";
-import SupplierDetailsComponent from "./components/supplier/DetailsComponent.vue";
+import BrandListComponent from "./components/brand/ListComponent.vue";
 
 export {
-    SupplierCreateUpdateComponent,
-    SupplierListComponent,
-    SupplierDetailsComponent,
+    BrandListComponent,
 }

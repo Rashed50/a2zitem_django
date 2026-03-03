@@ -15,9 +15,16 @@ from core.views.language_test import TranslationTestView
 from theme import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    ##? Client URL
+    path('', include('clientpage.urls')),
     
-    path('', include('apps.urls')),
+    ##? Admin URL
+    path('admin1/', admin.site.urls),
+    
+    ##? Django Admin URL
+    path('admin/', include('apps.urls')),
+    
+    ##? APIs
     path('api/', include('apis.urls')),
     
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

@@ -89,6 +89,9 @@ CUSTOM_APPS = [
     'apps.stock.apps.StockConfig',         ## stock
     'apps.sales.apps.SalesConfig',         ## sales
     'apps.order.apps.OrderConfig',         ## order
+    
+    ## Client Apps
+    'clientpage.apps.ClientpageConfig',    ## client
 ]
 
 
@@ -178,11 +181,14 @@ TEMPLATES = [
         'DIRS': [
                 os.path.join(BASE_DIR, 'templates'),
                 
-                ## Apps Template Setup
+                ##? Apps Template Setup [For Admin Panel]
                 os.path.join(BASE_DIR, 'apps/components/templates'),
                 os.path.join(BASE_DIR, 'apps/auth/templates'),
                 os.path.join(BASE_DIR, 'apps/roles/templates'),
                 os.path.join(BASE_DIR, 'apps/dashboard/templates'),
+                
+                ##? Client Template Setup
+                os.path.join(BASE_DIR, 'clientpage/templates'),
             ],
         'APP_DIRS': True,
         'OPTIONS': {
