@@ -8,10 +8,10 @@ const PAGE_URL = `${BASE_URL}/product`;
 //? Shop API URL
 export const BrandApiURL = {
     List: `${PRODUCT_ATTRIBUTE_API_URL}/brand`,
-    Create: `${PRODUCT_ATTRIBUTE_API_URL}`,
-    Details: `${PRODUCT_ATTRIBUTE_API_URL}`,
-    Update: `${PRODUCT_ATTRIBUTE_API_URL}`,
-    Delete: `${PRODUCT_ATTRIBUTE_API_URL}`,
+    Create: `${PRODUCT_ATTRIBUTE_API_URL}/brand`,
+    Details: `${PRODUCT_ATTRIBUTE_API_URL}/brand`,
+    Update: `${PRODUCT_ATTRIBUTE_API_URL}/brand`,
+    Delete: `${PRODUCT_ATTRIBUTE_API_URL}/brand`,
 };
 //! ====================================================
 

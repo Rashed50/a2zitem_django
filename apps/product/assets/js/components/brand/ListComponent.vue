@@ -1,144 +1,171 @@
 <template>
-   <div class="flex flex-col h-full w-full space-y-2">
-      <!-- Form Card -->
-      <div
-         class="flex-1 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden">
-         <!-- Card Header -->
-         <div
-            class="px-3 py-1 sm:px-6 sm:py-3 border-b border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
-            <h4 class="text-xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-3">
-               <i class="fa-regular fa-truck text-blue-600"></i>
-               <span class="text-lg sm:text-xl">Brand List</span>
-            </h4>
-            <ActionButton action="add" size="sm" @click="showAddItemModal = true" class="px-8" />
+   <!-- MasterCardLayout -->
+   <MasterCardLayout :is-loading="loadingStates.loading">
+      <!-- Loading -->
+      <template #loading>
+         <div class="flex items-center justify-center py-20">
+            <i class="fa-solid fa-spinner fa-spin text-3xl text-blue-500"></i>
          </div>
+      </template>
+
+      <!-- Main Content Card -->
+      <MainContentCard :error="error">
+         <!-- Header Icon -->
+         <template #icon>
+            <i class="fa-brands fa-airbnb text-blue-600 font-bold"></i>
+         </template>
+
+         <!-- Header Title -->
+         <template #title>
+            Brand List
+         </template>
+
+         <!-- Header Right Side -->
+         <template #header-right>
+            <ActionButton action="add" size="sm" @click="showAddItemModal = true" class="px-8" />
+         </template>
 
          <!-- Card Body -->
-         <div class="flex-1 overflow-y-auto px-3 py-3 sm:px-5 sm:py-3 space-y-4 sm:space-y-2">
-            <!-- Top Controls -->
-            <DataTableTopControls :entries-per-page="entriesPerPage" @update:entries-per-page="entriesPerPage = $event"
-               :search-query="searchQuery" @update:search-query="searchQuery = $event" :bulk-action="bulkAction"
-               @update:bulk-action="bulkAction = $event" :selected-rows="selectedRows"
-               :search-placeholder="'Search subscription plans...'" @entries-change="fetchData"
-               @search-input="onSearchInput" @clear-search="clearSearch" @bulk-apply="executeBulkAction" />
+         <template #body>
+            <div class="flex-1 overflow-y-auto px-3 py-3 sm:px-5 sm:py-3 space-y-4 sm:space-y-2">
+               <!-- Top Controls -->
+               <DataTableTopControls :entries-per-page="entriesPerPage"
+                  @update:entries-per-page="entriesPerPage = $event" :search-query="searchQuery"
+                  @update:search-query="searchQuery = $event" :bulk-action="bulkAction"
+                  @update:bulk-action="bulkAction = $event" :selected-rows="selectedRows"
+                  :search-placeholder="'Search subscription plans...'" @entries-change="fetchData"
+                  @search-input="onSearchInput" @clear-search="clearSearch" @bulk-apply="executeBulkAction" />
 
-            <!-- Data Table -->
-            <div class="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg">
-               <DataTablePcBody :items="apiData?.results || []" :columns="tableColumns"
-                  :pagination="apiData?.pagination" :loading="loading" :sort-column="sortColumn"
-                  :sort-direction="sortDirection" :selected-rows="selectedRows"
-                  @update:selected-rows="val => (selectedRows = val)" :select-all="selectAll"
-                  @update:select-all="val => (selectAll = val)" :sticky-columns="['name']" :show-checkbox="false"
-                  @sort="sortTable" :footer-data="tableFooterData">
+               <!-- Data Table -->
+               <div class="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg">
+                  <DataTablePcBody :items="apiData?.results || []" :columns="tableColumns"
+                     :pagination="apiData?.pagination" :loading="loadingStates.loadingTable" :sort-column="sortColumn"
+                     :sort-direction="sortDirection" :selected-rows="selectedRows"
+                     @update:selected-rows="val => (selectedRows = val)" :select-all="selectAll"
+                     @update:select-all="val => (selectAll = val)" :sticky-columns="['name']" :show-checkbox="false"
+                     @sort="sortTable" :footer-data="tableFooterData">
 
-                  <!-- Name (Sticky) -->
-                  <template #cell-name="{ row }">
-                     <div class="font-medium text-gray-900 dark:text-white">
-                        {{ row.name || '' }}
-                     </div>
-                  </template>
-
-                  <!-- Logo -->
-                  <template #cell-logo="{ row }">
-                     <div class="flex items-center space-x-2">
-                        <div v-if="row.logo">
-                           <img :src="row.logo" class="w-24 h-24 rounded-md" alt="Logo" />
+                     <!-- Name (Sticky) -->
+                     <template #cell-name="{ row }">
+                        <div class="font-medium text-gray-900 dark:text-white">
+                           {{ row.name || '' }}
                         </div>
-                        <div v-else class="w-24 h-24 flex items-center justify-center font-bold text-gray-500 dark:text-gray-400">
-                           <i class="fa-regular fa-image me-2"></i>
-                           <span>Not Uploaded</span>
-                        </div>
-                     </div>
-                  </template>
+                     </template>
 
-                  <!-- Activity Dates -->
-                  <template #cell-activity_dates="{ row }">
-                     <div class="space-y-2 text-xs">
-                        <div>
-                           <div class="font-medium text-gray-700 dark:text-gray-300">Created</div>
-                           <div class="text-gray-500 dark:text-gray-400">
-                              {{ formatLocalDateTimeExtended(row.created_at).formattedDate }}
+                     <!-- Logo -->
+                     <template #cell-logo="{ row }">
+                        <div class="flex items-center space-x-2">
+                           <div v-if="row.logo">
+                              <img :src="row.logo" class="w-24 h-24 rounded-md" alt="Logo" />
                            </div>
-                           <div class="text-gray-400 dark:text-gray-500">
-                              {{ formatLocalDateTimeExtended(row.created_at).formattedTime }}
+                           <div v-else
+                              class="w-24 h-24 flex items-center justify-center font-bold text-gray-500 dark:text-gray-400">
+                              <i class="fa-regular fa-image me-2"></i>
+                              <span>Not Uploaded</span>
                            </div>
                         </div>
+                     </template>
 
-                        <div>
-                           <div class="font-medium text-gray-700 dark:text-gray-300">Updated</div>
-                           <div class="text-gray-500 dark:text-gray-400">
-                              {{ formatLocalDateTimeExtended(row.updated_at).formattedDate }}
+                     <!-- Activity Dates -->
+                     <template #cell-activity_dates="{ row }">
+                        <div class="space-y-2 text-xs">
+                           <div>
+                              <div class="font-medium text-gray-700 dark:text-gray-300">Created</div>
+                              <div class="text-gray-500 dark:text-gray-400">
+                                 {{ formatLocalDateTimeExtended(row.created_at).formattedDate }}
+                              </div>
+                              <div class="text-gray-400 dark:text-gray-500">
+                                 {{ formatLocalDateTimeExtended(row.created_at).formattedTime }}
+                              </div>
                            </div>
-                           <div class="text-gray-400 dark:text-gray-500">
-                              {{ formatLocalDateTimeExtended(row.updated_at).formattedTime }}
+
+                           <div>
+                              <div class="font-medium text-gray-700 dark:text-gray-300">Updated</div>
+                              <div class="text-gray-500 dark:text-gray-400">
+                                 {{ formatLocalDateTimeExtended(row.updated_at).formattedDate }}
+                              </div>
+                              <div class="text-gray-400 dark:text-gray-500">
+                                 {{ formatLocalDateTimeExtended(row.updated_at).formattedTime }}
+                              </div>
                            </div>
                         </div>
-                     </div>
-                  </template>
+                     </template>
 
-                  <!-- Status -->
-                  <template #cell-status="{ row }">
-                     <ActionBadge :status="row.is_active ? 'active' : 'inactive'" size="sm" rounded="full" />
-                  </template>
+                     <!-- Status -->
+                     <template #cell-status="{ row }">
+                        <ActionBadge :status="row.is_active ? 'active' : 'inactive'" size="sm" rounded="full" />
+                     </template>
 
-                  <!-- Action Column (Custom) -->
-                  <template #cell-action="{ row }">
-                     <div class="flex flex-col items-center gap-1">
-                        <button @click="viewItem(row)"
-                           class="p-1 text-green-600 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-lg transition-colors"
-                           title="View">
-                           <i class="fa-solid fa-eye text-lg"></i>
-                        </button>
-                        <button @click="editItem(row)"
-                           class="p-1 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
-                           title="Edit">
-                           <i class="fa-solid fa-pen-to-square text-lg"></i>
-                        </button>
-                        <button @click="handleDelete(row.id)"
-                           class="p-1 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors"
-                           title="Delete">
-                           <i class="fa-solid fa-trash text-lg"></i>
-                        </button>
-                     </div>
-                  </template>
+                     <!-- Action Column (Custom) -->
+                     <template #cell-action="{ row }">
+                        <div class="flex flex-col items-center gap-1">
+                           <button @click="viewItem(row)"
+                              class="p-1 text-green-600 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-lg transition-colors"
+                              title="View">
+                              <i class="fa-solid fa-eye text-lg"></i>
+                           </button>
+                           <button @click="editItem(row)"
+                              class="p-1 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
+                              title="Edit">
+                              <i class="fa-solid fa-pen-to-square text-lg"></i>
+                           </button>
+                           <button @click="handleDelete(row.id)"
+                              class="p-1 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors"
+                              title="Delete">
+                              <i class="fa-solid fa-trash text-lg"></i>
+                           </button>
+                        </div>
+                     </template>
 
-               </DataTablePcBody>
+                  </DataTablePcBody>
+               </div>
+
+               <!-- Table Info and Pagination -->
+               <DataTablePagination :current-page="currentPage" :pagination="apiData?.pagination"
+                  :total-items="apiData?.total_items" :selected-count="selectedRows.length" @page-change="goToPage" />
             </div>
 
-            <!-- Table Info and Pagination -->
-            <DataTablePagination :current-page="currentPage" :pagination="apiData?.pagination"
-               :total-items="apiData?.total_items" :selected-count="selectedRows.length" @page-change="goToPage" />
-         </div>
+            <!-- Card Footer -->
+            <div
+               class="px-3 py-2 sm:px-4 sm:py-3 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center gap-2 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
+            </div>
 
-         <!-- Card Footer -->
-         <div
-            class="px-3 py-2 sm:px-4 sm:py-3 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center gap-2 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
-         </div>
-      </div>
+            <!-- ========= [ MODAL ] ============ -->
+            <CustomModal :isOpen="showAddItemModal" @update:isOpen="showAddItemModal = $event" title="Add New Brand"
+               size="sm">
+               <template #body>
+                  <form @submit.prevent="handleAddItem" class="space-y-5">
+                     <div class="space-y-3">
+                        <!-- Name -->
+                        <InputeComponent label="Brand Name" id="name" name="name" label-for="name"
+                           placeholder="Enter Brand Name" v-model="addForm.name" :error="addFormErrors.name" />
 
+                        <!-- Logo -->
+                        <FileInputComponent label="Brand Logo" v-model="addForm.logo" :current-image-url="addForm?.logo"
+                           :error="addFormErrors.logo" :accept="['image/*']" help-text="Square logo (1:1 ratio)"
+                           :max-size="2 * 1024 * 1024" />
 
-      <!-- ========= [ MODAL ] ============ -->
-      <CustomModal :isOpen="showAddItemModal" @update:isOpen="showAddOwnerModal = $event"
-         title="Add New Company Owner / Admin" size="md">
-         <template #body>
-            <form @submit.prevent="handleAddOwner" class="space-y-5">
-               <div class="grid grid-cols-1 gap-5 @sm:grid-cols-2 @xl:grid-cols-2 @3xl:grid-cols-4">
+                        <!-- Is Active -->
+                        <div>
+                           <label for="is_active"
+                              class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">
+                              Active
+                           </label>
+                           <Checkbox label="Is active ?" v-model="addForm.is_active" />
+                        </div>
 
-                  <!-- Name -->
-                  <InputeComponent label="Brand Name" id="name" name="name" label-for="name"
-                     placeholder="Enter Brand Name" v-model="addForm.name" :error="addFormErrors.name" />
-
-               </div>
-
-               <!-- Footer Buttons -->
-               <div class="flex justify-end border-t border-default space-x-3 pt-2 md:pt-5">
-                  <ActionButton action="cancel" @click="showAddItemModal = false" size="sm" label="Cancel" />
-                  <ActionButton action="save" size="sm" label="Save" type="submit" />
-               </div>
-            </form>
+                     </div>
+                     <!-- Footer Buttons -->
+                     <div class="flex justify-end border-t border-default space-x-3 pt-2 md:pt-5">
+                        <ActionButton action="cancel" @click="showAddItemModal = false" size="sm" label="Cancel" />
+                        <ActionButton action="save" size="sm" label="Save" type="submit" />
+                     </div>
+                  </form>
+               </template>
+            </CustomModal>
          </template>
-      </CustomModal>
-   </div>
+      </MainContentCard>
+   </MasterCardLayout>
 </template>
 
 <script setup>
@@ -152,6 +179,7 @@ import { truncateText } from '@/utils/textFormatter';
 import CustomModal from '@/components/modal/CustomModal.vue';
 import {
    ref,
+   reactive,
    computed,
    onMounted,
    watch,
@@ -174,7 +202,14 @@ const { proxy } = getCurrentInstance();
 // ===================================================================
 const accessToken = ref(window.accessToken);
 const userId = ref(window.user_id);
-const loading = ref(false);
+const loadingStates = reactive({
+   loading: false,
+   loadingTable: false,
+   back: false,
+   draft: false,
+   save: false,
+});
+const error = ref(null);
 const apiData = ref(null);
 
 // Table configuration
@@ -200,6 +235,7 @@ const showAddItemModal = ref(false);
 const addForm = ref({
    name: null,
    logo: null,
+   is_active: true
 });
 const addFormErrors = ref({});
 
@@ -208,27 +244,23 @@ const addFormErrors = ref({});
 // =========================== 3. COMPUTED ============================
 // ===================================================================
 const tableFooterData = computed(() => {
-   if (!apiData.value?.results?.length) {
-      return {}
-   }
-   const items = apiData.value.results
-   const totalPrice = items.reduce((sum, item) => sum + Number(item.price || 0), 0)
-   const activeCount = items.filter(item => item.is_active).length
-   return {
-      total_price: totalPrice.toFixed(2),
-      active_count: activeCount,
-   }
+   // if (!apiData.value?.results?.length) {
+   //    return {}
+   // }
+   // const items = apiData.value.results
+   // const totalPrice = items.reduce((sum, item) => sum + Number(item.price || 0), 0)
+   // const activeCount = items.filter(item => item.is_active).length
+   // return {
+   //    total_price: totalPrice.toFixed(2),
+   //    active_count: activeCount,
+   // }
 })
-
-const getTruncatedAddress = (address) => {
-   return truncateText(address, 50);
-};
 
 // ===================================================================
 // =========================== 4. METHODS ============================
 // ===================================================================
 const fetchData = async () => {
-   loading.value = true;
+   loadingStates.loadingTable = true;
    try {
       const params = {
          page: currentPage.value,
@@ -243,7 +275,7 @@ const fetchData = async () => {
       };
 
       // ✅ Relative URL with axios
-      const response = await axios.get(BrandApiURL.List, { params });
+      const response = await axios.get(`${BrandApiURL.List}/`, { params });
       apiData.value = response.data;
    } catch (error) {
       console.error('Error fetching data:', error);
@@ -257,15 +289,86 @@ const fetchData = async () => {
          },
       };
    } finally {
-      loading.value = false;
+      loadingStates.loadingTable = false;
    }
 };
 
 // Actions ------------------------------------------
-const addItem = () => {
-   // console.log('Add item');
-   // window.location = SupplierPageURL.Create;
+const resetAddFrom = () => {
+   addForm.value = {};
+   addFormErrors.value = {};
+}
+const handleAddItem = async () => {
+   addFormErrors.value = {}
+   const requiredFields = ['name', 'logo'];
+   let hasError = false;
+   requiredFields.forEach((field) => {
+      if (!addForm.value[field]) {
+         addFormErrors.value[field] = `${field.replace(/_/g, ' ')} is required`;
+         hasError = true;
+      }
+   });
+   if (hasError) {
+      toast.error('Required fields must be entry');
+      return;
+   }
+
+   const formDataToSend = new FormData();
+   formDataToSend.append('name', addForm.value.name);
+   formDataToSend.append('is_active', addForm.value.is_active);
+   if (addForm.value.logo) {
+      formDataToSend.append('logo', addForm.value.logo);
+   }
+
+   // API call ============
+   try {
+      const response = await axios.post(
+         `${BrandApiURL.Create}/`,
+         formDataToSend,
+         {}
+      );
+
+      if (response.data.success) {
+         toast.success('Owner added successfully');
+         // Form Close & Reset
+         showAddItemModal.value = false;
+         resetAddFrom();
+         fetchData();
+      } else {
+         if (response.data.errors) {
+            // handleBackendErrors(response.data.errors)
+            console.log(response.data.errors)
+         }
+         toast.error(response.data.message || 'Failed to add owner')
+      }
+   } catch (err) {
+      console.log(err.response.data.message);
+      // const backendErrors = err?.response?.data?.errors
+      // const errorMessage = err?.response?.data?.message || 'Request failed'
+
+      // if (backendErrors) {
+      //    handleBackendErrors(backendErrors)
+      //    toast.error(errorMessage)
+      // } else {
+      //    console.error('API error without validation details:', err)
+      //    toast.error('Something went wrong. Please check your connection.')
+      // }
+
+      // console.log(err.response.data.message);
+      // const e = err.response.data.errors
+      // if (e) {
+      //    Object.keys(e).forEach(field => {
+      //       console.log(`→ ${field}:`, e[field].join(" | "));
+      //    });
+      // }
+      // toast.error('Failed to add owner');
+   }
 };
+
+
+
+
+
 const editItem = (item) => {
    // console.log('Edit item:', item);
    // window.location = `${SupplierPageURL.Update}/${item.id}`;
