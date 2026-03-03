@@ -1,24 +1,17 @@
 import { BASE_API_URL, BASE_URL } from "../../../../frontend/src/route";
 
-const API_URL = `${BASE_API_URL}/supplier`;
-const PAGE_URL = `${BASE_URL}/supplier`;
+const API_URL = `${BASE_API_URL}/product`;
+const PRODUCT_ATTRIBUTE_API_URL = `${BASE_API_URL}/product-attributes`;
+const PAGE_URL = `${BASE_URL}/product`;
 
-//! Supplier URL =====================================
-//? Shop Page URL
-export const SupplierPageURL = {
-    List: `${PAGE_URL}/`,
-    Create: `${PAGE_URL}/create/`,
-    Details: `${PAGE_URL}/details`,
-    Update: `${PAGE_URL}/update`,
-};
-
+//! Brand URL =====================================
 //? Shop API URL
-export const SupplierApiURL = {
-    List: `${API_URL}`,
-    Create: `${API_URL}`,
-    Details: `${API_URL}`,
-    Update: `${API_URL}`,
-    Delete: `${API_URL}`,
+export const BrandApiURL = {
+    List: `${PRODUCT_ATTRIBUTE_API_URL}/brand`,
+    Create: `${PRODUCT_ATTRIBUTE_API_URL}`,
+    Details: `${PRODUCT_ATTRIBUTE_API_URL}`,
+    Update: `${PRODUCT_ATTRIBUTE_API_URL}`,
+    Delete: `${PRODUCT_ATTRIBUTE_API_URL}`,
 };
 //! ====================================================
 

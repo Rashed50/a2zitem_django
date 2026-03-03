@@ -113,7 +113,11 @@ app.component("supplier-list-component", SupplierListComponent);
 app.component("supplier-details-component", SupplierDetailsComponent);
 
 
-
+//! Product Component
+import { 
+    BrandListComponent
+} from '../../apps/product/assets/js/app';
+app.component("brand-list-component", BrandListComponent);
 
 
 //! Client Pages =========================================

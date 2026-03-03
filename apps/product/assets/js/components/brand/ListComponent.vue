@@ -8,9 +8,9 @@
             class="px-3 py-1 sm:px-6 sm:py-3 border-b border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
             <h4 class="text-xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-3">
                <i class="fa-regular fa-truck text-blue-600"></i>
-               <span class="text-lg sm:text-xl">Supplier List</span>
+               <span class="text-lg sm:text-xl">Brand List</span>
             </h4>
-            <ActionButton action="add" size="sm" @click="addItem" class="px-8" />
+            <ActionButton action="add" size="sm" @click="showAddItemModal = true" class="px-8" />
          </div>
 
          <!-- Card Body -->
@@ -38,27 +38,20 @@
                      </div>
                   </template>
 
-                  <!-- Contact Information -->
-                  <template #cell-contact="{ row }">
-                     <div class="font-medium text-gray-900 dark:text-white">
-                        {{ row.contact || '' }}
-                     </div>
-                     <div class="text-xs text-gray-500 dark:text-gray-400">
-                        {{ row.email || '' }}
-                     </div>
-                     <div class="text-xs text-gray-500 dark:text-gray-400">
-                        {{ row.phone || '' }}
-                     </div>
-                  </template>
-
-                  <!-- Address -->
-                  <template #cell-address="{ row }">
-                     <div class="max-h-20 overflow-y-auto whitespace-normal break-words pr-2">
-                        {{ row.address || '-' }}
-                        <!-- {{getTruncatedAddress(row.address)}} -->
+                  <!-- Logo -->
+                  <template #cell-logo="{ row }">
+                     <div class="flex items-center space-x-2">
+                        <div v-if="row.logo">
+                           <img :src="row.logo" class="w-24 h-24 rounded-md" alt="Logo" />
+                        </div>
+                        <div v-else class="w-24 h-24 flex items-center justify-center font-bold text-gray-500 dark:text-gray-400">
+                           <i class="fa-regular fa-image me-2"></i>
+                           <span>Not Uploaded</span>
+                        </div>
                      </div>
                   </template>
 
+                  <!-- Activity Dates -->
                   <template #cell-activity_dates="{ row }">
                      <div class="space-y-2 text-xs">
                         <div>
@@ -122,17 +115,41 @@
             class="px-3 py-2 sm:px-4 sm:py-3 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center gap-2 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
          </div>
       </div>
+
+
+      <!-- ========= [ MODAL ] ============ -->
+      <CustomModal :isOpen="showAddItemModal" @update:isOpen="showAddOwnerModal = $event"
+         title="Add New Company Owner / Admin" size="md">
+         <template #body>
+            <form @submit.prevent="handleAddOwner" class="space-y-5">
+               <div class="grid grid-cols-1 gap-5 @sm:grid-cols-2 @xl:grid-cols-2 @3xl:grid-cols-4">
+
+                  <!-- Name -->
+                  <InputeComponent label="Brand Name" id="name" name="name" label-for="name"
+                     placeholder="Enter Brand Name" v-model="addForm.name" :error="addFormErrors.name" />
+
+               </div>
+
+               <!-- Footer Buttons -->
+               <div class="flex justify-end border-t border-default space-x-3 pt-2 md:pt-5">
+                  <ActionButton action="cancel" @click="showAddItemModal = false" size="sm" label="Cancel" />
+                  <ActionButton action="save" size="sm" label="Save" type="submit" />
+               </div>
+            </form>
+         </template>
+      </CustomModal>
    </div>
 </template>
 
 <script setup>
-import { SupplierApiURL, SupplierPageURL } from '../../routes';
+import { BrandApiURL } from '../../routes';
 import { useDelete } from '@/composables/useDelete';
 import DataTableTopControls from '@/components/data-table/DataTableTopControls.vue';
 import DataTablePagination from '@/components/data-table/DataTablePagination.vue';
 import DataTablePcBody from '@/components/data-table/DataTablePcBody.vue'
 import { formatLocalDateTimeExtended } from '@/utils/dateFormatter';
-import { truncateText, needsTruncation, getTruncatedWithFull } from '@/utils/textFormatter';
+import { truncateText } from '@/utils/textFormatter';
+import CustomModal from '@/components/modal/CustomModal.vue';
 import {
    ref,
    computed,
@@ -172,12 +189,19 @@ const sortDirection = ref('asc');
 
 // Table columns configuration for subscription plans
 const tableColumns = [
-   { field: 'name', title: 'Name', width: '20%', sticky: true, sortable: true },
-   { field: 'contact', title: 'Contact Information', width: '20%', sticky: true, sortable: false },
-   { field: 'address', title: 'Address', width: '20%', sticky: false, sortable: false },
+   { field: 'name', title: 'Name', width: '50%', sticky: true, sortable: true },
+   { field: 'logo', title: 'Logo', width: '20%', sticky: false, sortable: false },
    { field: 'activity_dates', title: 'Activity Dates', width: '20%', sortable: false },
    { field: 'status', title: 'Status', width: '10%', sticky: true, sortable: false },
 ]
+
+// Modal configuration
+const showAddItemModal = ref(false);
+const addForm = ref({
+   name: null,
+   logo: null,
+});
+const addFormErrors = ref({});
 
 
 // ===================================================================
@@ -219,7 +243,7 @@ const fetchData = async () => {
       };
 
       // ✅ Relative URL with axios
-      const response = await axios.get(SupplierApiURL.List, { params });
+      const response = await axios.get(BrandApiURL.List, { params });
       apiData.value = response.data;
    } catch (error) {
       console.error('Error fetching data:', error);
@@ -240,21 +264,21 @@ const fetchData = async () => {
 // Actions ------------------------------------------
 const addItem = () => {
    // console.log('Add item');
-   window.location = SupplierPageURL.Create;
+   // window.location = SupplierPageURL.Create;
 };
 const editItem = (item) => {
    // console.log('Edit item:', item);
-   window.location = `${SupplierPageURL.Update}/${item.id}`;
+   // window.location = `${SupplierPageURL.Update}/${item.id}`;
 };
 
 const viewItem = (item) => {
    console.log('View item:', item.id);
-   window.location = `${SupplierPageURL.Details}/${item.id}/`;
+   // window.location = `${SupplierPageURL.Details}/${item.id}/`;
 };
 
 const handleDelete = (id) => {
    deleteItem({
-      url: `${SupplierApiURL.Delete}`,
+      url: `${BrandApiURL.Delete}`,
       id: id,
       name: 'Shop',
       onSuccess: fetchData,
