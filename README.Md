@@ -96,7 +96,7 @@ python manage.py staffuser
 python manage.py runserver
 ```
 
-# === Tailwind CSS and Vue Install ===
+# ===== Tailwind CSS and Vue Install =====
 ## 11. Install Tailwind CSS
 ```bash
 python manage.py tailwind install
