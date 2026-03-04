@@ -53,3 +53,22 @@ class CategoryListPageView(LoginRequiredMixin, generic.TemplateView):
         context['category_json'] = mark_safe(json.dumps(category_data, ensure_ascii=False))
         context['status_json'] = mark_safe(json.dumps(status_data, ensure_ascii=False))
         return context
+
+
+class CategoryCreatePageView(LoginRequiredMixin, generic.TemplateView):
+    login_url = reverse_lazy('auth:login')
+    template_name = 'category/create.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        request_user    = self.request.user
+        root_category_choices = Category.objects.filter(
+                is_deleted=False, parent__isnull=True,
+            ).values_list('id', 'name')
+        root_category_data = [
+                {'value': choice[0], 'label': str(choice[1])} 
+                for choice in root_category_choices
+            ]
+
+        context['root_category_json'] = mark_safe(json.dumps(root_category_data, ensure_ascii=False))
+        return context

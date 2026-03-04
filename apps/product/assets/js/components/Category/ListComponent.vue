@@ -195,17 +195,21 @@
             </div>
 
             <!-- ========= [ ADD MODAL ] ============ -->
-            <CustomModal :isOpen="showAddItemModal" @update:isOpen="showAddItemModal = $event" title="Add New Brand"
+            <CustomModal :isOpen="showAddItemModal" @update:isOpen="showAddItemModal = $event" title="Add New Category"
                size="sm">
                <template #body>
                   <form @submit.prevent="handleAddItem" class="space-y-5">
                      <div class="space-y-3">
                         <!-- Name -->
-                        <InputeComponent label="Brand Name" id="name" name="name" label-for="name"
-                           placeholder="Enter Brand Name" v-model="addForm.name" :error="addFormErrors.name" />
+                        <InputeComponent label="Category Name" id="name" name="name" label-for="name"
+                           placeholder="Enter Category Name" v-model="addForm.name" :error="addFormErrors.name" />
+
+                        <!-- Parent -->
+                        <CustomMultiSelect label="Category" v-model="filterForm.parent" :options="categoryChoices"
+                           label-key="label" value-key="value" placeholder="Select category" />
 
                         <!-- Logo -->
-                        <FileInputComponent label="Brand Logo" v-model="addForm.logo" :current-image-url="addForm?.logo"
+                        <FileInputComponent label="Category Logo" v-model="addForm.logo" :current-image-url="addForm?.logo"
                            :error="addFormErrors.logo" :accept="['image/*']" help-text="Square logo (1:1 ratio)"
                            :max-size="2 * 1024 * 1024" />
 
@@ -229,17 +233,17 @@
             </CustomModal>
 
             <!-- ========= [ EDIT MODAL ] ============ -->
-            <CustomModal :isOpen="showEditItemModal" @update:isOpen="showEditItemModal = $event" title="Edit Brand"
+            <CustomModal :isOpen="showEditItemModal" @update:isOpen="showEditItemModal = $event" title="Edit Category"
                size="sm">
                <template #body>
                   <form @submit.prevent="handleUpdateItem" class="space-y-5">
                      <div class="space-y-3">
                         <!-- Name -->
-                        <InputeComponent label="Brand Name" id="edit_name" name="edit_name" label-for="edit_name"
-                           placeholder="Enter Brand Name" v-model="editForm.name" :error="editFormErrors.name" />
+                        <InputeComponent label="Category Name" id="edit_name" name="edit_name" label-for="edit_name"
+                           placeholder="Enter Category Name" v-model="editForm.name" :error="editFormErrors.name" />
 
                         <!-- Logo -->
-                        <FileInputComponent label="Brand Logo" v-model="editForm.logo"
+                        <FileInputComponent label="Category Logo" v-model="editForm.logo"
                            :current-image-url="editForm?.current_logo" :error="editFormErrors.logo"
                            :accept="['image/*']" help-text="Square logo (1:1 ratio) - Leave empty to keep current logo"
                            :max-size="2 * 1024 * 1024" />
@@ -523,7 +527,7 @@ const handleUpdateItem = async () => {
       );
 
       if (response.data.success) {
-         toast.success('Brand updated successfully');
+         toast.success('Category updated successfully');
          // Modal Close & Reset
          showEditItemModal.value = false;
          resetEditForm();
@@ -533,14 +537,14 @@ const handleUpdateItem = async () => {
             editFormErrors.value = response.data.errors;
             console.log(response.data.errors)
          }
-         toast.error(response.data.message || 'Failed to update brand')
+         toast.error(response.data.message || 'Failed to update Category')
       }
    } catch (err) {
       console.log(err.response?.data?.message);
       if (err.response?.data?.errors) {
          editFormErrors.value = err.response.data.errors;
       }
-      toast.error(err.response?.data?.message || 'Failed to update brand');
+      toast.error(err.response?.data?.message || 'Failed to update Category');
    }
 };
 // --------------- End Modals -----------------------
