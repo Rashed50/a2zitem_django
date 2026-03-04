@@ -25,16 +25,47 @@
          <template #header-right>
             <!-- Add Button -->
             <ActionButton action="add" size="sm" @click="showAddItemModal = true" class="px-8" />
+
             <!-- Filter Button -->
-            <ActionButton action="filter" size="sm" @click="showFilter = true" class="px-8" />
+            <Button type="button" variant="primary" size="sm" @click="showFilter = !showFilter" class="px-8"
+               :label="showFilter ? 'Filter Close' : 'Filter Open'"
+               :icon-right="showFilter ? 'fa-solid fa-xmark' : 'fa-solid fa-filter'" />
          </template>
 
          <!-- Card Body -->
          <template #body>
-            <div v-if="showFilter" class="">
-               <h1>Show Filter</h1>
-            </div>
             <div class="flex-1 overflow-y-auto px-3 py-3 sm:px-5 sm:py-3 space-y-4 sm:space-y-2">
+               <!-- Filter Section -->
+               <transition enter-active-class="transition duration-300 ease-out"
+                  enter-from-class="transform opacity-0 -translate-y-2"
+                  enter-to-class="transform opacity-100 translate-y-0"
+                  leave-active-class="transition duration-200 ease-in"
+                  leave-from-class="transform opacity-100 translate-y-0"
+                  leave-to-class="transform opacity-0 -translate-y-2">
+                  <div v-if="showFilter"
+                     class="flex flex-col gap-4 p-3 sm:p-2 bg-gray-50 dark:bg-gray-900/30 rounded-lg border border-gray-200 dark:border-gray-700">
+                     <div class="responsive-grid gap-sm">
+                        <CustomMultiSelect label="Category" v-model="filterForm.parent" :options="categoryChoices"
+                           label-key="label" value-key="value" placeholder="Select category" />
+
+                        <CustomMultiSelect label="Status" v-model="filterForm.status" :options="statusChoices"
+                           label-key="label" value-key="value" placeholder="Select status" />
+                     </div>
+
+                     <!-- Filter Action Buttons -->
+                     <div class="flex justify-end gap-2 mt-4">
+                        <ActionButton action="export" size="sm" @click="exportData" label="Export" />
+
+                        <Button type="button" variant="outline-danger" size="sm" @click="resetFilters"
+                           icon-left="fa-solid fa-filter-circle-xmark">
+                           Reset
+                        </Button>
+
+                        <ActionButton action="filter" size="sm" @click="applyFilters" label="Apply Filter" />
+                     </div>
+                  </div>
+               </transition>
+
                <!-- Top Controls -->
                <DataTableTopControls :entries-per-page="entriesPerPage"
                   @update:entries-per-page="entriesPerPage = $event" :search-query="searchQuery"
@@ -266,6 +297,22 @@ const today = new Date().toISOString().split('T')[0];
 const { proxy } = getCurrentInstance();
 
 // ===================================================================
+// =========================== 2. PROPS =============================
+// ===================================================================
+const props = defineProps({
+   categoryChoices: {
+      type: Array,
+      required: true,
+      default: () => [],
+   },
+   statusChoices: {
+      type: Boolean,
+      required: true,
+      default: () => [],
+   }
+});
+
+// ===================================================================
 // =========================== 2. DATA ================================
 // ===================================================================
 const accessToken = ref(window.accessToken);
@@ -277,7 +324,7 @@ const loadingStates = reactive({
    draft: false,
    save: false,
 });
-const showFilter = ref(false);
+
 const error = ref(null);
 const apiData = ref(null);
 
@@ -290,6 +337,17 @@ const selectAll = ref(false);
 const bulkAction = ref('');
 const sortColumn = ref('name');
 const sortDirection = ref('asc');
+
+// Filter configuration
+const showFilter = ref(false);
+const categories = ref([]);
+const filterForm = ref({
+   name: '',
+   is_active: '',
+   parent: '',
+});
+
+const testOptions = ref([]);
 
 // Table columns configuration for subscription plans
 const tableColumns = [
@@ -556,6 +614,27 @@ const executeBulkAction = () => {
    selectedRows.value = [];
 };
 
+// Apply filters ----------------------------------------------------
+const exportData = () => {
+   console.log('Exporting data...');
+}
+
+const applyFilters = () => {
+   // currentPage.value = 1;
+   // fetchData(); 
+   console.log('Applying filters...');
+};
+
+// Reset filters
+const resetFilters = () => {
+   filterForm.value = {
+      parent: null,
+      status: null
+   };
+   // currentPage.value = 1;
+   // fetchData();
+};
+
 // Utility functions ================================================================
 function debounce(func, wait) {
    let timeout;
@@ -568,7 +647,6 @@ function debounce(func, wait) {
       timeout = setTimeout(later, wait);
    };
 }
-
 
 // ===================================================================
 // =========================== 1. WATCH =========================
@@ -605,5 +683,22 @@ onMounted(() => {
    -webkit-line-clamp: 2;
    -webkit-box-orient: vertical;
    overflow: hidden;
+}
+
+.v-enter-active,
+.v-leave-active {
+   transition: all 0.3s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+   opacity: 0;
+   transform: translateY(-10px);
+}
+
+.v-enter-to,
+.v-leave-from {
+   opacity: 1;
+   transform: translateY(0);
 }
 </style>

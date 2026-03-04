@@ -19,7 +19,10 @@
     </ul>
 </div>
 
-<category-list-component></category-list-component>
+<category-list-component 
+    :category-choices='{{category_json|safe}}'
+    :status-choices='{{status_json|safe}}'
+></category-list-component>
 {% endblock content %}
 
 {% block js %}{% endblock js %}

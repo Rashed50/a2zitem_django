@@ -38,5 +38,18 @@ class CategoryListPageView(LoginRequiredMixin, generic.TemplateView):
     template_name = 'category/list.html'
 
     def get_context_data(self, **kwargs):
-         context = super().get_context_data(**kwargs)
-         return context
+        context = super().get_context_data(**kwargs)
+        category_choices = Category.objects.filter(
+                is_deleted=False, parent__isnull=True,
+            ).values_list('id', 'name')
+        category_data = [
+                {'value': choice[0], 'label': str(choice[1])} 
+                for choice in category_choices
+            ]
+        status_data = [
+            {'value': True, 'label': 'Active'},
+            {'value': False, 'label': 'Inactive'},
+        ]
+        context['category_json'] = mark_safe(json.dumps(category_data, ensure_ascii=False))
+        context['status_json'] = mark_safe(json.dumps(status_data, ensure_ascii=False))
+        return context
