@@ -27,14 +27,17 @@ from apis.utils.pagination import CustomPageNumberPagination, get_paginated_resp
 from apis.utils.apiPermission import HasPermission
 
 ##? Service Import 
-# from apis.v1.attributes.services import queries
+from apis.v1.attributes.services import filters
 
 ##? Model Import 
 User = get_user_model() 
 from apps.product.models.category import Category
 
 ##? Serializer Import 
-from apis.v1.attributes.serializers.categorySerializer import CategorySerializer
+from apis.v1.attributes.serializers.categorySerializer import (
+        # CategorySerializer,
+        CategoryTreeSerializer,
+    )
 
 
 
@@ -45,7 +48,7 @@ from apis.v1.attributes.serializers.categorySerializer import CategorySerializer
 class CategoryListCreateAPIView(generics.ListCreateAPIView): 
     authentication_classes = [JWTAuthentication] 
     pagination_class       = CustomPageNumberPagination 
-    serializer_class       = CategorySerializer
+    serializer_class       = CategoryTreeSerializer
     
     filter_backends = [OrderingFilter]
     ordering_fields = ['name', 'created_at']
@@ -64,11 +67,20 @@ class CategoryListCreateAPIView(generics.ListCreateAPIView):
     # ##? Queryset
     def get_queryset(self):
         queryset = Category.objects.all().select_related('parent')
-        search   = self.request.query_params.get("search")
-
-        if search:
-            queryset = queryset.filter(Q(name__icontains=search))
-
+        
+        # ##? Search
+        # search   = self.request.query_params.get("search")
+        # if search:
+        #     queryset = queryset.filter(Q(name__icontains=search))
+        
+        filter_service = filters.CategoryFilterService(
+            search     = self.request.GET.get("search"),
+            parent_id  = self.request.GET.get("parent_id"),
+            start_date = self.request.GET.get("start_date"),
+            end_date   = self.request.GET.get("end_date"),
+            ordering   = self.request.GET.get("ordering"),
+        )
+        queryset = filter_service.apply_filters(queryset)
         return queryset
     
     ##! Create
@@ -91,11 +103,7 @@ class CategoryListCreateAPIView(generics.ListCreateAPIView):
         )
         return response_list(response_data, item_name="Category")
     
-    # def list(self, request, *args, **kwargs):
-    #     queryset = Category.objects.all()
-    #     tree = cache_tree_children(queryset)
-    #     serializer = self.get_serializer(tree, many=True)
-    #     return Response(serializer.data)
+
 
 
 
@@ -107,7 +115,7 @@ class CategoryListCreateAPIView(generics.ListCreateAPIView):
 class CategoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView): 
     queryset = Category.objects.all().order_by('name') 
     authentication_classes = [JWTAuthentication] 
-    serializer_class       = CategorySerializer
+    serializer_class       = CategoryTreeSerializer
     
     ##? Permission 
     permission_classes = [HasPermission] 

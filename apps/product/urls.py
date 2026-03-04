@@ -7,6 +7,7 @@ from apps.product.views.brandView import BrandListPageView
 from apps.product.views.colorView import ColorListPageView
 from apps.product.views.sizeView import SizeListPageView
 from apps.product.views.unitView import UnitListPageView
+from apps.product.views.cagegoryView import CategoryListPageView
 
 
 urlpatterns = [ 
@@ -15,7 +16,13 @@ urlpatterns = [
     path('size/', SizeListPageView.as_view(), name='size_list_page'),
     path('unit-of-measurment/', UnitListPageView.as_view(), name='unit_list_page'),
     
-    # ##? Subscription
+    ##? Category 
+    path(
+        'category/', 
+        include([
+            path('', CategoryListPageView.as_view(), name='category_list_page'),
+        ])
+    )
     # path(
     #     'subscription/',
     #     include(

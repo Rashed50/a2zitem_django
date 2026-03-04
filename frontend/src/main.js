@@ -119,11 +119,13 @@ import {
     ColorListComponent,
     SizeListComponent,
     UnitListComponent,
+    CategoryListComponent,
 } from '../../apps/product/assets/js/app';
 app.component("brand-list-component", BrandListComponent);
 app.component("color-list-component", ColorListComponent);
 app.component("size-list-component", SizeListComponent);
 app.component("unit-list-component", UnitListComponent);
+app.component("category-list-component", CategoryListComponent);
 
 
 //! Client Pages =========================================

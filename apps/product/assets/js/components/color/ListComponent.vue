@@ -56,7 +56,14 @@
                      <template #cell-created="{ row }">
                         <div class="space-y-2 text-xs">
                            <div>
-                              <div class="font-medium text-gray-700 dark:text-gray-300">Created</div>
+                              <div class="font-medium text-gray-700 dark:text-gray-300">Created By</div>
+                              <div class="text-gray-500 dark:text-gray-400">
+                                 <span v-if="row.created_by">{{ row.created_by?.name || '' }}</span>
+                                 <span v-else>-</span>
+                              </div>
+                           </div>
+                           <div>
+                              <div class="font-medium text-gray-700 dark:text-gray-300">Created At</div>
                               <div class="text-gray-500 dark:text-gray-400">
                                  {{ formatLocalDateTimeExtended(row.created_at).formattedDate }}
                               </div>
@@ -71,7 +78,14 @@
                      <template #cell-updated="{ row }">
                         <div class="space-y-2 text-xs">
                            <div>
-                              <div class="font-medium text-gray-700 dark:text-gray-300">Updated</div>
+                              <div class="font-medium text-gray-700 dark:text-gray-300">Updated By</div>
+                              <div class="text-gray-500 dark:text-gray-400">
+                                 <span v-if="row.updated_by">{{ row.updated_by?.name || '' }}</span>
+                                 <span v-else>-</span>
+                              </div>
+                           </div>
+                           <div>
+                              <div class="font-medium text-gray-700 dark:text-gray-300">Updated At</div>
                               <div class="text-gray-500 dark:text-gray-400">
                                  {{ formatLocalDateTimeExtended(row.updated_at).formattedDate }}
                               </div>

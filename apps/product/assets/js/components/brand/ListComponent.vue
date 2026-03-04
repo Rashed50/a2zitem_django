@@ -54,7 +54,7 @@
 
                      <!-- Logo -->
                      <template #cell-logo="{ row }">
-                        <div class="flex items-center space-x-2">
+                        <div class="flex items-center space-x-2 ms-2">
                            <div v-if="row.logo">
                               <img :src="row.logo" class="w-24 h-24 rounded-md" alt="Logo" />
                            </div>
@@ -66,11 +66,18 @@
                         </div>
                      </template>
 
-                     <!-- Activity Dates -->
-                     <template #cell-activity_dates="{ row }">
+                     <!-- Created Dates -->
+                     <template #cell-created="{ row }">
                         <div class="space-y-2 text-xs">
                            <div>
-                              <div class="font-medium text-gray-700 dark:text-gray-300">Created</div>
+                              <div class="font-medium text-gray-700 dark:text-gray-300">Created By</div>
+                              <div class="text-gray-500 dark:text-gray-400">
+                                 <span v-if="row.created_by">{{ row.created_by?.name || '' }}</span>
+                                 <span v-else>-</span>
+                              </div>
+                           </div>
+                           <div>
+                              <div class="font-medium text-gray-700 dark:text-gray-300">Created At</div>
                               <div class="text-gray-500 dark:text-gray-400">
                                  {{ formatLocalDateTimeExtended(row.created_at).formattedDate }}
                               </div>
@@ -78,9 +85,21 @@
                                  {{ formatLocalDateTimeExtended(row.created_at).formattedTime }}
                               </div>
                            </div>
+                        </div>
+                     </template>
 
+                     <!-- Updated Dates -->
+                     <template #cell-updated="{ row }">
+                        <div class="space-y-2 text-xs">
                            <div>
-                              <div class="font-medium text-gray-700 dark:text-gray-300">Updated</div>
+                              <div class="font-medium text-gray-700 dark:text-gray-300">Updated By</div>
+                              <div class="text-gray-500 dark:text-gray-400">
+                                 <span v-if="row.updated_by">{{ row.updated_by?.name || '' }}</span>
+                                 <span v-else>-</span>
+                              </div>
+                           </div>
+                           <div>
+                              <div class="font-medium text-gray-700 dark:text-gray-300">Updated At</div>
                               <div class="text-gray-500 dark:text-gray-400">
                                  {{ formatLocalDateTimeExtended(row.updated_at).formattedDate }}
                               </div>
@@ -176,8 +195,8 @@
 
                         <!-- Logo -->
                         <FileInputComponent label="Brand Logo" v-model="editForm.logo"
-                           :current-image-url="editForm?.current_logo" :error="editFormErrors.logo" :accept="['image/*']"
-                           help-text="Square logo (1:1 ratio) - Leave empty to keep current logo"
+                           :current-image-url="editForm?.current_logo" :error="editFormErrors.logo"
+                           :accept="['image/*']" help-text="Square logo (1:1 ratio) - Leave empty to keep current logo"
                            :max-size="2 * 1024 * 1024" />
 
                         <!-- Is Active -->
@@ -261,7 +280,8 @@ const sortDirection = ref('asc');
 const tableColumns = [
    { field: 'name', title: 'Name', width: '50%', sticky: true, sortable: true },
    { field: 'logo', title: 'Logo', width: '20%', sticky: false, sortable: false },
-   { field: 'activity_dates', title: 'Activity Dates', width: '20%', sortable: false },
+   { field: 'created', title: 'Created At', width: '20%', sortable: false },
+   { field: 'updated', title: 'Updated At', width: '20%', sortable: false },
    { field: 'status', title: 'Status', width: '10%', sticky: true, sortable: false },
 ]
 
@@ -399,7 +419,7 @@ const resetEditForm = () => {
 };
 const handleUpdateItem = async () => {
    editFormErrors.value = {}
-   const requiredFields = ['name']; 
+   const requiredFields = ['name'];
    let hasError = false;
 
    requiredFields.forEach((field) => {
@@ -423,7 +443,7 @@ const handleUpdateItem = async () => {
 
    try {
       const response = await axios.put(
-         `${BrandApiURL.Update}/${editForm.value.id}/`, 
+         `${BrandApiURL.Update}/${editForm.value.id}/`,
          formDataToSend,
          {}
       );

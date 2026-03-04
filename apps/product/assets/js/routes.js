@@ -43,3 +43,13 @@ export const UnitApiURL = {
     Delete: `${PRODUCT_ATTRIBUTE_API_URL}/unit`,
 };
 //! ====================================================
+
+//! Category URL =====================================
+export const CategoryApiURL = {
+    List: `${PRODUCT_ATTRIBUTE_API_URL}/category`,
+    Create: `${PRODUCT_ATTRIBUTE_API_URL}/category`,
+    Details: `${PRODUCT_ATTRIBUTE_API_URL}/category`,
+    Update: `${PRODUCT_ATTRIBUTE_API_URL}/category`,
+    Delete: `${PRODUCT_ATTRIBUTE_API_URL}/category`,
+};
+//! ====================================================

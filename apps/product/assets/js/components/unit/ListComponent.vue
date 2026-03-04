@@ -12,7 +12,7 @@
       <MainContentCard :error="error">
          <!-- Header Icon -->
          <template #icon>
-            <i class="fa-solid fa-ruler-vertical text-blue-600"></i>
+            <i class="fa-solid fa-scale-unbalanced-flip text-blue-600"></i>
          </template>
 
          <!-- Header Title -->
@@ -57,7 +57,14 @@
                      <template #cell-created="{ row }">
                         <div class="space-y-2 text-xs">
                            <div>
-                              <div class="font-medium text-gray-700 dark:text-gray-300">Created</div>
+                              <div class="font-medium text-gray-700 dark:text-gray-300">Created By</div>
+                              <div class="text-gray-500 dark:text-gray-400">
+                                 <span v-if="row.created_by">{{ row.created_by?.name || '' }}</span>
+                                 <span v-else>-</span>
+                              </div>
+                           </div>
+                           <div>
+                              <div class="font-medium text-gray-700 dark:text-gray-300">Created At</div>
                               <div class="text-gray-500 dark:text-gray-400">
                                  {{ formatLocalDateTimeExtended(row.created_at).formattedDate }}
                               </div>
@@ -72,7 +79,14 @@
                      <template #cell-updated="{ row }">
                         <div class="space-y-2 text-xs">
                            <div>
-                              <div class="font-medium text-gray-700 dark:text-gray-300">Updated</div>
+                              <div class="font-medium text-gray-700 dark:text-gray-300">Updated By</div>
+                              <div class="text-gray-500 dark:text-gray-400">
+                                 <span v-if="row.updated_by">{{ row.updated_by?.name || '' }}</span>
+                                 <span v-else>-</span>
+                              </div>
+                           </div>
+                           <div>
+                              <div class="font-medium text-gray-700 dark:text-gray-300">Updated At</div>
                               <div class="text-gray-500 dark:text-gray-400">
                                  {{ formatLocalDateTimeExtended(row.updated_at).formattedDate }}
                               </div>
@@ -135,8 +149,7 @@
 
                         <!-- Symbolic Name -->
                         <InputeComponent label="Symbolic Name" id="symbol" name="symbol" label-for="symbol"
-                           placeholder="Symbolic Name" v-model="addForm.symbol"
-                           :error="addFormErrors.symbol" />
+                           placeholder="Symbolic Name" v-model="addForm.symbol" :error="addFormErrors.symbol" />
 
                         <!-- Is Active -->
                         <div>
@@ -158,8 +171,8 @@
             </CustomModal>
 
             <!-- ========= [ EDIT MODAL ] ============ -->
-            <CustomModal :isOpen="showEditItemModal" @update:isOpen="showEditItemModal = $event" title="Edit Unit Of Measurment"
-               size="sm">
+            <CustomModal :isOpen="showEditItemModal" @update:isOpen="showEditItemModal = $event"
+               title="Edit Unit Of Measurment" size="sm">
                <template #body>
                   <form @submit.prevent="handleUpdateItem" class="space-y-5">
                      <div class="space-y-3">
