@@ -30,8 +30,8 @@ class SizeAdmin(admin.ModelAdmin):
     
 @admin.register(UnitOfMeasure)
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'full_name', 'is_active', 'is_deleted', 'created_at']
-    search_fields = ['id', 'name', 'full_name']
+    list_display = ['id', 'name', 'symbol', 'is_active', 'is_deleted', 'created_at']
+    search_fields = ['id', 'name', 'symbol']
     autocomplete_fields = ['created_by', 'updated_by']
 
 # @admin.register(Category) 

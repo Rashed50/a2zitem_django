@@ -323,9 +323,10 @@ const resetAddForm = () => {
       name: null,
       is_active: true
    };
-   Object.keys(addFormErrors).forEach(key => {
-      addFormErrors[key] = null;
-   });
+   addFormErrors.value = {
+      name: null,
+      is_active: true
+   };
 };
 
 const resetEditForm = () => {
@@ -334,17 +335,19 @@ const resetEditForm = () => {
       name: null,
       is_active: true
    };
-   editFormErrors.value = {
-      name: null
+   editFormErrors = {
+      id: null,
+      name: null,
+      is_active: true
    };
 };
 const handleAddItem = async () => {
-   addFormErrors.value = {}
+   addFormErrors.name = '';
    const requiredFields = ['name'];
    let hasError = false;
    requiredFields.forEach((field) => {
       if (!addForm.value[field]) {
-         addFormErrors.value[field] = `${field.replace(/_/g, ' ')} is required`;
+         addFormErrors[field] = `${field.replace(/_/g, ' ')} is required`;
          hasError = true;
       }
    });
@@ -394,13 +397,13 @@ const handleAddItem = async () => {
 };
 
 const handleUpdateItem = async () => {
-   editFormErrors.value = {}
+   addFormErrors.name = '';
    const requiredFields = ['name'];
    let hasError = false;
 
    requiredFields.forEach((field) => {
       if (!editForm.value[field]) {
-         editFormErrors.value[field] = `${field.replace(/_/g, ' ')} is required`;
+         editFormErrors[field] = `${field.replace(/_/g, ' ')} is required`;
          hasError = true;
       }
    });

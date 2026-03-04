@@ -18,195 +18,195 @@ class Command(BaseCommand):
         
         units = [
             ##! Weight Units
-            {"name": "Kilogram", "full_name": "kg"},
-            {"name": "Gram", "full_name": "g"},
-            {"name": "Milligram", "full_name": "mg"},
-            {"name": "Metric Ton", "full_name": "t"},
-            {"name": "Pound", "full_name": "lb"},
-            {"name": "Ounce", "full_name": "oz"},
+            {"name": "Kilogram", "symbol": "kg"},
+            {"name": "Gram", "symbol": "g"},
+            {"name": "Milligram", "symbol": "mg"},
+            {"name": "Metric Ton", "symbol": "t"},
+            {"name": "Pound", "symbol": "lb"},
+            {"name": "Ounce", "symbol": "oz"},
             
             ##! Volume Units
-            {"name": "Liter", "full_name": "L"},
-            {"name": "Milliliter", "full_name": "mL"},
-            {"name": "Gallon", "full_name": "gal"},
-            {"name": "Quart", "full_name": "qt"},
-            {"name": "Pint", "full_name": "pt"},
-            {"name": "Fluid Ounce", "full_name": "fl oz"},
-            {"name": "Cubic Meter", "full_name": "m³"},
-            {"name": "Cubic Centimeter", "full_name": "cm³"},
+            {"name": "Liter", "symbol": "L"},
+            {"name": "Milliliter", "symbol": "mL"},
+            {"name": "Gallon", "symbol": "gal"},
+            {"name": "Quart", "symbol": "qt"},
+            {"name": "Pint", "symbol": "pt"},
+            {"name": "Fluid Ounce", "symbol": "fl oz"},
+            {"name": "Cubic Meter", "symbol": "m³"},
+            {"name": "Cubic Centimeter", "symbol": "cm³"},
             
             ##! Length Units
-            {"name": "Meter", "full_name": "m"},
-            {"name": "Centimeter", "full_name": "cm"},
-            {"name": "Millimeter", "full_name": "mm"},
-            {"name": "Kilometer", "full_name": "km"},
-            {"name": "Inch", "full_name": "in"},
-            {"name": "Foot", "full_name": "ft"},
-            {"name": "Yard", "full_name": "yd"},
-            {"name": "Mile", "full_name": "mi"},
+            {"name": "Meter", "symbol": "m"},
+            {"name": "Centimeter", "symbol": "cm"},
+            {"name": "Millimeter", "symbol": "mm"},
+            {"name": "Kilometer", "symbol": "km"},
+            {"name": "Inch", "symbol": "in"},
+            {"name": "Foot", "symbol": "ft"},
+            {"name": "Yard", "symbol": "yd"},
+            {"name": "Mile", "symbol": "mi"},
             
             ##! Area Units
-            {"name": "Square Meter", "full_name": "m²"},
-            {"name": "Square Centimeter", "full_name": "cm²"},
-            {"name": "Square Foot", "full_name": "ft²"},
-            {"name": "Square Yard", "full_name": "yd²"},
-            {"name": "Acre", "full_name": "ac"},
-            {"name": "Hectare", "full_name": "ha"},
+            {"name": "Square Meter", "symbol": "m²"},
+            {"name": "Square Centimeter", "symbol": "cm²"},
+            {"name": "Square Foot", "symbol": "ft²"},
+            {"name": "Square Yard", "symbol": "yd²"},
+            {"name": "Acre", "symbol": "ac"},
+            {"name": "Hectare", "symbol": "ha"},
             
             ##! Piece/Count Units
-            {"name": "Piece", "full_name": "pc"},
-            {"name": "Pair", "full_name": "pr"},
-            {"name": "Set", "full_name": "set"},
-            {"name": "Dozen", "full_name": "doz"},
-            {"name": "Box", "full_name": "box"},
-            {"name": "Pack", "full_name": "pk"},
-            {"name": "Carton", "full_name": "ctn"},
-            {"name": "Bundle", "full_name": "bdl"},
-            {"name": "Roll", "full_name": "roll"},
-            {"name": "Sheet", "full_name": "sheet"},
+            {"name": "Piece", "symbol": "pc"},
+            {"name": "Pair", "symbol": "pr"},
+            {"name": "Set", "symbol": "set"},
+            {"name": "Dozen", "symbol": "doz"},
+            {"name": "Box", "symbol": "box"},
+            {"name": "Pack", "symbol": "pk"},
+            {"name": "Carton", "symbol": "ctn"},
+            {"name": "Bundle", "symbol": "bdl"},
+            {"name": "Roll", "symbol": "roll"},
+            {"name": "Sheet", "symbol": "sheet"},
             
             ##! Time Units
-            {"name": "Second", "full_name": "s"},
-            {"name": "Minute", "full_name": "min"},
-            {"name": "Hour", "full_name": "h"},
-            {"name": "Day", "full_name": "d"},
-            {"name": "Week", "full_name": "wk"},
-            {"name": "Month", "full_name": "mo"},
-            {"name": "Year", "full_name": "yr"},
+            {"name": "Second", "symbol": "s"},
+            {"name": "Minute", "symbol": "min"},
+            {"name": "Hour", "symbol": "h"},
+            {"name": "Day", "symbol": "d"},
+            {"name": "Week", "symbol": "wk"},
+            {"name": "Month", "symbol": "mo"},
+            {"name": "Year", "symbol": "yr"},
             
             ##! Energy Units
-            {"name": "Watt", "full_name": "W"},
-            {"name": "Kilowatt", "full_name": "kW"},
-            {"name": "Megawatt", "full_name": "MW"},
-            {"name": "Horsepower", "full_name": "hp"},
-            {"name": "Kilowatt-hour", "full_name": "kWh"},
-            {"name": "Joule", "full_name": "J"},
-            {"name": "Calorie", "full_name": "cal"},
+            {"name": "Watt", "symbol": "W"},
+            {"name": "Kilowatt", "symbol": "kW"},
+            {"name": "Megawatt", "symbol": "MW"},
+            {"name": "Horsepower", "symbol": "hp"},
+            {"name": "Kilowatt-hour", "symbol": "kWh"},
+            {"name": "Joule", "symbol": "J"},
+            {"name": "Calorie", "symbol": "cal"},
             
             ##! Temperature Units
-            {"name": "Celsius", "full_name": "°C"},
-            {"name": "Fahrenheit", "full_name": "°F"},
-            {"name": "Kelvin", "full_name": "K"},
+            {"name": "Celsius", "symbol": "°C"},
+            {"name": "Fahrenheit", "symbol": "°F"},
+            {"name": "Kelvin", "symbol": "K"},
             
             ##! Pressure Units
-            {"name": "Pascal", "full_name": "Pa"},
-            {"name": "Kilopascal", "full_name": "kPa"},
-            {"name": "Bar", "full_name": "bar"},
-            {"name": "PSI", "full_name": "psi"},
-            {"name": "Atmosphere", "full_name": "atm"},
+            {"name": "Pascal", "symbol": "Pa"},
+            {"name": "Kilopascal", "symbol": "kPa"},
+            {"name": "Bar", "symbol": "bar"},
+            {"name": "PSI", "symbol": "psi"},
+            {"name": "Atmosphere", "symbol": "atm"},
             
             ##! Speed Units
-            {"name": "Meter per Second", "full_name": "m/s"},
-            {"name": "Kilometer per Hour", "full_name": "km/h"},
-            {"name": "Mile per Hour", "full_name": "mph"},
-            {"name": "Knot", "full_name": "kn"},
+            {"name": "Meter per Second", "symbol": "m/s"},
+            {"name": "Kilometer per Hour", "symbol": "km/h"},
+            {"name": "Mile per Hour", "symbol": "mph"},
+            {"name": "Knot", "symbol": "kn"},
             
             ##! Data Storage Units
-            {"name": "Byte", "full_name": "B"},
-            {"name": "Kilobyte", "full_name": "KB"},
-            {"name": "Megabyte", "full_name": "MB"},
-            {"name": "Gigabyte", "full_name": "GB"},
-            {"name": "Terabyte", "full_name": "TB"},
-            {"name": "Petabyte", "full_name": "PB"},
+            {"name": "Byte", "symbol": "B"},
+            {"name": "Kilobyte", "symbol": "KB"},
+            {"name": "Megabyte", "symbol": "MB"},
+            {"name": "Gigabyte", "symbol": "GB"},
+            {"name": "Terabyte", "symbol": "TB"},
+            {"name": "Petabyte", "symbol": "PB"},
             
             ##! Concentration Units
-            {"name": "Percent", "full_name": "%"},
-            {"name": "Parts Per Million", "full_name": "ppm"},
-            {"name": "Parts Per Billion", "full_name": "ppb"},
-            {"name": "Molar", "full_name": "M"},
-            {"name": "Millimolar", "full_name": "mM"},
+            {"name": "Percent", "symbol": "%"},
+            {"name": "Parts Per Million", "symbol": "ppm"},
+            {"name": "Parts Per Billion", "symbol": "ppb"},
+            {"name": "Molar", "symbol": "M"},
+            {"name": "Millimolar", "symbol": "mM"},
             
             ##! Textile Units
-            {"name": "Denier", "full_name": "den"},
-            {"name": "Tex", "full_name": "tex"},
-            {"name": "Thread Count", "full_name": "TC"},
-            {"name": "GSM", "full_name": "gsm"},
+            {"name": "Denier", "symbol": "den"},
+            {"name": "Tex", "symbol": "tex"},
+            {"name": "Thread Count", "symbol": "TC"},
+            {"name": "GSM", "symbol": "gsm"},
             
             ##! Construction Units
-            {"name": "Bag", "full_name": "bag"},
-            {"name": "Ton", "full_name": "ton"},
-            {"name": "Cubic Feet", "full_name": "ft³"},
-            {"name": "Board Feet", "full_name": "bdft"},
-            {"name": "Square Feet", "full_name": "sq ft"},
+            {"name": "Bag", "symbol": "bag"},
+            {"name": "Ton", "symbol": "ton"},
+            {"name": "Cubic Feet", "symbol": "ft³"},
+            {"name": "Board Feet", "symbol": "bdft"},
+            {"name": "Square Feet", "symbol": "sq ft"},
             
             ##! Food Industry Units
-            {"name": "Cup", "full_name": "cup"},
-            {"name": "Tablespoon", "full_name": "tbsp"},
-            {"name": "Teaspoon", "full_name": "tsp"},
-            {"name": "Pinch", "full_name": "pinch"},
-            {"name": "Dash", "full_name": "dash"},
-            {"name": "Drop", "full_name": "drop"},
+            {"name": "Cup", "symbol": "cup"},
+            {"name": "Tablespoon", "symbol": "tbsp"},
+            {"name": "Teaspoon", "symbol": "tsp"},
+            {"name": "Pinch", "symbol": "pinch"},
+            {"name": "Dash", "symbol": "dash"},
+            {"name": "Drop", "symbol": "drop"},
             
             ##! Jewelry Units
-            {"name": "Carat", "full_name": "ct"},
-            {"name": "Gram", "full_name": "g"},
-            {"name": "Tola", "full_name": "tola"},
-            {"name": "Bhori", "full_name": "bhori"},
-            {"name": "Anna", "full_name": "anna"},
-            {"name": "Ratti", "full_name": "ratti"},
+            {"name": "Carat", "symbol": "ct"},
+            {"name": "Gram", "symbol": "g"},
+            {"name": "Tola", "symbol": "tola"},
+            {"name": "Bhori", "symbol": "bhori"},
+            {"name": "Anna", "symbol": "anna"},
+            {"name": "Ratti", "symbol": "ratti"},
             
             ##! Agricultural Units
-            {"name": "Kilogram", "full_name": "kg"},
-            {"name": "Quintal", "full_name": "q"},
-            # {"name": "Ton", "full_name": "t"},
-            {"name": "Bale", "full_name": "bale"},
-            {"name": "Bushel", "full_name": "bu"},
-            {"name": "Sack", "full_name": "sack"},
+            {"name": "Kilogram", "symbol": "kg"},
+            {"name": "Quintal", "symbol": "q"},
+            # {"name": "Ton", "symbol": "t"},
+            {"name": "Bale", "symbol": "bale"},
+            {"name": "Bushel", "symbol": "bu"},
+            {"name": "Sack", "symbol": "sack"},
             
             ##! Paper Units
-            {"name": "Ream", "full_name": "ream"},
-            {"name": "Quire", "full_name": "quire"},
-            {"name": "Sheet", "full_name": "sheet"},
+            {"name": "Ream", "symbol": "ream"},
+            {"name": "Quire", "symbol": "quire"},
+            {"name": "Sheet", "symbol": "sheet"},
             
             ##! Liquid Units (US/UK)
-            {"name": "US Gallon", "full_name": "US gal"},
-            {"name": "UK Gallon", "full_name": "UK gal"},
-            {"name": "US Quart", "full_name": "US qt"},
-            {"name": "UK Quart", "full_name": "UK qt"},
-            {"name": "US Pint", "full_name": "US pt"},
-            {"name": "UK Pint", "full_name": "UK pt"},
+            {"name": "US Gallon", "symbol": "US gal"},
+            {"name": "UK Gallon", "symbol": "UK gal"},
+            {"name": "US Quart", "symbol": "US qt"},
+            {"name": "UK Quart", "symbol": "UK qt"},
+            {"name": "US Pint", "symbol": "US pt"},
+            {"name": "UK Pint", "symbol": "UK pt"},
             
             ##! Special Units
-            {"name": "Unit", "full_name": "u"},
-            {"name": "Each", "full_name": "ea"},
-            {"name": "Case", "full_name": "case"},
-            {"name": "Pallet", "full_name": "plt"},
-            {"name": "Container", "full_name": "cont"},
-            {"name": "Drum", "full_name": "drum"},
-            {"name": "Can", "full_name": "can"},
-            {"name": "Bottle", "full_name": "btl"},
-            {"name": "Jar", "full_name": "jar"},
-            {"name": "Tube", "full_name": "tube"},
-            {"name": "Spool", "full_name": "spool"},
-            {"name": "Coil", "full_name": "coil"},
-            {"name": "Reel", "full_name": "reel"},
+            {"name": "Unit", "symbol": "u"},
+            {"name": "Each", "symbol": "ea"},
+            {"name": "Case", "symbol": "case"},
+            {"name": "Pallet", "symbol": "plt"},
+            {"name": "Container", "symbol": "cont"},
+            {"name": "Drum", "symbol": "drum"},
+            {"name": "Can", "symbol": "can"},
+            {"name": "Bottle", "symbol": "btl"},
+            {"name": "Jar", "symbol": "jar"},
+            {"name": "Tube", "symbol": "tube"},
+            {"name": "Spool", "symbol": "spool"},
+            {"name": "Coil", "symbol": "coil"},
+            {"name": "Reel", "symbol": "reel"},
             
             ##! Bangladeshi Local Units
-            {"name": "Maund", "full_name": "mn"},
-            {"name": "Seer", "full_name": "sr"},
-            {"name": "Chhatak", "full_name": "chk"},
-            {"name": "Poa", "full_name": "poa"},
-            {"name": "Dhoni", "full_name": "dhn"},
-            {"name": "Kani", "full_name": "kani"},
-            {"name": "Gonda", "full_name": "gnd"},
-            {"name": "Kara", "full_name": "kra"},
-            {"name": "Ratik", "full_name": "rtk"},
-            # {"name": "Tola (BD)", "full_name": "tola"},
-            # {"name": "Bhori (BD)", "full_name": "bhori"},
-            {"name": "Ana", "full_name": "ana"},
-            # {"name": "Ratti (BD)", "full_name": "ratti"},
-            {"name": "Dhur", "full_name": "dhur"},
-            {"name": "Katha", "full_name": "katha"},
-            {"name": "Bigha", "full_name": "bigha"},
-            {"name": "Shotok", "full_name": "stk"},
-            {"name": "Decimal", "full_name": "dec"},
+            {"name": "Maund", "symbol": "mn"},
+            {"name": "Seer", "symbol": "sr"},
+            {"name": "Chhatak", "symbol": "chk"},
+            {"name": "Poa", "symbol": "poa"},
+            {"name": "Dhoni", "symbol": "dhn"},
+            {"name": "Kani", "symbol": "kani"},
+            {"name": "Gonda", "symbol": "gnd"},
+            {"name": "Kara", "symbol": "kra"},
+            {"name": "Ratik", "symbol": "rtk"},
+            # {"name": "Tola (BD)", "symbol": "tola"},
+            # {"name": "Bhori (BD)", "symbol": "bhori"},
+            {"name": "Ana", "symbol": "ana"},
+            # {"name": "Ratti (BD)", "symbol": "ratti"},
+            {"name": "Dhur", "symbol": "dhur"},
+            {"name": "Katha", "symbol": "katha"},
+            {"name": "Bigha", "symbol": "bigha"},
+            {"name": "Shotok", "symbol": "stk"},
+            {"name": "Decimal", "symbol": "dec"},
         ]
         
         # Remove duplicates (if any)
         seen = set()
         unique_units = []
         for unit in units:
-            key = (unit["name"], unit["full_name"])
+            key = (unit["name"], unit["symbol"])
             if key not in seen:
                 seen.add(key)
                 unique_units.append(unit)
@@ -221,16 +221,16 @@ class Command(BaseCommand):
                 obj, created = UnitOfMeasure.objects.update_or_create(
                     name=unit_data["name"],
                     defaults={
-                        "full_name": unit_data["full_name"]
+                        "symbol": unit_data["symbol"]
                     }
                 )
                 
                 if created:
                     created_count += 1
-                    self.stdout.write(self.style.SUCCESS(f'✅ Created: {unit_data["name"]} ({unit_data["full_name"]})'))
+                    self.stdout.write(self.style.SUCCESS(f'✅ Created: {unit_data["name"]} ({unit_data["symbol"]})'))
                 else:
                     updated_count += 1
-                    self.stdout.write(self.style.WARNING(f'🔄 Updated: {unit_data["name"]} ({unit_data["full_name"]})'))
+                    self.stdout.write(self.style.WARNING(f'🔄 Updated: {unit_data["name"]} ({unit_data["symbol"]})'))
                     
             except Exception as e:
                 self.stdout.write(self.style.ERROR(f'❌ Error creating {unit_data["name"]}: {str(e)}'))

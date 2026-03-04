@@ -48,7 +48,8 @@
                      <!-- Name (Sticky) -->
                      <template #cell-name="{ row }">
                         <div class="font-medium text-gray-900 dark:text-white">
-                           {{ row.name || '' }} ({{ row.full_name || '' }})
+                           {{ row.name || '' }}
+                           <span v-if="row.symbol">({{ row.symbol || '' }})</span>
                         </div>
                      </template>
 
@@ -122,14 +123,20 @@
             </div>
 
             <!-- ========= [ ADD MODAL ] ============ -->
-            <CustomModal :isOpen="showAddItemModal" @update:isOpen="showAddItemModal = $event" title="Add New Size "
-               size="sm">
+            <CustomModal :isOpen="showAddItemModal" @update:isOpen="showAddItemModal = $event"
+               title="Add New Unit Of Measurment " size="sm">
                <template #body>
                   <form @submit.prevent="handleAddItem" class="space-y-5">
                      <div class="space-y-3">
                         <!-- Name -->
-                        <InputeComponent label="Size Name" id="name" name="name" label-for="name"
-                           placeholder="Enter Size Name" v-model="addForm.name" :error="addFormErrors.name" />
+                        <InputeComponent label="Unit Of Measurment Name" id="name" name="name" label-for="name"
+                           placeholder="Enter Unit Of Measurment Name" v-model="addForm.name"
+                           :error="addFormErrors.name" />
+
+                        <!-- Symbolic Name -->
+                        <InputeComponent label="Symbolic Name" id="symbol" name="symbol" label-for="symbol"
+                           placeholder="Symbolic Name" v-model="addForm.symbol"
+                           :error="addFormErrors.symbol" />
 
                         <!-- Is Active -->
                         <div>
@@ -151,14 +158,20 @@
             </CustomModal>
 
             <!-- ========= [ EDIT MODAL ] ============ -->
-            <CustomModal :isOpen="showEditItemModal" @update:isOpen="showEditItemModal = $event" title="Edit Size "
+            <CustomModal :isOpen="showEditItemModal" @update:isOpen="showEditItemModal = $event" title="Edit Unit Of Measurment"
                size="sm">
                <template #body>
                   <form @submit.prevent="handleUpdateItem" class="space-y-5">
                      <div class="space-y-3">
                         <!-- Name -->
-                        <InputeComponent label="Size  Name" id="edit_name" name="edit_name" label-for="edit_name"
-                           placeholder="Enter Size  Name" v-model="editForm.name" :error="editFormErrors.name" />
+                        <InputeComponent label="Unit Of Measurment  Name" id="edit_name" name="edit_name"
+                           label-for="edit_name" placeholder="Enter Unit Of Measurment  Name" v-model="editForm.name"
+                           :error="editFormErrors.name" />
+
+                        <!-- Symbolic Name -->
+                        <InputeComponent label="Symbolic Name" id="edit_symbol" name="edit_symbol"
+                           label-for="edit_symbol" placeholder="Symbolic Name" v-model="editForm.symbol"
+                           :error="editFormErrors.symbol" />
 
                         <!-- Is Active -->
                         <div>
@@ -250,18 +263,22 @@ const showAddItemModal = ref(false);
 const showEditItemModal = ref(false);
 const addForm = ref({
    name: null,
+   symbol: null,
    is_active: true
 });
 const editForm = ref({
    id: null,
    name: null,
+   symbol: null,
    is_active: true
 });
 const addFormErrors = reactive({
-   name: null
+   name: '',
+   symbol: '',
 });
 const editFormErrors = reactive({
-   name: null
+   name: '',
+   symbol: '',
 });
 
 // ===================================================================
@@ -321,33 +338,37 @@ const fetchData = async () => {
 const resetAddForm = () => {
    addForm.value = {
       name: null,
+      symbol: null,
       is_active: true
    };
-   Object.keys(addFormErrors).forEach(key => {
-      addFormErrors[key] = null;
-   });
+   addFormErrors.name = '';
+   addFormErrors.symbol = '';
 };
 
 const resetEditForm = () => {
    editForm.value = {
       id: null,
       name: null,
+      symbol: null,
       is_active: true
    };
-   editFormErrors.value = {
-      name: null
-   };
+   addFormErrors.name = '';
+   addFormErrors.symbol = '';
 };
+
 const handleAddItem = async () => {
-   addFormErrors.value = {}
-   const requiredFields = ['name'];
+   addFormErrors.name = '';
+   addFormErrors.symbol = '';
+   const requiredFields = ['name', 'symbol'];
    let hasError = false;
+
    requiredFields.forEach((field) => {
       if (!addForm.value[field]) {
-         addFormErrors.value[field] = `${field.replace(/_/g, ' ')} is required`;
+         addFormErrors[field] = `${field.replace(/_/g, ' ')} is required`;
          hasError = true;
       }
    });
+
    if (hasError) {
       toast.error('Required fields must be entry');
       return;
@@ -355,6 +376,7 @@ const handleAddItem = async () => {
 
    const formDataToSend = new FormData();
    formDataToSend.append('name', addForm.value.name);
+   formDataToSend.append('symbol', addForm.value.symbol);
    formDataToSend.append('is_active', addForm.value.is_active);
 
    // API call ============
@@ -394,8 +416,9 @@ const handleAddItem = async () => {
 };
 
 const handleUpdateItem = async () => {
-   editFormErrors.value = {}
-   const requiredFields = ['name'];
+   addFormErrors.name = '';
+   addFormErrors.symbol = '';
+   const requiredFields = ['name', 'symbol'];
    let hasError = false;
 
    requiredFields.forEach((field) => {
@@ -412,6 +435,7 @@ const handleUpdateItem = async () => {
 
    const formDataToSend = new FormData();
    formDataToSend.append('name', editForm.value.name);
+   formDataToSend.append('symbol', editForm.value.symbol);
    formDataToSend.append('is_active', editForm.value.is_active);
 
    try {
@@ -432,7 +456,7 @@ const handleUpdateItem = async () => {
             editFormErrors.value = response.data.errors;
             console.log(response.data.errors)
          }
-         toast.error(response.data.message || 'Failed to update Size ')
+         toast.error(response.data.message || 'Failed to update Unit Of Measurment ')
       }
    } catch (err) {
       if (err.response?.data?.errors) {
@@ -459,6 +483,7 @@ const editItem = (item) => {
    editForm.value = {
       id: item.id,
       name: item.name,
+      symbol: item.symbol,
       is_active: item.is_active
    };
    showEditItemModal.value = true;
