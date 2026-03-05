@@ -35,8 +35,8 @@ from apps.product.models.category import Category
 
 ##? Serializer Import 
 from apis.v1.attributes.serializers.categorySerializer import (
-        # CategorySerializer,
         CategoryTreeSerializer,
+        CategoryDetailsTreeSerializer
     )
 
 
@@ -115,7 +115,7 @@ class CategoryListCreateAPIView(generics.ListCreateAPIView):
 class CategoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView): 
     queryset = Category.objects.all().order_by('name') 
     authentication_classes = [JWTAuthentication] 
-    serializer_class       = CategoryTreeSerializer
+    # serializer_class       = CategoryTreeSerializer
     
     ##? Permission 
     permission_classes = [HasPermission] 
@@ -130,6 +130,11 @@ class CategoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
         else:
             self.required_perms = ["product.view_color"]
         return super().get_permissions()
+    
+    def get_serializer_class(self): 
+        if self.request.method == 'GET':
+            return CategoryDetailsTreeSerializer
+        return CategoryTreeSerializer
     
     ##! Retrieve
     def retrieve(self, request, *args, **kwargs):

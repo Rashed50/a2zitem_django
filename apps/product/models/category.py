@@ -54,3 +54,4 @@ class Category(MPTTModel, TimestampedModel):
             self.slug = generate_unique_slug(self, self.name)
         super().save(*args, **kwargs)
     
+    

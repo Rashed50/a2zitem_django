@@ -12,8 +12,7 @@
       <MainContentCard :error="error">
          <!-- Header Icon -->
          <template #icon>
-            <!-- <i class="fa-solid fa-layer-group text-blue-600"></i> -->
-            <i class="fa-brands fa-dropbox text-blue-600"></i>
+            <i class="fa-solid fa-table-list text-blue-500"></i>
          </template>
 
          <!-- Header Title -->
@@ -24,7 +23,7 @@
          <!-- Header Right Side -->
          <template #header-right>
             <!-- Add Button -->
-            <ActionButton action="add" size="sm" @click="showAddItemModal = true" class="px-8" />
+            <ActionButton action="add" size="sm" @click="addItemPage" class="px-8" />
 
             <!-- Filter Button -->
             <Button type="button" variant="primary" size="sm" @click="showFilter = !showFilter" class="px-8"
@@ -112,7 +111,7 @@
                      </template>
 
                      <!-- Created Dates -->
-                     <template #cell-created="{ row }">
+                     <template #cell-created_at="{ row }">
                         <div class="space-y-2 text-xs">
                            <div>
                               <div class="font-medium text-gray-700 dark:text-gray-300">Created By</div>
@@ -134,7 +133,7 @@
                      </template>
 
                      <!-- Updated Dates -->
-                     <template #cell-updated="{ row }">
+                     <template #cell-updated_at="{ row }">
                         <div class="space-y-2 text-xs">
                            <div>
                               <div class="font-medium text-gray-700 dark:text-gray-300">Updated By</div>
@@ -163,11 +162,11 @@
                      <!-- Action Column (Custom) -->
                      <template #cell-action="{ row }">
                         <div class="flex flex-col items-center gap-1">
-                           <!-- <button @click="viewItem(row)"
+                           <button @click="viewItem(row)"
                               class="p-1 text-green-600 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-lg transition-colors"
                               title="View">
                               <i class="fa-solid fa-eye text-lg"></i>
-                           </button> -->
+                           </button>
                            <button @click="editItem(row)"
                               class="p-1 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
                               title="Edit">
@@ -194,85 +193,13 @@
                class="px-3 py-2 sm:px-4 sm:py-3 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center gap-2 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
             </div>
 
-            <!-- ========= [ ADD MODAL ] ============ -->
-            <CustomModal :isOpen="showAddItemModal" @update:isOpen="showAddItemModal = $event" title="Add New Category"
-               size="sm">
-               <template #body>
-                  <form @submit.prevent="handleAddItem" class="space-y-5">
-                     <div class="space-y-3">
-                        <!-- Name -->
-                        <InputeComponent label="Category Name" id="name" name="name" label-for="name"
-                           placeholder="Enter Category Name" v-model="addForm.name" :error="addFormErrors.name" />
-
-                        <!-- Parent -->
-                        <CustomMultiSelect label="Category" v-model="filterForm.parent" :options="categoryChoices"
-                           label-key="label" value-key="value" placeholder="Select category" />
-
-                        <!-- Logo -->
-                        <FileInputComponent label="Category Logo" v-model="addForm.logo" :current-image-url="addForm?.logo"
-                           :error="addFormErrors.logo" :accept="['image/*']" help-text="Square logo (1:1 ratio)"
-                           :max-size="2 * 1024 * 1024" />
-
-                        <!-- Is Active -->
-                        <div>
-                           <label for="is_active"
-                              class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">
-                              Active
-                           </label>
-                           <Checkbox label="Is active ?" v-model="addForm.is_active" />
-                        </div>
-
-                     </div>
-                     <!-- Footer Buttons -->
-                     <div class="flex justify-end border-t border-default space-x-3 pt-2 md:pt-5">
-                        <ActionButton action="cancel" @click="showAddItemModal = false" size="sm" label="Cancel" />
-                        <ActionButton action="save" size="sm" label="Save" type="submit" />
-                     </div>
-                  </form>
-               </template>
-            </CustomModal>
-
-            <!-- ========= [ EDIT MODAL ] ============ -->
-            <CustomModal :isOpen="showEditItemModal" @update:isOpen="showEditItemModal = $event" title="Edit Category"
-               size="sm">
-               <template #body>
-                  <form @submit.prevent="handleUpdateItem" class="space-y-5">
-                     <div class="space-y-3">
-                        <!-- Name -->
-                        <InputeComponent label="Category Name" id="edit_name" name="edit_name" label-for="edit_name"
-                           placeholder="Enter Category Name" v-model="editForm.name" :error="editFormErrors.name" />
-
-                        <!-- Logo -->
-                        <FileInputComponent label="Category Logo" v-model="editForm.logo"
-                           :current-image-url="editForm?.current_logo" :error="editFormErrors.logo"
-                           :accept="['image/*']" help-text="Square logo (1:1 ratio) - Leave empty to keep current logo"
-                           :max-size="2 * 1024 * 1024" />
-
-                        <!-- Is Active -->
-                        <div>
-                           <label for="edit_is_active"
-                              class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">
-                              Active Status
-                           </label>
-                           <Checkbox label="Is active ?" v-model="editForm.is_active" />
-                        </div>
-                     </div>
-
-                     <!-- Footer Buttons -->
-                     <div class="flex justify-end border-t border-default space-x-3 pt-2 md:pt-5">
-                        <ActionButton action="cancel" @click="showEditItemModal = false" size="sm" label="Cancel" />
-                        <ActionButton action="save" size="sm" label="Update" type="submit" />
-                     </div>
-                  </form>
-               </template>
-            </CustomModal>
          </template>
       </MainContentCard>
    </MasterCardLayout>
 </template>
 
 <script setup>
-import { CategoryApiURL } from '../../routes';
+import { CategoryApiURL, CategoryPageURL } from '../../routes';
 import { useDelete } from '@/composables/useDelete';
 import DataTableTopControls from '@/components/data-table/DataTableTopControls.vue';
 import DataTablePagination from '@/components/data-table/DataTablePagination.vue';
@@ -289,6 +216,7 @@ import {
    inject,
    getCurrentInstance,
 } from 'vue';
+import { h } from 'vue';
 
 // ===================================================================
 // =========================== 1. INJECTIONS =========================
@@ -358,28 +286,10 @@ const tableColumns = [
    { field: 'name', title: 'Name', width: '20%', sticky: true, sortable: true },
    { field: 'parent', title: 'Parent Name', width: '20%', sticky: false, sortable: false },
    { field: 'logo', title: 'Logo', width: '20%', sticky: false, sortable: false },
-   { field: 'created', title: 'Created At', width: '20%', sortable: false },
-   { field: 'updated', title: 'Updated At', width: '20%', sortable: false },
+   { field: 'created_at', title: 'Created At', width: '20%', sortable: true },
+   { field: 'updated_at', title: 'Updated At', width: '20%', sortable: false },
    { field: 'status', title: 'Status', width: '10%', sticky: true, sortable: false },
 ]
-
-// Modal configuration
-const showAddItemModal = ref(false);
-const showEditItemModal = ref(false);
-const addForm = ref({
-   name: null,
-   logo: null,
-   is_active: true
-});
-const editForm = ref({
-   id: null,
-   name: null,
-   logo: null,
-   current_logo: null,
-   is_active: true
-});
-const addFormErrors = ref({});
-const editFormErrors = ref({});
 
 // ===================================================================
 // =========================== 3. COMPUTED ============================
@@ -434,137 +344,17 @@ const fetchData = async () => {
    }
 };
 
-// ------------ Start Modals -------------------------
-const resetAddFrom = () => {
-   addForm.value = {};
-   addFormErrors.value = {};
-}
-const handleAddItem = async () => {
-   addFormErrors.value = {}
-   const requiredFields = ['name', 'logo'];
-   let hasError = false;
-   requiredFields.forEach((field) => {
-      if (!addForm.value[field]) {
-         addFormErrors.value[field] = `${field.replace(/_/g, ' ')} is required`;
-         hasError = true;
-      }
-   });
-   if (hasError) {
-      toast.error('Required fields must be entry');
-      return;
-   }
-
-   const formDataToSend = new FormData();
-   formDataToSend.append('name', addForm.value.name);
-   formDataToSend.append('is_active', addForm.value.is_active);
-   if (addForm.value.logo) {
-      formDataToSend.append('logo', addForm.value.logo);
-   }
-
-   // API call ============
-   try {
-      const response = await axios.post(
-         `${CategoryApiURL.Create}/`,
-         formDataToSend,
-         {}
-      );
-
-      if (response.data.success) {
-         toast.success('Owner added successfully');
-         // Form Close & Reset
-         showAddItemModal.value = false;
-         resetAddFrom();
-         fetchData();
-      } else {
-         if (response.data.errors) {
-            console.log(response.data.errors)
-         }
-         toast.error(response.data.message || 'Failed to add owner')
-      }
-   } catch (err) {
-      console.log(err.response.data.message);
-   }
-};
-
-const resetEditForm = () => {
-   editForm.value = {
-      id: null,
-      name: null,
-      logo: null,
-      is_active: true
-   };
-   editFormErrors.value = {};
-};
-const handleUpdateItem = async () => {
-   editFormErrors.value = {}
-   const requiredFields = ['name'];
-   let hasError = false;
-
-   requiredFields.forEach((field) => {
-      if (!editForm.value[field]) {
-         editFormErrors.value[field] = `${field.replace(/_/g, ' ')} is required`;
-         hasError = true;
-      }
-   });
-
-   if (hasError) {
-      toast.error('Required fields must be entry');
-      return;
-   }
-
-   const formDataToSend = new FormData();
-   formDataToSend.append('name', editForm.value.name);
-   formDataToSend.append('is_active', editForm.value.is_active);
-   if (editForm.value.logo && typeof editForm.value.logo !== 'string') {
-      formDataToSend.append('logo', editForm.value.logo);
-   }
-
-   try {
-      const response = await axios.put(
-         `${CategoryApiURL.Update}/${editForm.value.id}/`,
-         formDataToSend,
-         {}
-      );
-
-      if (response.data.success) {
-         toast.success('Category updated successfully');
-         // Modal Close & Reset
-         showEditItemModal.value = false;
-         resetEditForm();
-         fetchData();  // Table reload
-      } else {
-         if (response.data.errors) {
-            editFormErrors.value = response.data.errors;
-            console.log(response.data.errors)
-         }
-         toast.error(response.data.message || 'Failed to update Category')
-      }
-   } catch (err) {
-      console.log(err.response?.data?.message);
-      if (err.response?.data?.errors) {
-         editFormErrors.value = err.response.data.errors;
-      }
-      toast.error(err.response?.data?.message || 'Failed to update Category');
-   }
-};
-// --------------- End Modals -----------------------
-
 // Actions ------------------------------------------
+const addItemPage = () => {
+   console.log('Add item');
+   window.location = `${CategoryPageURL.Create}`;
+}
 const editItem = (item) => {
-   // window.location = `${SupplierPageURL.Update}/${item.id}`;
-   editForm.value = {
-      id: item.id,
-      name: item.name,
-      logo: null,
-      current_logo: item.logo,
-      is_active: item.is_active
-   };
-   showEditItemModal.value = true;
+   window.location = `${CategoryPageURL.Update}/${item.id}`;
 };
 
 const viewItem = (item) => {
-   console.log('View item:', item.id);
-   // window.location = `${SupplierPageURL.Details}/${item.id}/`;
+   window.location = `${CategoryPageURL.Details}/${item.id}/`;
 };
 
 const handleDelete = (id) => {

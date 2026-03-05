@@ -1,6 +1,6 @@
 {% extends 'layouts/master.html' %}
 {% load static %}
-{% block title %}Supplier{% endblock title %}
+{% block title %}Category{% endblock title %}
 
 {% block styles %}{% endblock styles %}
 
@@ -18,7 +18,7 @@
         <li><i class="fa-solid fa-angle-right text-gray-400"></i></li>
         <li class="flex items-center">
             <a href="#" class="hover:text-blue-600 flex items-center gap-1">
-                Supplier
+                Category
             </a>
         </li>
         <li><i class="fa-solid fa-angle-right text-gray-400"></i></li>
@@ -26,7 +26,8 @@
     </ul>
 </div>
 
-<supplier-details-component :item-id="'{% if object.id %}{{ object.id }}{% else %}null{% endif %}'"></supplier-details-component>
+<category-details-component :item-id="'{% if object.id %}{{ object.id }}{% else %}null{% endif %}'"></category-details-component>
+<!-- <supplier-details-component :item-id="'{% if object.id %}{{ object.id }}{% else %}null{% endif %}'"></supplier-details-component> -->
 {% endblock content %}
 
 {% block js %}{% endblock js %}

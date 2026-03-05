@@ -52,4 +52,10 @@ export const CategoryApiURL = {
     Update: `${PRODUCT_ATTRIBUTE_API_URL}/category`,
     Delete: `${PRODUCT_ATTRIBUTE_API_URL}/category`,
 };
+export const CategoryPageURL = {
+    List: `${PAGE_URL}/category`,
+    Create: `${PAGE_URL}/category/create/`,
+    Details: `${PAGE_URL}/category/details`,
+    Update: `${PAGE_URL}/category/update`,
+}
 //! ====================================================

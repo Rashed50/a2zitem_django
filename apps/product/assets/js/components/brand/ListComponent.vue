@@ -280,7 +280,7 @@ const sortDirection = ref('asc');
 const tableColumns = [
    { field: 'name', title: 'Name', width: '50%', sticky: true, sortable: true },
    { field: 'logo', title: 'Logo', width: '20%', sticky: false, sortable: false },
-   { field: 'created', title: 'Created At', width: '20%', sortable: false },
+   { field: 'created', title: 'Created At', width: '20%', sortable: true },
    { field: 'updated', title: 'Updated At', width: '20%', sortable: false },
    { field: 'status', title: 'Status', width: '10%', sticky: true, sortable: false },
 ]

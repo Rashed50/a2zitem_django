@@ -7,7 +7,12 @@ from apps.product.views.brandView import BrandListPageView
 from apps.product.views.colorView import ColorListPageView
 from apps.product.views.sizeView import SizeListPageView
 from apps.product.views.unitView import UnitListPageView
-from apps.product.views.cagegoryView import CategoryListPageView
+from apps.product.views.cagegoryView import (
+    CategoryListPageView, 
+    CategoryCreatePageView,
+    CategoryUpdatePageView,
+    CategoryDetailsPageView
+)
 
 
 urlpatterns = [ 
@@ -21,6 +26,9 @@ urlpatterns = [
         'category/', 
         include([
             path('', CategoryListPageView.as_view(), name='category_list_page'),
+            path('create/', CategoryCreatePageView.as_view(), name='category_create_page'),
+            path('update/<int:pk>/', CategoryUpdatePageView.as_view(), name='category_update_page'),
+            path('details/<int:pk>/', CategoryDetailsPageView.as_view(), name='category_details_page'),
         ])
     )
     # path(
