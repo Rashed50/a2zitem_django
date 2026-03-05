@@ -115,9 +115,21 @@ app.component("supplier-details-component", SupplierDetailsComponent);
 
 //! Product Component
 import { 
-    BrandListComponent
+    BrandListComponent,
+    ColorListComponent,
+    SizeListComponent,
+    UnitListComponent,
+    CategoryListComponent,
+    CategoryCreateComponent,
+    CategoryDetailsComponent,
 } from '../../apps/product/assets/js/app';
 app.component("brand-list-component", BrandListComponent);
+app.component("color-list-component", ColorListComponent);
+app.component("size-list-component", SizeListComponent);
+app.component("unit-list-component", UnitListComponent);
+app.component("category-list-component", CategoryListComponent);
+app.component("category-create-component", CategoryCreateComponent);
+app.component("category-details-component", CategoryDetailsComponent);
 
 
 //! Client Pages =========================================

@@ -76,6 +76,6 @@ class UnitOfMeasureQueryService:
         if search:
             queryset = queryset.filter(
                 Q(name__icontains=search)
-                | Q(full_name__icontains=search)
+                | Q(symbol__icontains=search)
             )
         return queryset.order_by('name').distinct()

@@ -15,17 +15,14 @@
             </a>
         </li>
         <li><i class="fa-solid fa-angle-right text-gray-400"></i></li>
-        <li class="flex items-center">
-            <a href="#" class="hover:text-blue-600 flex items-center gap-1">
-                Supplier
-            </a>
-        </li>
-        <li><i class="fa-solid fa-angle-right text-gray-400"></i></li>
-        <li class="text-blue-600 font-semibold">Update</li>
+        <li class="text-blue-600 font-semibold">Category</li>
     </ul>
 </div>
 
-<supplier-create-and-update-component :item-id="'{% if object.id %}{{ object.id }}{% endif %}'"></supplier-create-and-update-component>
+<category-list-component 
+    :category-choices='{{category_json|safe}}'
+    :status-choices='{{status_json|safe}}'
+></category-list-component>
 {% endblock content %}
 
 {% block js %}{% endblock js %}

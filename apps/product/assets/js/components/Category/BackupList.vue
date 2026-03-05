@@ -12,22 +12,59 @@
       <MainContentCard :error="error">
          <!-- Header Icon -->
          <template #icon>
-            <i class="fa-solid fa-scale-unbalanced-flip text-blue-600"></i>
+            <i class="fa-solid fa-table-list text-blue-500"></i>
          </template>
 
          <!-- Header Title -->
          <template #title>
-            Unit Of Mesurement List
+            Category List
          </template>
 
          <!-- Header Right Side -->
          <template #header-right>
-            <ActionButton action="add" size="sm" @click="showAddItemModal = true" class="px-8" />
+            <!-- Add Button -->
+            <ActionButton action="add" size="sm" @click="addItemPage" class="px-8" />
+
+            <!-- Filter Button -->
+            <Button type="button" variant="primary" size="sm" @click="showFilter = !showFilter" class="px-8"
+               :label="showFilter ? 'Filter Close' : 'Filter Open'"
+               :icon-right="showFilter ? 'fa-solid fa-xmark' : 'fa-solid fa-filter'" />
          </template>
 
          <!-- Card Body -->
          <template #body>
             <div class="flex-1 overflow-y-auto px-3 py-3 sm:px-5 sm:py-3 space-y-4 sm:space-y-2">
+               <!-- Filter Section -->
+               <transition enter-active-class="transition duration-300 ease-out"
+                  enter-from-class="transform opacity-0 -translate-y-2"
+                  enter-to-class="transform opacity-100 translate-y-0"
+                  leave-active-class="transition duration-200 ease-in"
+                  leave-from-class="transform opacity-100 translate-y-0"
+                  leave-to-class="transform opacity-0 -translate-y-2">
+                  <div v-if="showFilter"
+                     class="flex flex-col gap-4 p-3 sm:p-2 bg-gray-50 dark:bg-gray-900/30 rounded-lg border border-gray-200 dark:border-gray-700">
+                     <div class="responsive-grid gap-sm">
+                        <CustomMultiSelect label="Root Category" v-model="filterForm.parent" :options="categoryChoices"
+                           label-key="label" value-key="value" placeholder="Select category" />
+
+                        <CustomMultiSelect label="Status" v-model="filterForm.status" :options="statusChoices"
+                           label-key="label" value-key="value" placeholder="Select status" />
+                     </div>
+
+                     <!-- Filter Action Buttons -->
+                     <div class="flex justify-end gap-2 mt-4">
+                        <ActionButton action="export" size="sm" @click="exportData" label="Export" />
+
+                        <Button type="button" variant="outline-danger" size="sm" @click="resetFilters"
+                           icon-left="fa-solid fa-filter-circle-xmark">
+                           Reset
+                        </Button>
+
+                        <ActionButton action="filter" size="sm" @click="applyFilters" label="Apply Filter" />
+                     </div>
+                  </div>
+               </transition>
+
                <!-- Top Controls -->
                <DataTableTopControls :entries-per-page="entriesPerPage"
                   @update:entries-per-page="entriesPerPage = $event" :search-query="searchQuery"
@@ -49,12 +86,32 @@
                      <template #cell-name="{ row }">
                         <div class="font-medium text-gray-900 dark:text-white">
                            {{ row.name || '' }}
-                           <span v-if="row.symbol">({{ row.symbol || '' }})</span>
+                        </div>
+                     </template>
+
+                     <!-- Parent Name -->
+                     <template #cell-parent="{ row }">
+                        <div class="text-gray-500 dark:text-gray-400">
+                           {{ row.parent?.name || '' }}
+                        </div>
+                     </template>
+
+                     <!-- Logo -->
+                     <template #cell-logo="{ row }">
+                        <div class="flex items-center space-x-2 ms-2">
+                           <div v-if="row.logo">
+                              <img :src="row.logo" class="w-24 h-24 rounded-md" alt="Logo" />
+                           </div>
+                           <div v-else
+                              class="w-24 h-24 flex items-center justify-center font-bold text-gray-500 dark:text-gray-400">
+                              <i class="fa-regular fa-image me-2"></i>
+                              <span>Not Uploaded</span>
+                           </div>
                         </div>
                      </template>
 
                      <!-- Created Dates -->
-                     <template #cell-created="{ row }">
+                     <template #cell-created_at="{ row }">
                         <div class="space-y-2 text-xs">
                            <div>
                               <div class="font-medium text-gray-700 dark:text-gray-300">Created By</div>
@@ -76,7 +133,7 @@
                      </template>
 
                      <!-- Updated Dates -->
-                     <template #cell-updated="{ row }">
+                     <template #cell-updated_at="{ row }">
                         <div class="space-y-2 text-xs">
                            <div>
                               <div class="font-medium text-gray-700 dark:text-gray-300">Updated By</div>
@@ -105,11 +162,11 @@
                      <!-- Action Column (Custom) -->
                      <template #cell-action="{ row }">
                         <div class="flex flex-col items-center gap-1">
-                           <!-- <button @click="viewItem(row)"
+                           <button @click="viewItem(row)"
                               class="p-1 text-green-600 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-lg transition-colors"
                               title="View">
                               <i class="fa-solid fa-eye text-lg"></i>
-                           </button> -->
+                           </button>
                            <button @click="editItem(row)"
                               class="p-1 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
                               title="Edit">
@@ -136,81 +193,13 @@
                class="px-3 py-2 sm:px-4 sm:py-3 border-t border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center gap-2 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-900 dark:to-blue-900/20">
             </div>
 
-            <!-- ========= [ ADD MODAL ] ============ -->
-            <CustomModal :isOpen="showAddItemModal" @update:isOpen="showAddItemModal = $event"
-               title="Add New Unit Of Measurment " size="sm">
-               <template #body>
-                  <form @submit.prevent="handleAddItem" class="space-y-5">
-                     <div class="space-y-3">
-                        <!-- Name -->
-                        <InputeComponent label="Unit Of Measurment Name" id="name" name="name" label-for="name"
-                           placeholder="Enter Unit Of Measurment Name" v-model="addForm.name"
-                           :error="addFormErrors.name" />
-
-                        <!-- Symbolic Name -->
-                        <InputeComponent label="Symbolic Name" id="symbol" name="symbol" label-for="symbol"
-                           placeholder="Symbolic Name" v-model="addForm.symbol" :error="addFormErrors.symbol" />
-
-                        <!-- Is Active -->
-                        <div>
-                           <label for="is_active"
-                              class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">
-                              Active
-                           </label>
-                           <Checkbox label="Is active ?" v-model="addForm.is_active" />
-                        </div>
-
-                     </div>
-                     <!-- Footer Buttons -->
-                     <div class="flex justify-end border-t border-default space-x-3 pt-2 md:pt-5">
-                        <ActionButton action="cancel" @click="showAddItemModal = false" size="sm" label="Cancel" />
-                        <ActionButton action="save" size="sm" label="Save" type="submit" />
-                     </div>
-                  </form>
-               </template>
-            </CustomModal>
-
-            <!-- ========= [ EDIT MODAL ] ============ -->
-            <CustomModal :isOpen="showEditItemModal" @update:isOpen="showEditItemModal = $event"
-               title="Edit Unit Of Measurment" size="sm">
-               <template #body>
-                  <form @submit.prevent="handleUpdateItem" class="space-y-5">
-                     <div class="space-y-3">
-                        <!-- Name -->
-                        <InputeComponent label="Unit Of Measurment  Name" id="edit_name" name="edit_name"
-                           label-for="edit_name" placeholder="Enter Unit Of Measurment  Name" v-model="editForm.name"
-                           :error="editFormErrors.name" />
-
-                        <!-- Symbolic Name -->
-                        <InputeComponent label="Symbolic Name" id="edit_symbol" name="edit_symbol"
-                           label-for="edit_symbol" placeholder="Symbolic Name" v-model="editForm.symbol"
-                           :error="editFormErrors.symbol" />
-
-                        <!-- Is Active -->
-                        <div>
-                           <label for="edit_is_active"
-                              class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">
-                              Active Status
-                           </label>
-                           <Checkbox label="Is active ?" v-model="editForm.is_active" />
-                        </div>
-                     </div>
-
-                     <!-- Footer Buttons -->
-                     <div class="flex justify-end border-t border-default space-x-3 pt-2 md:pt-5">
-                        <ActionButton action="cancel" @click="showEditItemModal = false" size="sm" label="Cancel" />
-                        <ActionButton action="save" size="sm" label="Update" type="submit" />
-                     </div>
-                  </form>
-               </template>
-            </CustomModal>
          </template>
       </MainContentCard>
    </MasterCardLayout>
 </template>
 
 <script setup>
-import { UnitApiURL } from '../../routes';
+import { CategoryApiURL, CategoryPageURL } from '../../routes';
 import { useDelete } from '@/composables/useDelete';
 import DataTableTopControls from '@/components/data-table/DataTableTopControls.vue';
 import DataTablePagination from '@/components/data-table/DataTablePagination.vue';
@@ -227,6 +216,7 @@ import {
    inject,
    getCurrentInstance,
 } from 'vue';
+import { h } from 'vue';
 
 // ===================================================================
 // =========================== 1. INJECTIONS =========================
@@ -237,6 +227,22 @@ const swal = inject('swal');
 const { deleteItem } = useDelete();
 const today = new Date().toISOString().split('T')[0];
 const { proxy } = getCurrentInstance();
+
+// ===================================================================
+// =========================== 2. PROPS =============================
+// ===================================================================
+const props = defineProps({
+   categoryChoices: {
+      type: Array,
+      required: true,
+      default: () => [],
+   },
+   statusChoices: {
+      type: Array,
+      required: true,
+      default: () => [],
+   }
+});
 
 // ===================================================================
 // =========================== 2. DATA ================================
@@ -250,6 +256,7 @@ const loadingStates = reactive({
    draft: false,
    save: false,
 });
+
 const error = ref(null);
 const apiData = ref(null);
 
@@ -263,36 +270,23 @@ const bulkAction = ref('');
 const sortColumn = ref('name');
 const sortDirection = ref('asc');
 
+// Filter configuration
+const showFilter = ref(false);
+const categories = ref([]);
+const filterForm = ref({
+   parent: null,
+   status: null,
+});
+
 // Table columns configuration for subscription plans
 const tableColumns = [
-   { field: 'name', title: 'Name', width: '50%', sticky: true, sortable: true },
-   { field: 'created', title: 'Created At', width: '20%', sortable: false },
-   { field: 'updated', title: 'Updated At', width: '20%', sortable: false },
+   { field: 'name', title: 'Name', width: '20%', sticky: true, sortable: true },
+   { field: 'parent', title: 'Parent Name', width: '20%', sticky: false, sortable: false },
+   { field: 'logo', title: 'Logo', width: '20%', sticky: false, sortable: false },
+   { field: 'created_at', title: 'Created At', width: '20%', sortable: true },
+   { field: 'updated_at', title: 'Updated At', width: '20%', sortable: false },
    { field: 'status', title: 'Status', width: '10%', sticky: true, sortable: false },
 ]
-
-// Modal configuration
-const showAddItemModal = ref(false);
-const showEditItemModal = ref(false);
-const addForm = ref({
-   name: null,
-   symbol: null,
-   is_active: true
-});
-const editForm = ref({
-   id: null,
-   name: null,
-   symbol: null,
-   is_active: true
-});
-const addFormErrors = reactive({
-   name: '',
-   symbol: '',
-});
-const editFormErrors = reactive({
-   name: '',
-   symbol: '',
-});
 
 // ===================================================================
 // =========================== 3. COMPUTED ============================
@@ -319,17 +313,25 @@ const fetchData = async () => {
       const params = {
          page: currentPage.value,
          page_size: entriesPerPage.value,
+
+         //!✅ Search Query
          ...(searchQuery.value && { search: searchQuery.value }),
+
+         //!✅ Sort Configuration
          ...(sortColumn.value && {
             ordering:
                sortDirection.value === 'desc'
                   ? `-${sortColumn.value}`
                   : sortColumn.value,
          }),
+
+         //!✅ Filter Configuration
+         ...(filterForm.value.parent && { parent_id: filterForm.value.parent }),
+         ...(filterForm.value.status && { is_active: filterForm.value.status }),
       };
 
       // ✅ Relative URL with axios
-      const response = await axios.get(`${UnitApiURL.List}/`, { params });
+      const response = await axios.get(`${CategoryApiURL.List}/`, { params });
       apiData.value = response.data;
    } catch (error) {
       console.error('Error fetching data:', error);
@@ -347,169 +349,22 @@ const fetchData = async () => {
    }
 };
 
-// ------------ Start Modals -------------------------
-const resetAddForm = () => {
-   addForm.value = {
-      name: null,
-      symbol: null,
-      is_active: true
-   };
-   addFormErrors.name = '';
-   addFormErrors.symbol = '';
-};
-
-const resetEditForm = () => {
-   editForm.value = {
-      id: null,
-      name: null,
-      symbol: null,
-      is_active: true
-   };
-   addFormErrors.name = '';
-   addFormErrors.symbol = '';
-};
-
-const handleAddItem = async () => {
-   addFormErrors.name = '';
-   addFormErrors.symbol = '';
-   const requiredFields = ['name', 'symbol'];
-   let hasError = false;
-
-   requiredFields.forEach((field) => {
-      if (!addForm.value[field]) {
-         addFormErrors[field] = `${field.replace(/_/g, ' ')} is required`;
-         hasError = true;
-      }
-   });
-
-   if (hasError) {
-      toast.error('Required fields must be entry');
-      return;
-   }
-
-   const formDataToSend = new FormData();
-   formDataToSend.append('name', addForm.value.name);
-   formDataToSend.append('symbol', addForm.value.symbol);
-   formDataToSend.append('is_active', addForm.value.is_active);
-
-   // API call ============
-   try {
-      const response = await axios.post(
-         `${UnitApiURL.Create}/`,
-         formDataToSend,
-         {}
-      );
-
-      if (response.data.success) {
-         toast.success(response.data.message || 'Successfully added');
-         // Form Close & Reset
-         showAddItemModal.value = false;
-         resetAddForm();
-         fetchData();
-      } else {
-         if (response.data.errors) {
-            console.log("API Error", response.data.errors)
-         }
-         toast.error(response.data.message || 'Failed to add owner')
-      }
-   } catch (err) {
-      if (err.response?.data?.errors) {
-         const backendErrors = err.response.data.errors;
-         Object.keys(backendErrors).forEach((key) => {
-            const value = backendErrors[key];
-            if (addFormErrors[key] !== undefined) {
-               addFormErrors[key] = Array.isArray(value) ? value[0] : value;
-            }
-         });
-         toast.error(err.response.data.message || 'Validation failed');
-      } else {
-         toast.error('Something went wrong. Please try again.');
-      }
-   }
-};
-
-const handleUpdateItem = async () => {
-   addFormErrors.name = '';
-   addFormErrors.symbol = '';
-   const requiredFields = ['name', 'symbol'];
-   let hasError = false;
-
-   requiredFields.forEach((field) => {
-      if (!editForm.value[field]) {
-         editFormErrors.value[field] = `${field.replace(/_/g, ' ')} is required`;
-         hasError = true;
-      }
-   });
-
-   if (hasError) {
-      toast.error('Required fields must be entry');
-      return;
-   }
-
-   const formDataToSend = new FormData();
-   formDataToSend.append('name', editForm.value.name);
-   formDataToSend.append('symbol', editForm.value.symbol);
-   formDataToSend.append('is_active', editForm.value.is_active);
-
-   try {
-      const response = await axios.put(
-         `${UnitApiURL.Update}/${editForm.value.id}/`,
-         formDataToSend,
-         {}
-      );
-
-      if (response.data.success) {
-         toast.success(response.data.message || 'Successfully updated');
-         // Modal Close & Reset
-         showEditItemModal.value = false;
-         resetEditForm();
-         fetchData();  // Table reload
-      } else {
-         if (response.data.errors) {
-            editFormErrors.value = response.data.errors;
-            console.log(response.data.errors)
-         }
-         toast.error(response.data.message || 'Failed to update Unit Of Measurment ')
-      }
-   } catch (err) {
-      if (err.response?.data?.errors) {
-         const backendErrors = err.response.data.errors;
-         Object.keys(backendErrors).forEach((key) => {
-            const value = backendErrors[key];
-            console.log("key:", key, "value:", value)
-            if (editFormErrors[key] !== undefined) {
-               editFormErrors[key] = Array.isArray(value) ? value[0] : value;
-            }
-         });
-
-         toast.error(err.response.data.message || 'Validation failed');
-      } else {
-         toast.error('Something went wrong. Please try again.');
-      }
-   }
-};
-// --------------- End Modals -----------------------
-
 // Actions ------------------------------------------
+const addItemPage = () => {
+   console.log('Add item');
+   window.location = `${CategoryPageURL.Create}`;
+}
 const editItem = (item) => {
-   // window.location = `${SupplierPageURL.Update}/${item.id}`;
-   editForm.value = {
-      id: item.id,
-      name: item.name,
-      symbol: item.symbol,
-      is_active: item.is_active
-   };
-   showEditItemModal.value = true;
+   window.location = `${CategoryPageURL.Update}/${item.id}`;
 };
 
 const viewItem = (item) => {
-   console.log('View item:', item.id);
-   // window.location = `${SupplierPageURL.Details}/${item.id}/`;
+   window.location = `${CategoryPageURL.Details}/${item.id}/`;
 };
 
 const handleDelete = (id) => {
    deleteItem({
-      url: `${UnitApiURL.Delete}`,
+      url: `${CategoryApiURL.Delete}`,
       id: id,
       name: 'Shop',
       onSuccess: fetchData,
@@ -558,6 +413,27 @@ const executeBulkAction = () => {
    selectedRows.value = [];
 };
 
+// Apply filters ----------------------------------------------------
+const exportData = () => {
+   // console.log('Exporting data...');
+   toast.info('Exporting data...');
+}
+
+const applyFilters = () => {
+   currentPage.value = 1;
+   fetchData();
+};
+
+// Reset filters
+const resetFilters = () => {
+   filterForm.value = {
+      parent: null,
+      status: null
+   };
+   currentPage.value = 1;
+   fetchData();
+};
+
 // Utility functions ================================================================
 function debounce(func, wait) {
    let timeout;
@@ -570,6 +446,7 @@ function debounce(func, wait) {
       timeout = setTimeout(later, wait);
    };
 }
+
 // ===================================================================
 // =========================== 1. WATCH =========================
 // ===================================================================
@@ -605,5 +482,22 @@ onMounted(() => {
    -webkit-line-clamp: 2;
    -webkit-box-orient: vertical;
    overflow: hidden;
+}
+
+.v-enter-active,
+.v-leave-active {
+   transition: all 0.3s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+   opacity: 0;
+   transform: translateY(-10px);
+}
+
+.v-enter-to,
+.v-leave-from {
+   opacity: 1;
+   transform: translateY(0);
 }
 </style>

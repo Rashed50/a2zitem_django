@@ -16,23 +16,85 @@ from apps.product.models.category import Category
 ##? Serializers Import
 from apis.v1.common.user.serializers import UserMiniListSerializer
 
-
+class MiniCategorySerializer(serializers.ModelSerializer):
+    created_by = serializers.CharField(
+        source  = 'created_by.name',
+        read_only = True
+    )
+    class Meta:
+        model  = Category
+        fields = ["id", "slug", "name", "created_at", "created_by"]
 
 ##TODO:- Serializers Initialization
-class CategorySerializer(serializers.ModelSerializer):
+class CategoryTreeSerializer(serializers.ModelSerializer):
     created_by = UserMiniListSerializer(read_only=True)
     updated_by = UserMiniListSerializer(read_only=True)
-    
-    ## 👉 Parent শুধু ID হিসেবে নিবে
-    parent = serializers.PrimaryKeyRelatedField(
-        queryset=Category.objects.all(),
-        required=False,
-        allow_null=True
-    )
+    parent     = MiniCategorySerializer(read_only=True)
+    parent_id  = serializers.PrimaryKeyRelatedField(
+            queryset   = Category.objects.all(),
+            # source     = 'parent',
+            write_only = True,
+            required   = False,
+            allow_null = True,
+            error_messages = get_field_error_messages('Parent', 'PrimaryKeyRelated'),
+        )
 
-    ## 👉 Children nested ভাবে দেখাবে
-    children = serializers.SerializerMethodField()
+    class Meta:
+        model  = Category
+        fields = [
+            'id',
+            'slug',
+            'name',
+            'parent',
+            'parent_id',
+            # 'children',
+            'logo',
+            'is_active',
+            'created_at',
+            'updated_at',
+            'created_by',
+            'updated_by',
+        ]
+        extra_kwargs = {
+            'name': {
+                'required'       : True,
+                'allow_blank'    : False,
+                'error_messages' : get_field_error_messages('Name', 'CharField')
+            },
+        }
+        
+    def validate_parent(self, value):
+        if self.instance:
+            if value == self.instance:
+                raise serializers.ValidationError("Category cannot be its own parent.")
+            if value and value in self.instance.get_descendants():
+                raise serializers.ValidationError("Cannot assign child as parent.")
+        return value
+
+    def create(self, validated_data):
+        request  = self.context['request']
+        parent   = validated_data.pop('parent_id', None)
+        category = Category.objects.create(parent=parent, **validated_data)
+        return category
     
+    def update(self, instance, validated_data):
+        request  = self.context['request']
+        parent   = validated_data.pop('parent_id', None)
+        instance = super().update(instance, validated_data)
+        if parent is not None:
+            instance.parent = parent
+            instance.save()
+        return instance
+
+
+
+class CategoryDetailsTreeSerializer(serializers.ModelSerializer):
+    created_by     = UserMiniListSerializer(read_only=True)
+    updated_by     = UserMiniListSerializer(read_only=True)
+    parent         = MiniCategorySerializer(read_only=True)
+    parent_chain   = serializers.SerializerMethodField()
+    children_chain = serializers.SerializerMethodField()
+
     class Meta:
         model  = Category
         fields = [
@@ -40,33 +102,24 @@ class CategorySerializer(serializers.ModelSerializer):
             'slug',
             'name',
             'logo',
-            'parent',
-            'children',
+            'is_active',
+            'created_at',
+            'updated_at',
             'created_by',
             'updated_by',
+            
+            ##? Tree
+            'parent', 'parent_chain',
+            'children_chain',
         ]
-        read_only_fields = ['id', 'slug', 'created_by', 'updated_by', 'children']
-        extra_kwargs = {
-            'name' : {
-                'required': True, 
-                'allow_null': False,
-                'allow_blank': False,
-                'error_messages': get_field_error_messages('Name', 'CharField')
-            },
-        }
+    
+    def get_parent_chain(self, obj):
+        ancestors = obj.get_ancestors(include_self=False)
+        # return [{"id": cat.id, "slug": cat.slug, "name": cat.name} for cat in ancestors]
+        return MiniCategorySerializer(ancestors, many=True, context=self.context).data
         
-    def get_children(self, obj):
+    def get_children_chain(self, obj):
         children = obj.get_children()
-        if children:
-            return CategorySerializer(children, many=True, context=self.context).data
-        return []
-
-    def validate_parent(self, value):
-        if self.instance:
-            if value == self.instance:
-                raise serializers.ValidationError("Category cannot be its own parent.")
-            if value and value in self.instance.get_descendants():
-                raise serializers.ValidationError("Cannot assign a child as parent.")
-        return value
-
-
+        # return [{"id": cat.id, "slug": cat.slug, "name": cat.name} for cat in children]
+        return MiniCategorySerializer(children, many=True, context=self.context).data
+        

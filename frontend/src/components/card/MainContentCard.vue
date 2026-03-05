@@ -22,7 +22,8 @@
          class="px-3 py-2 sm:px-6 sm:py-3 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800">
          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
             <!-- Title section - 60% on large devices -->
-            <div class="w-full lg:w-3/5">
+            <!-- <div class="w-full lg:w-3/5"> -->
+            <div class="w-full lg:w-1/2">
                <h4 class="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
                   <slot name="icon">
                      <i class="fa-solid fa-info-circle text-blue-500 text-lg sm:text-xl"></i>
@@ -34,8 +35,10 @@
             </div>
 
             <!-- Header right section - 40% on large devices -->
+            <!-- <div v-if="$slots['header-right']"
+               class="w-full lg:w-2/5 pt-2 sm:pt-0 border-t sm:border-0 border-gray-200 dark:border-gray-700"> -->
             <div v-if="$slots['header-right']"
-               class="w-full lg:w-2/5 pt-2 sm:pt-0 border-t sm:border-0 border-gray-200 dark:border-gray-700">
+               class="w-full lg:w-1/2 pt-2 sm:pt-0 border-t sm:border-0 border-gray-200 dark:border-gray-700">
                <!-- Content right aligned on desktop -->
                <div class="flex flex-wrap items-center gap-2 justify-start lg:justify-end">
                   <slot name="header-right"></slot>
