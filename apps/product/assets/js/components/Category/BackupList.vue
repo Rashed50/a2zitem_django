@@ -272,6 +272,7 @@ const sortDirection = ref('asc');
 
 // Filter configuration
 const showFilter = ref(false);
+const categories = ref([]);
 const filterForm = ref({
    parent: null,
    status: null,
