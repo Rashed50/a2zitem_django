@@ -12,12 +12,14 @@ class CategoryFilterService:
     def __init__(
         self,
         search     = None,
+        is_active  = None,
         parent_id  = None,
         start_date = None,
         end_date   = None,
         ordering   = None,
     ):
         self.search     = search
+        self.is_active  = is_active
         self.parent_id  = parent_id
         self.start_date = start_date
         self.end_date   = end_date
@@ -33,6 +35,12 @@ class CategoryFilterService:
             )
 
         ##* 🔎 Filter
+        if self.is_active is not None:
+            is_active = self.is_active
+            if isinstance(is_active, str):
+                is_active = is_active.lower() == "true"
+            queryset = queryset.filter(is_active=is_active)
+            
         if self.parent_id is not None:
             if self.parent_id == "null":
                 queryset = queryset.filter(parent__isnull=True)

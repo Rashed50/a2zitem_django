@@ -75,6 +75,7 @@ class CategoryListCreateAPIView(generics.ListCreateAPIView):
         
         filter_service = filters.CategoryFilterService(
             search     = self.request.GET.get("search"),
+            is_active  = self.request.GET.get("is_active"),
             parent_id  = self.request.GET.get("parent_id"),
             start_date = self.request.GET.get("start_date"),
             end_date   = self.request.GET.get("end_date"),

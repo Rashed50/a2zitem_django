@@ -47,8 +47,8 @@ class CategoryListPageView(LoginRequiredMixin, generic.TemplateView):
                 for choice in category_choices
             ]
         status_data = [
-            {'value': True, 'label': 'Active'},
-            {'value': False, 'label': 'Inactive'},
+            {'value': 1, 'label': 'Active'},
+            {'value': 2, 'label': 'Inactive'},
         ]
         context['category_json'] = mark_safe(json.dumps(category_data, ensure_ascii=False))
         context['status_json'] = mark_safe(json.dumps(status_data, ensure_ascii=False))

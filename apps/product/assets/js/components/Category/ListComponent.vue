@@ -238,7 +238,7 @@ const props = defineProps({
       default: () => [],
    },
    statusChoices: {
-      type: Boolean,
+      type: Array,
       required: true,
       default: () => [],
    }
@@ -274,10 +274,13 @@ const sortDirection = ref('asc');
 const showFilter = ref(false);
 const categories = ref([]);
 const filterForm = ref({
-   name: '',
-   is_active: '',
-   parent: '',
+   parent: null,
+   status: null,
 });
+const statusMap = {
+   1: true,
+   2: false
+};
 
 const testOptions = ref([]);
 
@@ -316,13 +319,21 @@ const fetchData = async () => {
       const params = {
          page: currentPage.value,
          page_size: entriesPerPage.value,
+
+         //!✅ Search Query
          ...(searchQuery.value && { search: searchQuery.value }),
+
+         //!✅ Sort Configuration
          ...(sortColumn.value && {
             ordering:
                sortDirection.value === 'desc'
                   ? `-${sortColumn.value}`
                   : sortColumn.value,
          }),
+
+         //!✅ Filter Configuration
+         ...(filterForm.value.parent && { parent_id: filterForm.value.parent }),
+         ...(filterForm.value.status && { is_active: statusMap[filterForm.value.status] })
       };
 
       // ✅ Relative URL with axios
@@ -410,13 +421,13 @@ const executeBulkAction = () => {
 
 // Apply filters ----------------------------------------------------
 const exportData = () => {
-   console.log('Exporting data...');
+   // console.log('Exporting data...');
+   toast.info('Exporting data...');
 }
 
 const applyFilters = () => {
-   // currentPage.value = 1;
-   // fetchData(); 
-   console.log('Applying filters...');
+   currentPage.value = 1;
+   fetchData();
 };
 
 // Reset filters
@@ -425,8 +436,8 @@ const resetFilters = () => {
       parent: null,
       status: null
    };
-   // currentPage.value = 1;
-   // fetchData();
+   currentPage.value = 1;
+   fetchData();
 };
 
 // Utility functions ================================================================
