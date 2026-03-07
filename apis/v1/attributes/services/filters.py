@@ -5,8 +5,171 @@ from apis.utils.time import StartDate, EndDate
 
 ##? Models Import 
 from apps.product.models.category import Category
+from apps.product.models.brand import Brand
+from apps.product.models.color import Color
+from apps.product.models.size import Size
+from apps.product.models.unit import UnitOfMeasure
 
 
+
+class BrandFilterService:
+    def __init__(
+        self,
+        search      = None,
+        is_active   = None,
+        start_date  = None,
+        end_date    = None,
+        ordering    = None,
+    ):
+        self.search      = search
+        self.is_active   = is_active
+        self.start_date  = start_date
+        self.end_date    = end_date
+        self.ordering    = ordering
+        
+    def apply_filters(self, queryset):
+        ##* 🔍 Search filter 
+        if self.search:
+            queryset = queryset.filter(
+                Q(name__icontains=self.search) 
+                | Q(slug__icontains=self.search)
+                | Q(id__exact=self.search)
+            )
+        ##* 🔎 Filter
+        if self.is_active is not None:
+            is_active = self.is_active
+            if isinstance(is_active, str):
+                is_active = is_active.lower() == "true"
+            queryset = queryset.filter(is_active=is_active)
+        if self.start_date:
+            queryset = queryset.filter(created_at__gte=StartDate(self.start_date))
+        if self.end_date:
+            queryset = queryset.filter(created_at__lte=EndDate(self.end_date))
+            
+        ##* ↕ Ordering
+        if self.ordering:
+            queryset = queryset.order_by(self.ordering)
+        return queryset
+
+
+class ColorFilterService:
+    def __init__(
+        self,
+        search      = None,
+        is_active   = None,
+        start_date  = None,
+        end_date    = None,
+        ordering    = None,
+    ):
+        self.search      = search
+        self.is_active   = is_active
+        self.start_date  = start_date
+        self.end_date    = end_date
+        self.ordering    = ordering
+        
+    def apply_filters(self, queryset):
+        ##* 🔍 Search filter 
+        if self.search:
+            queryset = queryset.filter(
+                Q(name__icontains=self.search) 
+                | Q(id__exact=self.search)
+            )
+        ##* 🔎 Filter
+        if self.is_active is not None:
+            is_active = self.is_active
+            if isinstance(is_active, str):
+                is_active = is_active.lower() == "true"
+            queryset = queryset.filter(is_active=is_active)
+        if self.start_date:
+            queryset = queryset.filter(created_at__gte=StartDate(self.start_date))
+        if self.end_date:
+            queryset = queryset.filter(created_at__lte=EndDate(self.end_date))
+            
+        ##* ↕ Ordering
+        if self.ordering:
+            queryset = queryset.order_by(self.ordering)
+        return queryset
+
+
+class SizeFilterService:
+    def __init__(
+        self,
+        search      = None,
+        is_active   = None,
+        start_date  = None,
+        end_date    = None,
+        ordering    = None,
+    ):
+        self.search      = search
+        self.is_active   = is_active
+        self.start_date  = start_date
+        self.end_date    = end_date
+        self.ordering    = ordering
+    
+    def apply_filters(self, queryset):
+    ##* 🔍 Search filter 
+        if self.search:
+            queryset = queryset.filter(
+                Q(name__icontains=self.search) 
+                | Q(id__exact=self.search)
+            )
+        ##* 🔎 Filter
+        if self.is_active is not None:
+            is_active = self.is_active
+            if isinstance(is_active, str):
+                is_active = is_active.lower() == "true"
+            queryset = queryset.filter(is_active=is_active)
+        if self.start_date:
+            queryset = queryset.filter(created_at__gte=StartDate(self.start_date))
+        if self.end_date:
+            queryset = queryset.filter(created_at__lte=EndDate(self.end_date))
+            
+        ##* ↕ Ordering
+        if self.ordering:
+            queryset = queryset.order_by(self.ordering)
+        return queryset
+        
+
+class UnitOfMeasureFilterService:
+    def __init__(
+        self,
+        search      = None,
+        is_active   = None,
+        start_date  = None,
+        end_date    = None,
+        ordering    = None,
+    ):
+        self.search      = search
+        self.is_active   = is_active
+        self.start_date  = start_date
+        self.end_date    = end_date
+        self.ordering    = ordering
+        
+    def apply_filters(self, queryset):
+        ##* 🔍 Search filter 
+        if self.search:
+            queryset = queryset.filter(
+                Q(name__icontains=self.search) 
+                | Q(symbol__icontains=self.search)
+                | Q(id__exact=self.search)
+            )
+        ##* 🔎 Filter
+        if self.is_active is not None:
+            is_active = self.is_active
+            if isinstance(is_active, str):
+                is_active = is_active.lower() == "true"
+            queryset = queryset.filter(is_active=is_active)
+        if self.start_date:
+            queryset = queryset.filter(created_at__gte=StartDate(self.start_date))
+        if self.end_date:
+            queryset = queryset.filter(created_at__lte=EndDate(self.end_date))
+            
+        ##* ↕ Ordering
+        if self.ordering:
+            queryset = queryset.order_by(self.ordering)
+        return queryset
+        
+    
 
 class CategoryFilterService:
     def __init__(
@@ -29,10 +192,6 @@ class CategoryFilterService:
 
     def apply_filters(self, queryset):
         
-        print('=================')
-        print(self.category_id)
-        print('=================')
-
         ##* 🔍 Search filter 
         if self.search:
             queryset = queryset.filter(
@@ -80,21 +239,5 @@ class CategoryFilterService:
 
         return queryset
 
-# class YourFilterService: 
-#    def __init__(self, 
-#        supplier_id = None, 
-#        start_date = None, 
-#        end_date = None, 
-#    ): 
-#        self.supplier_id = supplier_id 
-#        self.start_date = start_date 
-#        self.end_date = end_date 
 
-#    def apply_filters(self, queryset): 
-#        if self.supplier_id: 
-#            queryset = queryset.filter(supplier_id=self.supplier_id) 
-#        if self.start_date: 
-#            queryset =  queryset.filter(date__gte=StartDate(self.start_date)) 
-#        if self.end_date: 
-#            queryset =  queryset.filter(date__lte=EndDate(self.end_date)) 
-#        return queryset 
+

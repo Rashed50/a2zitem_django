@@ -4,6 +4,24 @@ const API_URL = `${BASE_API_URL}/product`;
 const PRODUCT_ATTRIBUTE_API_URL = `${BASE_API_URL}/product-attributes`;
 const PAGE_URL = `${BASE_URL}/product`;
 
+//! Product Item URL =====================================
+export const ProductItemApiURL = {
+    List: `${API_URL}/item`,
+    Create: `${API_URL}/item`,
+    Details: `${API_URL}/item`,
+    Update: `${API_URL}/item`,
+    Delete: `${API_URL}/item`,
+}
+export const ProductItemPageURL = {
+    List: `${PAGE_URL}/item`,
+    Create: `${PAGE_URL}/item`,
+    Details: `${PAGE_URL}/item`,
+    Update: `${PAGE_URL}/item`,
+    Delete: `${PAGE_URL}/item`,
+}
+//! ====================================================
+
+
 //! Brand URL =====================================
 export const BrandApiURL = {
     List: `${PRODUCT_ATTRIBUTE_API_URL}/brand`,
@@ -60,3 +78,4 @@ export const CategoryPageURL = {
     Update: `${PAGE_URL}/category/update`,
 }
 //! ====================================================
+

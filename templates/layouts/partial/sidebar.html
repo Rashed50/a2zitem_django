@@ -170,7 +170,7 @@
          </div>
 
          <!-- Category -->
-          <div class="menu-group">
+         <div class="menu-group">
             <button
                class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 transition-colors {% active_menu request 'product:category_list_page,product:category_create_page,product:category_details_page' %}"
                data-menu="category"
@@ -196,31 +196,32 @@
             </div>
          </div>
 
-         <!-- Role/Permission -->
-         <!-- <div class="menu-group">
+         <!-- Product -->
+         <div class="menu-group">
             <button
-               class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 transition-colors {% active_menu request 'roles:roles_list_page,roles:role_create_page,roles:role_details_page,roles:role_update_page,roles:permissions_list_page' %}"
-               data-menu="role_permission" data-open="{% is_menu_open request 'roles:roles_list_page,roles:role_create_page,roles:role_details_page,roles:role_update_page,roles:permissions_list_page' %}">
+               class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 transition-colors {% active_menu request 'product:product_item_list_page,product:product_list_page' %}"
+               data-menu="product"
+               data-open="{% is_menu_open request 'product:product_item_list_page,product:product_list_page' %}">
                <span class="flex items-center gap-2 md:gap-3">
                   <i class="fa-regular fa-folder w-4 md:w-5 text-center"></i>
-                  <span class="sidebar-text text-xs md:text-sm">Role/Permission</span>
+                  <span class="sidebar-text text-xs md:text-sm">Product</span>
                </span>
-               <i id="arrow-role_permission"
+               <i id="arrow-product"
                   class="fas fa-chevron-right text-xs transition-transform duration-200 dark:text-gray-400"></i>
             </button>
-            <div id="submenu-role_permission" class="submenu hidden pl-4 md:pl-5 mt-1 space-y-1">
-               <a href="{% url 'roles:roles_list_page' %}" data-menu="roles:roles_list_page"
-                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'roles:roles_list_page,roles:role_create_page,roles:role_details_page,roles:role_update_page' %}">
+            <div id="submenu-product" class="submenu hidden pl-4 md:pl-5 mt-1 space-y-1">
+               <a href="{% url 'product:product_item_list_page' %}" data-menu="product_item_list_page"
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'product:product_item_list_page' %}">
                   <i class="fa-regular fa-file w-4 text-center"></i>
-                  <span class="sidebar-text">Roles</span>
+                  <span class="sidebar-text">Item</span>
                </a>
-               <a href="{% url 'roles:permissions_list_page' %}" data-menu="company_list_page"
-                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'roles:permissions_list_page' %}">
+               <a href="{% url 'product:product_list_page' %}" data-menu="product_list_page"
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'product:product_list_page' %}">
                   <i class="fa-regular fa-file w-4 text-center"></i>
-                  <span class="sidebar-text">Permissions</span>
+                  <span class="sidebar-text">Product</span>
                </a>
             </div>
-         </div> -->
+         </div>
       </nav>
    </div>
 

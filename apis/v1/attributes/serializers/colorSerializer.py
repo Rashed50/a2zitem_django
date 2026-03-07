@@ -18,6 +18,9 @@ from apis.v1.common.user.serializers import UserMiniListSerializer
 
 
 
+
+
+
 ##TODO:- Serializers Initialization
 class ColorSerializer(serializers.ModelSerializer):
     created_by = UserMiniListSerializer(read_only=True)
@@ -36,3 +39,7 @@ class ColorSerializer(serializers.ModelSerializer):
         }
 
 
+class MiniColorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model  = Color
+        fields = ['id', 'name']
