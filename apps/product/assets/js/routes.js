@@ -46,6 +46,7 @@ export const UnitApiURL = {
 
 //! Category URL =====================================
 export const CategoryApiURL = {
+    MiniList : `${PRODUCT_ATTRIBUTE_API_URL}/category/mini-list/`,
     List: `${PRODUCT_ATTRIBUTE_API_URL}/category`,
     Create: `${PRODUCT_ATTRIBUTE_API_URL}/category`,
     Details: `${PRODUCT_ATTRIBUTE_API_URL}/category`,

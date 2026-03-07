@@ -35,10 +35,44 @@ from apps.product.models.category import Category
 
 ##? Serializer Import 
 from apis.v1.attributes.serializers.categorySerializer import (
+        MiniCategorySerializer,
         CategoryTreeSerializer,
-        CategoryDetailsTreeSerializer
+        CategoryDetailsTreeSerializer,
     )
 
+
+"""
+##TODO:- Mini Category Serializer
+"""
+class MiniCategoryListAPIView(generics.ListCreateAPIView): 
+    authentication_classes = [JWTAuthentication] 
+    permission_classes     = [permissions.IsAuthenticated]
+    serializer_class       = MiniCategorySerializer
+    
+    def get_queryset(self):
+        queryset = Category.objects.all().select_related('parent')
+        filter_service = filters.CategoryFilterService(
+            search      = self.request.GET.get("search"),
+            is_active   = self.request.GET.get("is_active"),
+            parent_id   = self.request.GET.get("parent_id"),
+            category_id = self.request.GET.get("category_id"),
+            start_date  = self.request.GET.get("start_date"),
+            end_date    = self.request.GET.get("end_date"),
+            ordering    = self.request.GET.get("ordering"),
+        )
+        queryset = filter_service.apply_filters(queryset)
+        return queryset
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        response_data = get_paginated_response(
+            queryset   = queryset,
+            request    = request,
+            pagination = 0,
+            serializer_class = self.get_serializer
+        )
+        return response_list(response_data, item_name="Category")
+        
 
 
 """
@@ -67,19 +101,14 @@ class CategoryListCreateAPIView(generics.ListCreateAPIView):
     # ##? Queryset
     def get_queryset(self):
         queryset = Category.objects.all().select_related('parent')
-        
-        # ##? Search
-        # search   = self.request.query_params.get("search")
-        # if search:
-        #     queryset = queryset.filter(Q(name__icontains=search))
-        
         filter_service = filters.CategoryFilterService(
-            search     = self.request.GET.get("search"),
-            is_active  = self.request.GET.get("is_active"),
-            parent_id  = self.request.GET.get("parent_id"),
-            start_date = self.request.GET.get("start_date"),
-            end_date   = self.request.GET.get("end_date"),
-            ordering   = self.request.GET.get("ordering"),
+            search      = self.request.GET.get("search"),
+            is_active   = self.request.GET.get("is_active"),
+            parent_id   = self.request.GET.get("parent_id"),
+            category_id = self.request.GET.get("category_id"),
+            start_date  = self.request.GET.get("start_date"),
+            end_date    = self.request.GET.get("end_date"),
+            ordering    = self.request.GET.get("ordering"),
         )
         queryset = filter_service.apply_filters(queryset)
         return queryset

@@ -9,7 +9,11 @@ from apis.v1.attributes.views.brandApiView import BrandListCreateAPIView, BrandR
 from apis.v1.attributes.views.colorApiView import ColorListCreateAPIView, ColorRetrieveUpdateDestroyAPIView
 from apis.v1.attributes.views.sizeApiView import SizeListCreateAPIView, SizeRetrieveUpdateDestroyAPIView
 from apis.v1.attributes.views.unitApiView import UnitOfMeasureListCreateAPIView, UnitOfMeasureRetrieveUpdateDestroyAPIView
-from apis.v1.attributes.views.categoryApiView import CategoryListCreateAPIView, CategoryRetrieveUpdateDestroyAPIView
+from apis.v1.attributes.views.categoryApiView import (
+    CategoryListCreateAPIView, 
+    CategoryRetrieveUpdateDestroyAPIView,  
+    MiniCategoryListAPIView,
+)
 
 urlpatterns = [ 
     path( 
@@ -45,6 +49,7 @@ urlpatterns = [
         include([ 
             path('', CategoryListCreateAPIView.as_view()),  
             path('<int:pk>/', CategoryRetrieveUpdateDestroyAPIView.as_view()), 
+            path('mini-list/', MiniCategoryListAPIView.as_view()),
         ]) 
     ),
 ] 

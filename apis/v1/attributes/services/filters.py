@@ -11,21 +11,27 @@ from apps.product.models.category import Category
 class CategoryFilterService:
     def __init__(
         self,
-        search     = None,
-        is_active  = None,
-        parent_id  = None,
-        start_date = None,
-        end_date   = None,
-        ordering   = None,
+        search      = None,
+        is_active   = None,
+        parent_id   = None,
+        category_id = None,
+        start_date  = None,
+        end_date    = None,
+        ordering    = None,
     ):
-        self.search     = search
-        self.is_active  = is_active
-        self.parent_id  = parent_id
-        self.start_date = start_date
-        self.end_date   = end_date
-        self.ordering   = ordering
+        self.search      = search
+        self.is_active   = is_active
+        self.parent_id   = parent_id
+        self.category_id = category_id
+        self.start_date  = start_date
+        self.end_date    = end_date
+        self.ordering    = ordering
 
     def apply_filters(self, queryset):
+        
+        print('=================')
+        print(self.category_id)
+        print('=================')
 
         ##* 🔍 Search filter 
         if self.search:
@@ -46,6 +52,17 @@ class CategoryFilterService:
                 queryset = queryset.filter(parent__isnull=True)
             else:
                 queryset = queryset.filter(parent_id=self.parent_id)
+        
+        if self.category_id:
+            # category = Category.objects.get(id=self.category_id)
+            # queryset = queryset.filter(tree_id=category.tree_id, lft__gte=category.lft, rght__lte=category.rght)
+            print('=================')
+            print(self.category_id)
+            print('=================')
+            if self.parent_id == "null":
+                queryset = queryset.filter(parent__isnull=True)
+            else:
+                queryset = queryset.filter(parent_id=self.category_id)
 
         if self.start_date:
             queryset = queryset.filter(

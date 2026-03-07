@@ -183,7 +183,7 @@ const variantClasses = computed(() => {
       danger:
          'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500 border border-red-600',
       warning:
-         'bg-yellow-500 hover:bg-yellow-600 text-white focus:ring-yellow-500 border border-yellow-500',
+         'bg-yellow-500 hover:bg-yellow-600 dark:bg-yellow-600 text-white focus:ring-yellow-500 border border-yellow-500',
       info: 'bg-cyan-500 hover:bg-cyan-600 text-white focus:ring-cyan-500 border border-cyan-500',
       light: 'bg-gray-100 hover:bg-gray-200 text-gray-800 focus:ring-gray-300 border border-gray-200',
       dark: 'bg-gray-800 hover:bg-gray-900 text-white focus:ring-gray-700 border border-gray-800',
@@ -193,7 +193,7 @@ const variantClasses = computed(() => {
       'outline-primary':
          'bg-transparent hover:bg-blue-600 text-blue-600 hover:text-white border border-blue-600 focus:ring-blue-500',
       'outline-secondary':
-         'bg-transparent hover:bg-gray-600 text-gray-600 hover:text-white border border-gray-600 focus:ring-gray-500',
+         'bg-transparent hover:bg-gray-600 text-gray-100 hover:text-white border border-gray-600 focus:ring-gray-500',
       'outline-success':
          'bg-transparent hover:bg-green-600 text-green-600 hover:text-white border border-green-600 focus:ring-green-500',
       'outline-danger':
