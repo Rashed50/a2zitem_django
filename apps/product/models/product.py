@@ -20,7 +20,7 @@ class Product(TimestampedModel):
     name  = models.CharField(max_length=255, unique=True, db_index=True, verbose_name=_("Item Name"))
     title = models.CharField(max_length=255, db_index=True, verbose_name=_("Title"))
     
-    Category = models.ForeignKey(
+    category = models.ForeignKey(
             Category, 
             on_delete = models.SET_NULL, 
             null      = True, 
