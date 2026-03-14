@@ -8,8 +8,9 @@ import CategoryListComponent from "./components/category/ListComponent.vue";
 import CategoryCreateComponent from "./components/category/CreateComponent.vue";
 import CategoryDetailsComponent from "./components/category/DetailsComponent.vue";
 
-//! Product Item Components
-import ProductItemListComponent from "./components/item/ListComponent.vue";
+//! Product Components
+import ProductListComponent from "./components/product/ListComponent.vue";
+import ProductCreateComponent from "./components/product/CreateComponent.vue";
 
 export {
     BrandListComponent,
@@ -20,5 +21,6 @@ export {
     CategoryCreateComponent,
     CategoryDetailsComponent,
     //? Product Item Components
-    ProductItemListComponent,
+    ProductListComponent,
+    ProductCreateComponent,
 }

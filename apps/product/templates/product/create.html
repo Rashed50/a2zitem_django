@@ -4,6 +4,7 @@
 
 {% block styles %}{% endblock styles %}
 
+
 {% block content %}
 <!-- Page Header -->
 <div class="border-b border-gray-200 dark:border-gray-700 pb-2 mb-2 flex flex-col gap-1">
@@ -15,11 +16,26 @@
             </a>
         </li>
         <li><i class="fa-solid fa-angle-right text-gray-400"></i></li>
-        <li class="text-blue-600 font-semibold">Item</li>
+        <li class="flex items-center">
+            <a href="#" class="hover:text-blue-600 flex items-center gap-1">
+                Product
+            </a>
+        </li>
+        <li><i class="fa-solid fa-angle-right text-gray-400"></i></li>
+        <li class="text-blue-600 font-semibold">Create</li>
     </ul>
 </div>
 
-<product-item-list-component></product-item-list-component>
+{{ page_data|json_script:"page-data" }}
+
+<script>
+window.__PAGE__ = JSON.parse(
+    document.getElementById("page-data").textContent
+)
+</script>
+
+<product-create-component></product-create-component>
 {% endblock content %}
+
 
 {% block js %}{% endblock js %}
