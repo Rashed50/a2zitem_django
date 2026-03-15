@@ -1,13 +1,4 @@
 def get_field_error_messages(field_name, field_type='default'):
-    """
-    Generate consistent error messages for all serializer field types
-    Args:
-        field_name (str): Human-readable field name (e.g., "Supplier", "Air way bill")
-        field_type (str): Type of serializer field (e.g., "CharField", "PrimaryKeyRelated", "EmailField")
-    Returns:
-        dict: Complete error messages dictionary for the field
-    """
-    
     # Common base messages for all field types
     base_messages = {
         'required' : f'{field_name} is required.',
@@ -84,30 +75,3 @@ def get_field_error_messages(field_name, field_type='default'):
     return {**base_messages, **type_specific.get(field_type, {})}
 
 
-
-
-"""#! Example: Uses of this, 
-from .utils.error_utils import get_field_error_messages
-
-# প্রাইমারি কী সম্পর্কিত ফিল্ড
-supplier_id = serializers.PrimaryKeyRelatedField(
-    queryset=Supplier.objects.all(),
-    error_messages=get_field_error_messages('Supplier', 'PrimaryKeyRelated')
-)
-
-# চার ফিল্ড
-awb_number = serializers.CharField(
-    max_length=100,
-    error_messages=get_field_error_messages('Air way bill', 'CharField')
-)
-
-# ইমেইল ফিল্ড
-email = serializers.EmailField(
-    error_messages=get_field_error_messages('Email', 'EmailField')
-)
-
-# তারিখ ফিল্ড
-delivery_date = serializers.DateField(
-    error_messages=get_field_error_messages('Delivery date', 'DateField')
-)
-"""
