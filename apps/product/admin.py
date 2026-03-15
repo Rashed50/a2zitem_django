@@ -35,7 +35,7 @@ class ProductVariantInline(admin.TabularInline):
     readonly_fields     = ['sku']  
     autocomplete_fields = ['color', 'size', 'unit']  
 
-    classes = ['collapse']  
+    # classes = ['collapse']  
     
     def get_readonly_fields(self, request, obj=None):
         if obj: 

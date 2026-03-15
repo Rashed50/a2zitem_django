@@ -11,6 +11,7 @@ import CategoryDetailsComponent from "./components/category/DetailsComponent.vue
 //! Product Components
 import ProductListComponent from "./components/product/ListComponent.vue";
 import ProductCreateComponent from "./components/product/CreateComponent.vue";
+import ProductDetailsComponent from "./components/product/DetailsComponent.vue";
 
 export {
     BrandListComponent,
@@ -23,4 +24,5 @@ export {
     //? Product Item Components
     ProductListComponent,
     ProductCreateComponent,
+    ProductDetailsComponent,
 }

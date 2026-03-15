@@ -60,28 +60,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     
     ##? Queryset
     def get_queryset(self):
-        queryset = queries.ProductQueryService()
-        queryset = queryset.filter(is_deleted=False)
-        filter_service = filters.ProductFilterService(
-            search      = self.request.GET.get("search"),
-            is_active   = self.request.GET.get("is_active"),
-            start_date  = self.request.GET.get("start_date"),
-            end_date    = self.request.GET.get("end_date"),
-            ordering    = self.request.GET.get("ordering"),
-            
-            ##? Brand filters
-            brand_id    = self.request.GET.get("brand_id"),
-            brand_slug  = self.request.GET.get("brand"),
-            brand_ids   = self.request.GET.get("brand_ids"),
-            brand_slugs = self.request.GET.get("brands"),
-            
-            ##? Category filters
-            category_id    = self.request.GET.get("category_id"),
-            category_slug  = self.request.GET.get("category"),
-            category_ids   = self.request.GET.get("category_ids"),
-            category_slugs = self.request.GET.get("categories"),
-        )
-        queryset = filter_service.apply_filters(queryset)
+        queryset = Product.objects.filter(is_deleted=False)
         return queryset
     
     ##! Create
@@ -131,8 +110,7 @@ class ProductRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
     
     ##? Queryset
     def get_queryset(self):
-        queryset = queries.ProductQueryService()
-        queryset = queryset.filter(is_deleted=False)
+        queryset = Product.objects.filter(is_deleted=False)
         return queryset
     
     ##! Retrieve

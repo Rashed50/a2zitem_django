@@ -18,7 +18,7 @@ class Product(TimestampedModel):
     slug  = models.SlugField(max_length=255, unique=True, db_index=True, blank=True, verbose_name=_("Slug"))
     code  = models.CharField(max_length=20, unique=True, db_index=True, blank=True, verbose_name=_("Product Code"))
     name  = models.CharField(max_length=255, unique=True, db_index=True, verbose_name=_("Item Name"))
-    title = models.CharField(max_length=255, db_index=True, verbose_name=_("Title"))
+    title = models.CharField(max_length=255, db_index=True, null=True, blank=True, verbose_name=_("Title"))
     
     category = models.ForeignKey(
             Category, 

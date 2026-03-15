@@ -22,11 +22,12 @@ from apis.v1.attributes.serializers.sizeSerializer import MiniSizeSerializer
 from apis.v1.attributes.serializers.unitSerializer import MiniUnitOfMeasureSerializer
 
 class ProductVariantSerializer(serializers.ModelSerializer):
+    id    = serializers.IntegerField(required=False)
     color = MiniColorSerializer(read_only=True)
     size  = MiniSizeSerializer(read_only=True)
     unit  = MiniUnitOfMeasureSerializer(read_only=True)
     
-    colour_id = serializers.PrimaryKeyRelatedField(
+    color_id = serializers.PrimaryKeyRelatedField(
         queryset   = Color.objects.all(),
         source     = 'color',
         write_only = True,
@@ -55,13 +56,13 @@ class ProductVariantSerializer(serializers.ModelSerializer):
         model  = ProductVariant
         fields = [
             'id', 'sku', 'stock', 'min_stock',
-            'color', 'colour_id',
+            'color', 'color_id',
             'size', 'size_id',
             'unit', 'unit_id',
             'purchase_price', 'selling_price',
             'is_default',
         ]
-        read_only_fields = ['id', 'sku']
+        read_only_fields = ['sku']
         extra_kwargs = {
             'stock': {
                 'required': True,
