@@ -127,6 +127,17 @@ app.component("product-create-component", ProductCreateComponent);
 app.component("product-details-component", ProductDetailsComponent);
 
 
+//! Sales Component
+import { 
+    SaleListComponent,
+    SaleCreateComponent,
+    SaleDetailsComponent,
+} from '../../apps/sales/assets/js/app';
+app.component("sale-list-component", SaleListComponent);
+app.component("sale-create-component", SaleCreateComponent);
+app.component("sale-details-component", SaleDetailsComponent);
+
+
 //! Client Pages =========================================
 import {
     HomePageComponent
