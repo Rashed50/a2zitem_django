@@ -39,6 +39,16 @@ class SaleItem(TimestampedModel2):
         verbose_name = _("Sale Item")
         verbose_name_plural = _("Sale Items")
         unique_together = ['sale', 'variant']
+        
+    def save(self, *args, **kwargs):
+        self.subtotal = self.quantity * self.price
+        super().save(*args, **kwargs)
+        
+        # reduce stock
+        self.variant.stock -= self.quantity
+        self.variant.save(update_fields=["stock"])
+
+        self.sale.update_grand_total()
 
 
         

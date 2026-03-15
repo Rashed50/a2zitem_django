@@ -6,4 +6,5 @@ urlpatterns = [
     path('components/', include('apps.components.urls',  namespace='components')),
     path('roles/', include('apps.roles.urls',  namespace='roles')),
     path('product/', include('apps.product.urls',  namespace='product')),
+    path('sales/', include('apps.sales.urls',  namespace='sales')),
 ]

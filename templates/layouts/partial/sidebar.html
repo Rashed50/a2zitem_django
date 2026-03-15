@@ -116,9 +116,9 @@
          <!-- Product -->
          <div class="menu-group">
             <button
-               class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 transition-colors {% active_menu request 'product:product_create_page,product:product_list_page' %}"
+               class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 transition-colors {% active_menu request 'product:product_create_page,product:product_list_page,product:product_details_page,product:product_update_page' %}"
                data-menu="product"
-               data-open="{% is_menu_open request 'product:product_create_page,product:product_list_page' %}">
+               data-open="{% is_menu_open request 'product:product_create_page,product:product_list_page,product:product_details_page,product:product_update_page' %}">
                <span class="flex items-center gap-2 md:gap-3">
                   <i class="fa-regular fa-folder w-4 md:w-5 text-center"></i>
                   <span class="sidebar-text text-xs md:text-sm">Product</span>
@@ -133,7 +133,34 @@
                   <span class="sidebar-text">Create</span>
                </a>
                <a href="{% url 'product:product_list_page' %}" data-menu="product_list_page"
-                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'product:product_list_page' %}">
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'product:product_list_page,product:product_details_page,product:product_update_page' %}">
+                  <i class="fa-regular fa-file w-4 text-center"></i>
+                  <span class="sidebar-text">List</span>
+               </a>
+            </div>
+         </div>
+
+         <!-- Sales -->
+         <div class="menu-group">
+            <button
+               class="sidebar-link w-full flex items-center justify-between p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 transition-colors {% active_menu request 'sales:sale_create_page,sales:sale_list_page,sales:sale_details_page,sales:sale_update_page' %}"
+               data-menu="sales"
+               data-open="{% is_menu_open request 'sales:sale_create_page,sales:sale_list_page,sales:sale_details_page,sales:sale_update_page' %}">
+               <span class="flex items-center gap-2 md:gap-3">
+                  <i class="fa-regular fa-folder w-4 md:w-5 text-center"></i>
+                  <span class="sidebar-text text-xs md:text-sm">Sales</span>
+               </span>
+               <i id="arrow-sales"
+                  class="fas fa-chevron-right text-xs transition-transform duration-200 dark:text-gray-400"></i>
+            </button>
+            <div id="submenu-sales" class="submenu hidden pl-4 md:pl-5 mt-1 space-y-1">
+               <a href="{% url 'sales:sale_create_page' %}" data-menu="sale_create_page"
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'sales:sale_create_page' %}">
+                  <i class="fa-regular fa-file w-4 text-center"></i>
+                  <span class="sidebar-text">Create</span>
+               </a>
+               <a href="{% url 'sales:sale_list_page' %}" data-menu="sale_list_page"
+                  class="sidebar-link flex items-center gap-2 p-2 rounded-[4px] {{ sidebar_colors.menu_text }} {{ sidebar_colors.menu_hover_bg }} dark:text-gray-100 dark:hover:bg-gray-700 text-xs md:text-sm {% active_menu request 'sales:sale_list_page,sales:sale_details_page,sales:sale_update_page' %}">
                   <i class="fa-regular fa-file w-4 text-center"></i>
                   <span class="sidebar-text">List</span>
                </a>

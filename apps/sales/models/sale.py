@@ -14,10 +14,23 @@ from core.utils.generator import generate_unique_slug, generate_unique_code
 User = get_user_model() 
 from core.models.time_stamped import TimestampedModel, TimestampedModel2
 
+
+class Customer(TimestampedModel2):
+    name = models.CharField(
+            max_length   = 100, 
+            db_index     = True, 
+            null         = True, 
+            blank        = True, 
+            verbose_name = _("Name")
+        )
+    email   = models.EmailField(unique=True, null=True, blank=True, db_index=True, verbose_name=_("Email"))
+    phone   = models.CharField(max_length=15, unique=True, verbose_name=_("Phone"))
+    address = models.TextField(null=True, blank=True,verbose_name=_("Address"))
+
 class Sale(TimestampedModel2):
-    invoice_no = models.CharField(max_length=50, unique=True, verbose_name=_("Invoice Number"))
+    invoice_no = models.CharField(max_length=50, unique=True, db_index=True, verbose_name=_("Invoice Number"))
     customer   = models.ForeignKey(
-        User,
+        Customer,
         on_delete    = models.SET_NULL,
         null         = True,
         blank        = True,
