@@ -130,32 +130,27 @@ yarn dev
 ```
 
 # ======= Bulk Import =======
-## 1. Supplier Bulk Import
-```bash
-python manage.py BulkSupplier
-```
-
-## 2. Brand Bulk Import
+## Brand Bulk Import
 ```bash
 python manage.py BulkBrand
 ```
 
-## 3. Category Bulk Import
+## Category Bulk Import
 ```bash
 python manage.py BulkCategory
 ```
 
-## 4. Color Bulk Import
+## Color Bulk Import
 ```bash
 python manage.py BulkColor
 ```
 
-## 5. Size Bulk Import
+## Size Bulk Import
 ```bash
 python manage.py BulkSize
 ```
 
-## 6. Unit Of Measure Bulk Import
+## Unit Of Measure Bulk Import
 ```bash
 python manage.py BulkUnit
 ```
