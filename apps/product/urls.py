@@ -14,6 +14,10 @@ from apps.product.views.cagegoryView import (
     CategoryDetailsPageView
 )
 
+from apps.product.views.productView import (
+    ProductListPageView,
+    ProductCreatePageView,
+)
 
 urlpatterns = [ 
     path('brand/', BrandListPageView.as_view(), name='brand_list_page'),
@@ -30,16 +34,14 @@ urlpatterns = [
             path('update/<int:pk>/', CategoryUpdatePageView.as_view(), name='category_update_page'),
             path('details/<int:pk>/', CategoryDetailsPageView.as_view(), name='category_details_page'),
         ])
-    )
-    # path(
-    #     'subscription/',
-    #     include(
-    #         [
-    #             path('list/', views.SubscriptionTemplatePage.as_view(), name='subscription_list_page'),
-    #             path('create/', views.SubscriptionCreatePage.as_view(), name='subscription_create_page'),
-    #             path('details/<int:pk>/', views.SubscriptionDetailsPage.as_view(), name='subscription_details_page'),
-    #             path('update/<int:pk>/', views.SubscriptionUpdatePage.as_view(), name='subscription_update_page'),
-    #         ]
-    #     )
-    # )
+    ),
+    
+    ##? Product
+    path(
+        '', 
+        include([
+            path('', ProductListPageView.as_view(), name='product_list_page'),
+            path('create/', ProductCreatePageView.as_view(), name='product_create_page'),
+        ])
+    ),
 ]

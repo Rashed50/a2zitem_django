@@ -20,7 +20,7 @@ class Product(TimestampedModel):
     name  = models.CharField(max_length=255, unique=True, db_index=True, verbose_name=_("Item Name"))
     title = models.CharField(max_length=255, db_index=True, verbose_name=_("Title"))
     
-    Category = models.ForeignKey(
+    category = models.ForeignKey(
             Category, 
             on_delete = models.SET_NULL, 
             null      = True, 
@@ -53,13 +53,13 @@ class Product(TimestampedModel):
         verbose_name_plural = _("Products")
         
     def __str__(self):
-        return self.title
+        return self.name
     
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = generate_unique_slug(Product, self.title)
+            self.slug = generate_unique_slug(self, self.name)
         if not self.code:
-            self.code = generate_unique_code(Product, length=8)
+            self.code = generate_unique_code(self.__class__, prefix="PRD", field_name="code", padding=8)
         super().save(*args, **kwargs)
     
     

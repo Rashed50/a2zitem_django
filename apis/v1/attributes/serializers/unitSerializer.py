@@ -42,3 +42,6 @@ class UnitOfMeasureSerializer(serializers.ModelSerializer):
         }
 
 
+class MiniUnitOfMeasureSerializer(UnitOfMeasureSerializer):
+    class Meta(UnitOfMeasureSerializer.Meta):
+        fields = ['id', 'name', 'symbol']

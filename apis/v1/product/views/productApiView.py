@@ -19,70 +19,30 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework_simplejwt.authentication import JWTAuthentication 
 from django_filters.rest_framework import DjangoFilterBackend 
 
-from mptt.templatetags.mptt_tags import cache_tree_children
-
 ##? Utils Import 
 from apis.utils.apiResponse import * 
 from apis.utils.pagination import CustomPageNumberPagination, get_paginated_response 
 from apis.utils.apiPermission import HasPermission
 
 ##? Service Import 
-from apis.v1.attributes.services import filters
+from apis.v1.product.services import queries, filters
 
 ##? Model Import 
 User = get_user_model() 
-from apps.product.models.category import Category
+from apps.product.models.product import Product
 
 ##? Serializer Import 
-from apis.v1.attributes.serializers.categorySerializer import (
-        MiniCategorySerializer,
-        CategoryTreeSerializer,
-        CategoryDetailsTreeSerializer,
-    )
+from apis.v1.product.serializers.productSerializer import ProductSerializer
 
 
 """
-##TODO:- Mini Category Serializer
-"""
-class MiniCategoryListAPIView(generics.ListCreateAPIView): 
-    authentication_classes = [JWTAuthentication] 
-    permission_classes     = [permissions.IsAuthenticated]
-    serializer_class       = MiniCategorySerializer
-    
-    def get_queryset(self):
-        queryset = Category.objects.all().select_related('parent')
-        filter_service = filters.CategoryFilterService(
-            search      = self.request.GET.get("search"),
-            is_active   = self.request.GET.get("is_active"),
-            parent_id   = self.request.GET.get("parent_id"),
-            category_id = self.request.GET.get("category_id"),
-            start_date  = self.request.GET.get("start_date"),
-            end_date    = self.request.GET.get("end_date"),
-            ordering    = self.request.GET.get("ordering"),
-        )
-        queryset = filter_service.apply_filters(queryset)
-        return queryset
-    
-    def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-        response_data = get_paginated_response(
-            queryset   = queryset,
-            request    = request,
-            pagination = 0,
-            serializer_class = self.get_serializer
-        )
-        return response_list(response_data, item_name="Category")
-        
-
-
-"""
-##TODO:- Category Create & List API Views
+##TODO:- Product Item Create & List API Views
 ##* List/Create API Views (GET,POST)
 """
-class CategoryListCreateAPIView(generics.ListCreateAPIView): 
+class ProductListCreateAPIView(generics.ListCreateAPIView): 
     authentication_classes = [JWTAuthentication] 
     pagination_class       = CustomPageNumberPagination 
-    serializer_class       = CategoryTreeSerializer
+    serializer_class       = ProductSerializer
     
     filter_backends = [OrderingFilter]
     ordering_fields = ['name', 'created_at']
@@ -93,22 +53,33 @@ class CategoryListCreateAPIView(generics.ListCreateAPIView):
     permission_policy  = {"GET":{"admin": True}, "POST":{"admin":True}}
     def get_permissions(self):
         if self.request.method == "POST":
-            self.required_perms = ["product.add_color"]
+            self.required_perms = ["product.add_product"]
         else:
-            self.required_perms = ["product.view_color"]
+            self.required_perms = ["product.view_product"]
         return super().get_permissions() 
     
-    # ##? Queryset
+    ##? Queryset
     def get_queryset(self):
-        queryset = Category.objects.all().select_related('parent')
-        filter_service = filters.CategoryFilterService(
+        queryset = queries.ProductQueryService()
+        queryset = queryset.filter(is_deleted=False)
+        filter_service = filters.ProductFilterService(
             search      = self.request.GET.get("search"),
             is_active   = self.request.GET.get("is_active"),
-            parent_id   = self.request.GET.get("parent_id"),
-            category_id = self.request.GET.get("category_id"),
             start_date  = self.request.GET.get("start_date"),
             end_date    = self.request.GET.get("end_date"),
             ordering    = self.request.GET.get("ordering"),
+            
+            ##? Brand filters
+            brand_id    = self.request.GET.get("brand_id"),
+            brand_slug  = self.request.GET.get("brand"),
+            brand_ids   = self.request.GET.get("brand_ids"),
+            brand_slugs = self.request.GET.get("brands"),
+            
+            ##? Category filters
+            category_id    = self.request.GET.get("category_id"),
+            category_slug  = self.request.GET.get("category"),
+            category_ids   = self.request.GET.get("category_ids"),
+            category_slugs = self.request.GET.get("categories"),
         )
         queryset = filter_service.apply_filters(queryset)
         return queryset
@@ -121,7 +92,7 @@ class CategoryListCreateAPIView(generics.ListCreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        return response_create(serializer.data,item_name="Category") 
+        return response_create(serializer.data,item_name="Item") 
 
     ##! List
     def list(self, request, *args, **kwargs):
@@ -131,46 +102,44 @@ class CategoryListCreateAPIView(generics.ListCreateAPIView):
             request  = request,
             serializer_class = self.get_serializer
         )
-        return response_list(response_data, item_name="Category")
-    
-
+        return response_list(response_data, item_name="Item")
 
 
 
 
 """
-##TODO:- Category Retrieve, Update, Destroy API Views
+##TODO:- Item Retrieve, Update, Destroy API Views
 ##* Details/Update/Delete API Views (GET,PUT,PATCH,DELETE)
 """
-class CategoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView): 
-    queryset = Category.objects.all().order_by('name') 
+class ProductRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView): 
     authentication_classes = [JWTAuthentication] 
-    # serializer_class       = CategoryTreeSerializer
+    serializer_class       = ProductSerializer
     
     ##? Permission 
     permission_classes = [HasPermission] 
     permission_policy  = {"GET":{"admin": True}, "PUT":{"admin":True}, "PATCH":{"admin":True}, "DELETE":{"admin":True}}
     def get_permissions(self):
         if self.request.method == "PUT":
-            self.required_perms = ["product.change_color"]
+            self.required_perms = ["product.change_Item"]
         elif self.request.method == "PATCH":
-            self.required_perms = ["product.change_color"]
+            self.required_perms = ["product.change_Item"]
         elif self.request.method == "DELETE":
-            self.required_perms = ["product.delete_color"]
+            self.required_perms = ["product.delete_Item"]
         else:
-            self.required_perms = ["product.view_color"]
+            self.required_perms = ["product.view_Item"]
         return super().get_permissions()
     
-    def get_serializer_class(self): 
-        if self.request.method == 'GET':
-            return CategoryDetailsTreeSerializer
-        return CategoryTreeSerializer
+    ##? Queryset
+    def get_queryset(self):
+        queryset = queries.ProductQueryService()
+        queryset = queryset.filter(is_deleted=False)
+        return queryset
     
     ##! Retrieve
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-        return response_details(serializer.data, item_name="Category")
+        return response_details(serializer.data, item_name="Item")
     
     ##! Update
     def perform_update(self, serializer):
@@ -184,7 +153,7 @@ class CategoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
         serializer = self.get_serializer(instance, data=request.data, partial=partial) 
         serializer.is_valid(raise_exception=True) 
         self.perform_update(serializer) 
-        return response_update(serializer.data, serializer=serializer, item_name='Category')
+        return response_update(serializer.data, serializer=serializer, item_name='Item')
     
     ##! Destroy
     # def perform_destroy(self, instance):
@@ -193,5 +162,5 @@ class CategoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
     def destroy(self, request, *args, **kwargs): 
         instance = self.get_object() 
         self.perform_destroy(instance) 
-        return response_delete(item=instance, item_name='Category', request=request)
+        return response_delete(item=instance, item_name='Item', request=request)
 

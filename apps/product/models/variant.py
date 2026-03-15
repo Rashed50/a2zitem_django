@@ -1,4 +1,4 @@
-import uuid, json, random, datetime
+import re
 from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
@@ -27,7 +27,7 @@ class ProductVariant(TimestampedModel2):
         related_name = "variants"
     )
 
-    sku = models.CharField(max_length=50, unique=True, db_index=True, verbose_name=_("Stock Keeping Unit (SKU)"))
+    sku = models.CharField(max_length=50, unique=True, blank=True, db_index=True, verbose_name=_("Stock Keeping Unit (SKU)"))
     
     stock     = models.PositiveIntegerField(default=0, verbose_name=_("Stock Quantity"))
     min_stock = models.PositiveIntegerField(default=0, verbose_name=_("Minimum Stock"))
@@ -56,7 +56,56 @@ class ProductVariant(TimestampedModel2):
         ]
 
     def __str__(self):
-        return f"{self.product.title} - {self.sku}"
+        return f"{self.product.name} - {self.sku}"
+    
+    def generate_sku(self):
+        """
+        Generate SKU based on product code, color and size
+        Format: {PRODUCT_CODE}-{COLOR_CODE}-{SIZE_CODE}
+        Example: PRD001-RED-XL
+        """
+        product_code = self.product.code if self.product and self.product.code else f"PRD{self.product.id}"
+        if self.color and self.color.name:
+            color_name = re.sub(r'[^a-zA-Z0-9]', '', self.color.name)
+            color_code = color_name[:3].upper()
+        else:
+            color_code = "CLR"
+        
+        if self.size and self.size.name:
+            size_name = self.size.name.upper().strip()
+            size_code = re.sub(r'[^a-zA-Z0-9]', '', size_name)
+            if len(size_code) > 5: 
+                size_code = size_code[:5]
+        else:
+            size_code = "SZE"
+        
+        unit_code = ""
+        if self.unit and self.unit.name:
+            unit_code = f"-{self.unit.name[:3].upper()}"
+        elif self.unit and self.unit.name:
+            unit_name = self.unit.name[:3].upper()
+            unit_code = f"-{unit_name}"
+        
+        base_sku = f"{product_code}-{color_code}-{size_code}{unit_code}"
+        
+        return base_sku.upper()
+    
+    def ensure_unique_sku(self, base_sku):
+        sku = base_sku
+        counter = 1
+        
+        while ProductVariant.objects.filter(sku=sku).exclude(pk=self.pk).exists():
+            if counter == 1:
+                sku = f"{base_sku}-{counter}"
+            else:
+                sku = f"{base_sku}-{counter}"
+            counter += 1
+            if counter > 999:
+                from django.utils import timezone
+                timestamp = timezone.now().strftime("%H%M%S")
+                sku = f"{base_sku}-{timestamp}"
+                break
+        return sku
     
     def clean(self):
         ##* Price validation
@@ -72,6 +121,9 @@ class ProductVariant(TimestampedModel2):
                 raise ValidationError("Only one default variant allowed per product")
             
     def save(self, *args, **kwargs):
+        if not self.sku:
+            base_sku = self.generate_sku()
+            self.sku = self.ensure_unique_sku(base_sku)
         self.full_clean()
         super().save(*args, **kwargs)
     

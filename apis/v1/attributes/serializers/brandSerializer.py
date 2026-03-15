@@ -41,3 +41,8 @@ class BrandSerializer(serializers.ModelSerializer):
         }
 
 
+class MiniBrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model  = Brand
+        fields = ['id', 'name', 'logo']
+

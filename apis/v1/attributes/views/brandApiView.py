@@ -25,15 +25,46 @@ from apis.utils.pagination import CustomPageNumberPagination, get_paginated_resp
 from apis.utils.apiPermission import HasPermission
 
 ##? Service Import 
-from apis.v1.attributes.services import queries
+from apis.v1.attributes.services import queries, filters
 
 ##? Model Import 
 User = get_user_model() 
 from apps.product.models.brand import Brand
 
 ##? Serializer Import 
-from apis.v1.attributes.serializers.brandSerializer import BrandSerializer
+from apis.v1.attributes.serializers.brandSerializer import BrandSerializer, MiniBrandSerializer
 
+
+"""
+##TODO:- Mini Brand List API Views
+##* List API Views (GET)
+"""
+class MiniBrandListApiView(generics.ListAPIView):
+    authentication_classes = [JWTAuthentication] 
+    permission_classes     = [permissions.IsAuthenticated]
+    serializer_class       = MiniBrandSerializer
+    
+    def get_queryset(self):
+        queryset = queries.BrandQueryService.get_queryset()
+        filter_service = filters.BrandFilterService(
+            search      = self.request.GET.get("search"),
+            is_active   = self.request.GET.get("is_active"),
+            start_date  = self.request.GET.get("start_date"),
+            end_date    = self.request.GET.get("end_date"),
+            ordering    = self.request.GET.get("ordering"),
+        )
+        queryset = filter_service.apply_filters(queryset)
+        return queryset
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        response_data = get_paginated_response(
+            queryset   = queryset,
+            request    = request,
+            pagination = 0,
+            serializer_class = self.get_serializer
+        )
+        return response_list(response_data, item_name="Brand")
 
 
 """

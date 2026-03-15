@@ -36,3 +36,7 @@ class SizeSerializer(serializers.ModelSerializer):
         }
 
 
+class MiniSizeSerializer(SizeSerializer):
+    class Meta(SizeSerializer.Meta):
+        fields = ['id', 'name']
+

@@ -23,6 +23,7 @@
 
          <!-- Header Right Side -->
          <template #header-right>
+            <ActionButton action="back" @click="goToBack" variant="outline-secondary" size="sm" label="Back" />
             <ActionButton action="edit" size="sm" @click="goUpdatePage" class="px-8" label="Update" />
          </template>
 
@@ -58,7 +59,7 @@
                                  class="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg text-sm font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 cursor-default">
                                  {{ cat.name }}
                                  <span
-                                    class="absolute -top-2 -right-2 w-5 h-5 bg-blue-700 rounded-full text-xs flex items-center justify-center border-2  border-gray-600 dark:border-white">
+                                    class="absolute -top-2 -right-2 w-5 h-5 bg-gray-200 dark:bg-blue-500 rounded-full text-xs flex items-center justify-center border-2  border-gray-600 dark:border-white">
                                     <span class="text-black dark:text-white">{{ index + 1 }}</span>
                                  </span>
                               </span>
@@ -276,6 +277,12 @@ const fetchDetailsData = async () => {
    } finally {
       loadingStates.loading = false;
    }
+};
+
+const goToBack = () => {
+   loadingStates.back = true;
+   window.location.href = CategoryPageURL.List;
+   setTimeout(() => (loadingStates.back = false), 500);
 };
 
 const goUpdatePage = () => {

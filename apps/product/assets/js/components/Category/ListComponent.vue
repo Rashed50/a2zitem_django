@@ -47,6 +47,13 @@
                         <CustomMultiSelect label="Root Category" v-model="filterForm.parent" :options="categoryChoices"
                            label-key="label" value-key="value" placeholder="Select category" />
 
+                        <!-- Dynamic Children -->
+                        <div v-for="(level, index) in categoryLevels" :key="index">
+                           <CustomMultiSelect :label="`Child Level ${index + 1}`" v-model="filterForm.children[index]"
+                              :options="level" label-key="label" value-key="value" placeholder="Select category"
+                              @update:modelValue="(val) => fetchChildren(val, index)" />
+                        </div>
+
                         <CustomMultiSelect label="Status" v-model="filterForm.status" :options="statusChoices"
                            label-key="label" value-key="value" placeholder="Select status" />
                      </div>
@@ -274,8 +281,10 @@ const sortDirection = ref('asc');
 const showFilter = ref(false);
 const filterForm = ref({
    parent: null,
+   children: [],
    status: null,
 });
+const categoryLevels = ref([]);
 
 // Table columns configuration for subscription plans
 const tableColumns = [
@@ -303,6 +312,12 @@ const tableFooterData = computed(() => {
    // }
 })
 
+const selectedCategoryId = computed(() => {
+   const children = filterForm.value.children || []
+   const lastChild = [...children].reverse().find(id => id)
+   return lastChild || filterForm.value.parent || null
+})
+
 // ===================================================================
 // =========================== 4. METHODS ============================
 // ===================================================================
@@ -325,7 +340,7 @@ const fetchData = async () => {
          }),
 
          //!✅ Filter Configuration
-         ...(filterForm.value.parent && { parent_id: filterForm.value.parent }),
+         ...(selectedCategoryId.value && { category_id: selectedCategoryId.value }),
          ...(filterForm.value.status && { is_active: filterForm.value.status }),
       };
 
@@ -446,6 +461,29 @@ function debounce(func, wait) {
    };
 }
 
+// For Category Children Filter ====================================================
+const mapOptions = (data) => {
+   return data.map(item => ({
+      value: item.id,
+      label: item.name
+   }));
+};
+
+const fetchChildren = async (parentId, index) => {
+   if (!parentId) return
+   try {
+      const response = await axios.get(`${CategoryApiURL.MiniList}`, {
+         params: { parent_id: parentId }
+      })
+      const children = mapOptions(response.data.results)
+      if (children.length) {
+         categoryLevels.value[index + 1] = children
+         filterForm.value.children[index + 1] = null
+      }
+   } catch (err) {
+      console.error(err)
+   }
+}
 // ===================================================================
 // =========================== 1. WATCH =========================
 // ===================================================================
@@ -466,6 +504,24 @@ watch(selectedRows, (newVal) => {
    }
 });
 
+
+watch(() => filterForm.value.parent, async (newParent) => {
+   console.log('Parent changed:', newParent);
+   filterForm.value.children = [];
+   categoryLevels.value = [];
+   if (!newParent) return;
+   try {
+      const response = await axios.get(`${CategoryApiURL.MiniList}?parent_id=${newParent}`);
+      if (response.data.success) {
+         categoryLevels.value[0] = mapOptions(response.data.results);
+         console.log("========================");
+         console.log(response.data.results);
+         console.log("========================");
+      }
+   } catch (err) {
+      console.error(err);
+   }
+});
 // ===================================================================
 // =========================== 5. MOUNTED ============================
 // ===================================================================

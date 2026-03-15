@@ -122,6 +122,8 @@ import {
     CategoryListComponent,
     CategoryCreateComponent,
     CategoryDetailsComponent,
+    ProductListComponent,
+    ProductCreateComponent,
 } from '../../apps/product/assets/js/app';
 app.component("brand-list-component", BrandListComponent);
 app.component("color-list-component", ColorListComponent);
@@ -130,6 +132,8 @@ app.component("unit-list-component", UnitListComponent);
 app.component("category-list-component", CategoryListComponent);
 app.component("category-create-component", CategoryCreateComponent);
 app.component("category-details-component", CategoryDetailsComponent);
+app.component("product-list-component", ProductListComponent);
+app.component("product-create-component", ProductCreateComponent);
 
 
 //! Client Pages =========================================
