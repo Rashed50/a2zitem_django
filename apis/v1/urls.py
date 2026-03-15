@@ -5,4 +5,5 @@ urlpatterns = [
     path('auth/', include('apis.v1.auth.urls'), name='auth_api'),
     path('supplier/', include('apis.v1.supplier.urls'), name='supplier_api'),
     path('product-attributes/', include('apis.v1.attributes.urls'), name='attributes_api'),
+    path('product/', include('apis.v1.product.urls'), name='product_api'),
 ]

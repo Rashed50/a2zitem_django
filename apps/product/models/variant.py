@@ -6,6 +6,9 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 
+from django.db.models import Max
+import re
+
 ##? Utils Import
 from core.utils.generator import generate_unique_slug, generate_unique_code
 
@@ -48,65 +51,75 @@ class ProductVariant(TimestampedModel2):
         ordering            = ['-created_at', '-updated_at']
 
         ##* This will ensure that the same Color + Size of the same Product cannot be inserted twice.
-        constraints = [
-            models.UniqueConstraint(
-                fields=['product', 'color', 'size'],
-                name='unique_variant_per_product'
-            )
-        ]
+        # constraints = [
+        #     models.UniqueConstraint(
+        #         fields=['product', 'color', 'size'],
+        #         name='unique_variant_per_product'
+        #     )
+        # ]
 
     def __str__(self):
         return f"{self.product.name} - {self.sku}"
     
     def generate_sku(self):
         """
-        Generate SKU based on product code, color and size
-        Format: {PRODUCT_CODE}-{COLOR_CODE}-{SIZE_CODE}
-        Example: PRD001-RED-XL
+        Generate SKU for product variant.
+
+        Format:
+            PRODUCTCODE-COLOR-SIZE-UNIT
+
+        Example:
+            PRD00000003-RED-XL-KG
+            PRD00000003-BLU-M-LB
+            PRD00000003-GRE-32-PC
         """
-        product_code = self.product.code if self.product and self.product.code else f"PRD{self.product.id}"
+        ##? Product Code
+        product_code = self.product.code if self.product else "PRD"
+
+        ##? Color Code
         if self.color and self.color.name:
-            color_name = re.sub(r'[^a-zA-Z0-9]', '', self.color.name)
-            color_code = color_name[:3].upper()
+            color_code = "".join(self.color.name.upper().split())[:3]
         else:
             color_code = "CLR"
-        
+
+        ##? Size Code
         if self.size and self.size.name:
-            size_name = self.size.name.upper().strip()
-            size_code = re.sub(r'[^a-zA-Z0-9]', '', size_name)
-            if len(size_code) > 5: 
-                size_code = size_code[:5]
+            size_code = (
+                self.size.name.upper()
+                .replace('"', '')
+                .replace("'", "")
+                .replace(" ", "")
+            )[:3]
         else:
-            size_code = "SZE"
-        
-        unit_code = ""
-        if self.unit and self.unit.name:
-            unit_code = f"-{self.unit.name[:3].upper()}"
-        elif self.unit and self.unit.name:
-            unit_name = self.unit.name[:3].upper()
-            unit_code = f"-{unit_name}"
-        
-        base_sku = f"{product_code}-{color_code}-{size_code}{unit_code}"
-        
-        return base_sku.upper()
+            size_code = "SIZ"
+
+        ##? Unit Code
+        if self.unit:
+            if self.unit.symbol:
+                unit_code = self.unit.symbol.upper()
+            else:
+                unit_code = "".join(self.unit.name.upper().split())[:3]
+        else:
+            unit_code = "UNT"
+
+        base_sku = f"{product_code}-{color_code}-{size_code}-{unit_code}"
+        return base_sku
     
     def ensure_unique_sku(self, base_sku):
-        sku = base_sku
-        counter = 1
+        variants = ProductVariant.objects.filter(
+                sku__startswith = base_sku
+            ).exclude(pk=self.pk).values_list("sku", flat=True)
+        max_counter = 0
+        for sku in variants:
+            match = re.search(rf"{base_sku}-(\d+)$", sku)
+            if match:
+                max_counter = max(max_counter, int(match.group(1)))
+
+        if not variants:
+            return base_sku
+
+        return f"{base_sku}-{max_counter+1}"
         
-        while ProductVariant.objects.filter(sku=sku).exclude(pk=self.pk).exists():
-            if counter == 1:
-                sku = f"{base_sku}-{counter}"
-            else:
-                sku = f"{base_sku}-{counter}"
-            counter += 1
-            if counter > 999:
-                from django.utils import timezone
-                timestamp = timezone.now().strftime("%H%M%S")
-                sku = f"{base_sku}-{timestamp}"
-                break
-        return sku
-    
     def clean(self):
         ##* Price validation
         if self.selling_price < self.purchase_price:

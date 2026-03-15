@@ -10,7 +10,7 @@
                <i class="fa-solid fa-cart-shopping text-blue-600 dark:text-white"></i>
                <span class="text-lg sm:text-xl">Product Item List</span>
             </h4>
-            <ActionButton action="add" size="sm" @click="addItem" class="px-8" />
+            <ActionButton action="add" size="sm" @click="goToAddPage" class="px-8" />
          </div>
 
          <!-- Card Body -->
@@ -33,36 +33,80 @@
 
                   <!-- Name (Sticky) -->
                   <template #cell-name="{ row }">
-                     <div class="font-medium text-gray-900 dark:text-white">
-                        {{ row.name || '' }}
+                     <div class="space-y-1">
+                        <!-- Product Name -->
+                        <div class="font-semibold text-gray-900 dark:text-white">
+                           {{ row.name }}
+                        </div>
+
+                        <!-- Brand -->
+                        <div class="text-xs text-blue-600 dark:text-blue-400">
+                           {{ row.brand?.name }}
+                        </div>
+
+                        <!-- Category -->
+                        <div class="text-xs text-gray-500 dark:text-gray-400">
+                           {{ row.category_path }}
+                        </div>
+
+                        <!-- Code -->
+                        <div class="text-[11px] text-gray-400">
+                           Code: {{ row.code }}
+                        </div>
                      </div>
                   </template>
 
                   <!-- Contact Information -->
-                  <template #cell-contact="{ row }">
-                     <div class="font-medium text-gray-900 dark:text-white">
-                        {{ row.contact || '' }}
-                     </div>
-                     <div class="text-xs text-gray-500 dark:text-gray-400">
-                        {{ row.email || '' }}
-                     </div>
-                     <div class="text-xs text-gray-500 dark:text-gray-400">
-                        {{ row.phone || '' }}
+                  <template #cell-variants="{ row }">
+                     <div class="flex flex-col gap-1">
+                        <div v-for="variant in row.variants" :key="variant.id"
+                           class="flex items-center justify-between text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                           <span class="font-medium">
+                              {{ variant.color?.name }} / {{ variant.size?.name }}
+                           </span>
+
+                           <span class="text-gray-500">
+                              {{ variant.stock }}-{{ variant.unit?.symbol }}
+                           </span>
+
+                           <span class="text-green-600 font-semibold">
+                              ৳{{ variant.selling_price }}/-
+                           </span>
+                        </div>
                      </div>
                   </template>
+                  <!-- <template #cell-variants="{ row }">
+                     <div class="space-y-2">
+                        <div v-for="variant in row.variants" :key="variant.id"
+                           class="text-xs border rounded-md px-2 py-1 bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600">
+                           <div class="font-medium text-gray-800 dark:text-gray-200">
+                              {{ variant.color?.name }} | {{ variant.size?.name }}
+                           </div>
 
-                  <!-- Address -->
-                  <template #cell-address="{ row }">
-                     <div class="max-h-20 overflow-y-auto whitespace-normal break-words pr-2">
-                        {{ row.address || '-' }}
-                        <!-- {{getTruncatedAddress(row.address)}} -->
+                           <div class="text-gray-500 dark:text-gray-400">
+                              {{ variant.unit?.symbol }}
+                              • Stock: {{ variant.stock }}
+                           </div>
+
+                           <div class="text-green-600 font-medium">
+                              ৳ {{ variant.selling_price }}
+                           </div>
+                        </div>
                      </div>
-                  </template>
+                  </template> -->
 
-                  <template #cell-activity_dates="{ row }">
+                  <!-- Created Dates -->
+                  <template #cell-created="{ row }">
                      <div class="space-y-2 text-xs">
                         <div>
-                           <div class="font-medium text-gray-700 dark:text-gray-300">Created</div>
+                           <div class="font-medium text-gray-700 dark:text-gray-300">Created By</div>
+                           <div class="text-gray-500 dark:text-gray-400">
+                              <span v-if="row.created_by">{{ row.created_by?.name || '' }}</span>
+                              <span v-else>-</span>
+                           </div>
+                        </div>
+                        <div>
+                           <div class="font-medium text-gray-700 dark:text-gray-300">Created At</div>
                            <div class="text-gray-500 dark:text-gray-400">
                               {{ formatLocalDateTimeExtended(row.created_at).formattedDate }}
                            </div>
@@ -70,9 +114,21 @@
                               {{ formatLocalDateTimeExtended(row.created_at).formattedTime }}
                            </div>
                         </div>
+                     </div>
+                  </template>
 
+                  <!-- Updated Dates -->
+                  <template #cell-updated="{ row }">
+                     <div class="space-y-2 text-xs">
                         <div>
-                           <div class="font-medium text-gray-700 dark:text-gray-300">Updated</div>
+                           <div class="font-medium text-gray-700 dark:text-gray-300">Updated By</div>
+                           <div class="text-gray-500 dark:text-gray-400">
+                              <span v-if="row.updated_by">{{ row.updated_by?.name || '' }}</span>
+                              <span v-else>-</span>
+                           </div>
+                        </div>
+                        <div>
+                           <div class="font-medium text-gray-700 dark:text-gray-300">Updated At</div>
                            <div class="text-gray-500 dark:text-gray-400">
                               {{ formatLocalDateTimeExtended(row.updated_at).formattedDate }}
                            </div>
@@ -91,7 +147,7 @@
                   <!-- Action Column (Custom) -->
                   <template #cell-action="{ row }">
                      <div class="flex flex-col items-center gap-1">
-                        <button @click="viewItem(row)"
+                        <button @click="goToDetailsPage(row)"
                            class="p-1 text-green-600 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-lg transition-colors"
                            title="View">
                            <i class="fa-solid fa-eye text-lg"></i>
@@ -126,7 +182,7 @@
 </template>
 
 <script setup>
-import { ProductItemApiURL, ProductItemPageURL } from '../../routes';
+import { ProductApiURL, ProductPageURL } from '../../routes';
 import { useDelete } from '@/composables/useDelete';
 import DataTableTopControls from '@/components/data-table/DataTableTopControls.vue';
 import DataTablePagination from '@/components/data-table/DataTablePagination.vue';
@@ -172,10 +228,10 @@ const sortDirection = ref('asc');
 
 // Table columns configuration for subscription plans
 const tableColumns = [
-   { field: 'name', title: 'Name', width: '20%', sticky: true, sortable: true },
-   { field: 'contact', title: 'Contact Information', width: '20%', sticky: true, sortable: false },
-   { field: 'address', title: 'Address', width: '20%', sticky: false, sortable: false },
-   { field: 'activity_dates', title: 'Activity Dates', width: '20%', sortable: false },
+   { field: 'name', title: 'Product Info.', width: '20%', sticky: true, sortable: true },
+   { field: 'variants', title: 'variants Info.', width: '20%', sticky: true, sortable: false },
+   { field: 'created', title: 'Created At', width: '20%', sortable: false },
+   { field: 'updated', title: 'Updated At', width: '20%', sortable: false },
    { field: 'status', title: 'Status', width: '10%', sticky: true, sortable: false },
 ]
 
@@ -219,7 +275,7 @@ const fetchData = async () => {
       };
 
       // ✅ Relative URL with axios
-      const response = await axios.get(ProductItemApiURL.List, { params });
+      const response = await axios.get(ProductApiURL.List, { params });
       apiData.value = response.data;
    } catch (error) {
       console.error('Error fetching data:', error);
@@ -238,23 +294,23 @@ const fetchData = async () => {
 };
 
 // Actions ------------------------------------------
-const addItem = () => {
+const goToAddPage = () => {
    // console.log('Add item');
-   window.location = ProductItemPageURL.Create;
+   window.location = ProductPageURL.Create;
 };
 const editItem = (item) => {
    // console.log('Edit item:', item);
-   window.location = `${ProductItemPageURL.Update}/${item.id}`;
+   window.location = `${ProductPageURL.Update}/${item.id}`;
 };
 
-const viewItem = (item) => {
+const goToDetailsPage = (item) => {
    console.log('View item:', item.id);
-   window.location = `${ProductItemPageURL.Details}/${item.id}/`;
+   window.location = `${ProductPageURL.Details}/${item.id}/`;
 };
 
 const handleDelete = (id) => {
    deleteItem({
-      url: `${ProductItemApiURL.Delete}`,
+      url: `${ProductApiURL.Delete}`,
       id: id,
       name: 'Shop',
       onSuccess: fetchData,

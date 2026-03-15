@@ -17,6 +17,8 @@ from apps.product.views.cagegoryView import (
 from apps.product.views.productView import (
     ProductListPageView,
     ProductCreatePageView,
+    ProductDetailPageView,
+    ProductUpdatePageView,
 )
 
 urlpatterns = [ 
@@ -42,6 +44,8 @@ urlpatterns = [
         include([
             path('', ProductListPageView.as_view(), name='product_list_page'),
             path('create/', ProductCreatePageView.as_view(), name='product_create_page'),
+            path('details/<int:pk>/', ProductDetailPageView.as_view(), name='product_details_page'),
+            path('update/<int:pk>/', ProductUpdatePageView.as_view(), name='product_update_page'),
         ])
     ),
 ]

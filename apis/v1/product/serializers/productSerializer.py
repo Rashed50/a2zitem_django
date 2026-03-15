@@ -128,136 +128,135 @@ class ProductSerializer(serializers.ModelSerializer):
         ancestors = obj.category.get_ancestors(include_self=True)
         return " > ".join([ancestor.name for ancestor in ancestors])
 
-
+    ##? ============= [ Validations ] ============= ##
+    def validate_name(self, value):
+        qs = Product.objects.filter(name=value)
+        if self.instance:  
+            qs = qs.exclude(id=self.instance.id)
+        if qs.exists():
+            raise serializers.ValidationError("Product with this Item Name already exists.")
+        return value
+    
+    def validate_title(self, value):
+        """Auto-set title from name if not provided"""
+        if not value and self.initial_data.get('name'):
+            return self.initial_data.get('name')
+        return value
+    
     def validate_variants(self, value):
-        """
-        Validate that at least one variant is provided
-        """
         if not value or len(value) == 0:
             raise serializers.ValidationError("At least one variant is required.")
         
-        # Check for duplicate color+size combinations
-        combinations = []
-        for variant in value:
-            color_id = variant.get('color', {}).get('id') if isinstance(variant.get('color'), dict) else variant.get('colour_id')
-            size_id = variant.get('size', {}).get('id') if isinstance(variant.get('size'), dict) else variant.get('size_id')
+        # combinations = []
+        # for variant in value:
+        #     color_id = self._extract_id(variant, 'color')
+        #     size_id  = self._extract_id(variant, 'size')
             
-            if color_id and size_id:
-                combo = f"{color_id}-{size_id}"
-                if combo in combinations:
-                    raise serializers.ValidationError(
-                        f"Duplicate variant combination: Color ID {color_id} and Size ID {size_id} cannot be used twice."
-                    )
-                combinations.append(combo)
+        #     if not color_id or not size_id:
+        #         raise serializers.ValidationError(
+        #             "Each variant must have both a color and a size."
+        #         )
+            
+        #     combo = f"{color_id}-{size_id}"
+        #     if combo in combinations:
+        #         raise serializers.ValidationError(
+        #             f"Duplicate color and size combination found: Color {color_id}, Size {size_id}"
+        #         )
+        #     combinations.append(combo)
         
         return value
+
+    ##? ============= [ Create & Update ] ============= ##
     
     def create(self, validated_data):
-        """
-        Create Product with multiple variants
-        """
         variants_data = validated_data.pop('variants', [])
-        
-        # Create product
+        ## Create product
         product = Product.objects.create(**validated_data)
-        
-        # Create variants
+        ## Create variants
         self._create_variants(product, variants_data)
-        
         return product
     
     def update(self, instance, validated_data):
-        """
-        Update Product and its variants
-        """
         variants_data = validated_data.pop('variants', None)
         
-        # Update product fields
+        ## Update product fields
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
         
-        # Update variants if provided
+        ## Update variants if provided
         if variants_data is not None:
             self._update_variants(instance, variants_data)
         
         return instance
     
     def _create_variants(self, product, variants_data):
-        """
-        Helper method to create variants
-        """
         for variant_data in variants_data:
-            # Generate SKU
-            sku = self._generate_sku(product, variant_data)
+            ProductVariant.objects.create(product = product,**variant_data)
             
-            # Create variant
-            ProductVariant.objects.create(
-                product=product,
-                sku=sku,
-                **variant_data
-            )
-    
     def _update_variants(self, product, variants_data):
-        """
-        Helper method to update variants
-        Handles create, update, delete operations
-        """
         existing_variants = {v.id: v for v in product.variants.all()}
-        processed_ids = set()
-        
+        processed_ids     = set()
+
         for variant_data in variants_data:
-            variant_id = variant_data.get('id')
-            
+            variant_id = variant_data.get("id")
+            if "color" in variant_data and variant_data["color"]:
+                new_color_id = getattr(variant_data["color"], "id", None)
+            else:
+                new_color_id = variant_data.get("color_id")
+
+            if "size" in variant_data and variant_data["size"]:
+                new_size_id = getattr(variant_data["size"], "id", None)
+            else:
+                new_size_id = variant_data.get("size_id")
+
+            if "unit" in variant_data and variant_data["unit"]:
+                new_unit_id = getattr(variant_data["unit"], "id", None)
+            else:
+                new_unit_id = variant_data.get("unit_id")
+
+            ##? Duplicate check
+            duplicate_qs = ProductVariant.objects.filter(
+                product  = product,
+                color_id = new_color_id,
+                size_id  = new_size_id
+            )
+            if variant_id:
+                duplicate_qs = duplicate_qs.exclude(id=variant_id)
+
+            if duplicate_qs.exists():
+                raise serializers.ValidationError(
+                    # f"Variant with color ID {new_color_id} and size ID {new_size_id} already exists for this product."
+                    "Variant with color and size already exists for this product."
+                )
+
             if variant_id and variant_id in existing_variants:
-                # Update existing variant
+                ##? Update existing variant
                 variant = existing_variants[variant_id]
                 for attr, value in variant_data.items():
-                    if attr not in ['id', 'sku']:  # Don't update id or sku
+                    if attr not in ["id", "sku"]:
                         setattr(variant, attr, value)
                 variant.save()
                 processed_ids.add(variant_id)
             else:
-                # Create new variant
-                # Generate SKU
-                sku = self._generate_sku(product, variant_data)
-                
-                ProductVariant.objects.create(
-                    product=product,
-                    sku=sku,
-                    **variant_data
+                ##? Create New Variant
+                variant = ProductVariant.objects.create(
+                    product  = product,
+                    color_id = new_color_id,
+                    size_id  = new_size_id,
+                    unit_id  = new_unit_id,
+                    stock    = variant_data.get("stock", 0),
+                    selling_price  = variant_data.get("selling_price", 0),
+                    purchase_price = variant_data.get("purchase_price", 0),
+                    min_stock      = variant_data.get("min_stock", 0),
                 )
-        
-        # Delete variants that weren't in the update data
+                processed_ids.add(variant.id)
+
+        ##? Delete variants removed from frontend
         for variant_id, variant in existing_variants.items():
             if variant_id not in processed_ids:
                 variant.delete()
     
-    def _generate_sku(self, product, variant_data):
-        """
-        Generate SKU for variant
-        Format: {product_code}-{color_code}-{size_code}
-        """
-        color = variant_data.get('color', {})
-        if isinstance(color, dict):
-            color_code = color.get('code', '')[:3]
-        else:
-            color_code = str(variant_data.get('colour_id', ''))[:3]
-        
-        size = variant_data.get('size', {})
-        if isinstance(size, dict):
-            size_code = size.get('code', '')[:3]
-        else:
-            size_code = str(variant_data.get('size_id', ''))[:3]
-        
-        # Generate base SKU
-        base_sku = f"{product.code}-{color_code}-{size_code}".upper()
-        
-        # Ensure uniqueness
-        counter = 1
-        sku = base_sku
-        while ProductVariant.objects.filter(sku=sku).exists():
-            sku = f"{base_sku}-{counter}"
-            counter += 1
-        
-        return sku
+    
+                
+                

@@ -119,9 +119,9 @@
                            <tr v-for="(variant, index) in formData.variants" :key="index"
                               class="hover:bg-gray-50 dark:hover:bg-gray-800/50">
                               <td class="px-4 py-2">
-                                 <CustomMultiSelect v-model="variant.colour_id" :options="colorChoices"
+                                 <CustomMultiSelect v-model="variant.color_id" :options="colorChoices"
                                     label-key="label" value-key="value" placeholder="Select Colour"
-                                    :error="formErrors[`variants_${index}_colour_id`]" :multiple="false" required />
+                                    :error="formErrors[`variants_${index}_color_id`]" :multiple="false" required />
                               </td>
                               <td class="px-4 py-2">
                                  <CustomMultiSelect v-model="variant.size_id" :options="sizeChoices" label-key="label"
@@ -197,7 +197,7 @@
 
 <script setup>
 import { inject, ref, onMounted, computed, reactive, watch } from 'vue';
-import { ProductItemApiURL, ProductItemPageURL, CategoryApiURL } from '../../routes';
+import { ProductApiURL, ProductPageURL, CategoryApiURL } from '../../routes';
 
 // ===================================================================
 // =========================== 1. INJECTIONS =========================
@@ -237,7 +237,7 @@ const error = ref(null);
 
 // Create a default variant structure
 const createDefaultVariant = () => ({
-   colour_id: null,
+   color_id: null,
    size_id: null,
    unit_id: null,
    quantity: 0,
@@ -338,7 +338,7 @@ const fetchDetails = async () => {
    isInitializing.value = true;
 
    try {
-      const response = await axios.get(`${ProductItemApiURL.Details}/${props.itemId}/`);
+      const response = await axios.get(`${ProductApiURL.Details}/${props.itemId}/`);
 
       if (response.data.success) {
          const detailsData = response.data.results;
@@ -352,12 +352,13 @@ const fetchDetails = async () => {
          // Load variants if available
          if (detailsData.variants && detailsData.variants.length > 0) {
             formData.value.variants = detailsData.variants.map(v => ({
-               colour_id: v.colour?.id,
+               id: v.id,
+               color_id: v.color?.id,
                size_id: v.size?.id,
                unit_id: v.unit?.id,
-               quantity: v.quantity || 0,
+               quantity: v.stock || 0,
                selling_price: v.selling_price || 0,
-               total_value: (v.quantity || 0) * (v.selling_price || 0)
+               total_value: (v.stock || 0) * (v.selling_price || 0)
             }));
          } else {
             formData.value.variants = [createDefaultVariant()];
@@ -453,7 +454,7 @@ const handleChildSelection = async (val, index) => {
 // ------------------------- Navigation ------------------------------
 const handleBack = () => {
    loadingStates.back = true;
-   window.location.href = ProductItemPageURL.List;
+   window.location.href = ProductPageURL.List;
    setTimeout(() => (loadingStates.back = false), 500);
 };
 
@@ -484,8 +485,8 @@ const validateFormData = () => {
 
    // Validate variants
    formData.value.variants.forEach((variant, index) => {
-      if (!variant.colour_id) {
-         formErrors[`variants_${index}_colour_id`] = 'Colour is required';
+      if (!variant.color_id) {
+         formErrors[`variants_${index}_color_id`] = 'Colour is required';
          isValid = false;
       }
       if (!variant.size_id) {
@@ -546,44 +547,49 @@ const handleSubmit = async (e) => {
       is_active: formData.value.is_active,
       is_featured: formData.value.is_featured,
       variants: formData.value.variants.map(v => ({
-         colour_id: v.colour_id,
+         ...(v.id && { id: v.id }),
+         color_id: v.color_id,
          size_id: v.size_id,
          unit_id: v.unit_id,
-         quantity: v.quantity,
+         stock: v.quantity,
          selling_price: v.selling_price
       }))
    };
 
-   loadingStates.save = false;
-   console.log("========================");
-   console.log(payload);
-   console.log("========================");
+   // loadingStates.save = false;
+   // console.log("========================");
+   // console.log(payload);
+   // console.log("========================");
 
-   // try {
-   //    let response;
-   //    if (isEditMode.value) {
-   //       response = await axios.put(`${ProductItemApiURL.Update}/${props.itemId}/`, payload);
-   //    } else {
-   //       response = await axios.post(`${ProductItemApiURL.Create}/`, payload);
-   //    }
+   try {
+      let response;
+      if (isEditMode.value) {
+         response = await axios.put(`${ProductApiURL.Update}/${props.itemId}/`, payload);
+      } else {
+         response = await axios.post(`${ProductApiURL.Create}/`, payload);
+      }
 
-   //    if (response.data.success) {
-   //       toast.success(isEditMode.value ? 'successfully updated' : 'successfully created');
-   //       setTimeout(() => {
-   //          window.location.href = `${ProductItemPageURL.Details}/${response.data.results.id}/`;
-   //       }, 2000);
-   //    } else {
-   //       toast.error(response.data.message || 'Failed to save!');
-   //       console.error(response.data.message || 'Failed to save!');
-   //    }
-   // } catch (err) {
-   //    toast.error(err.response?.data?.message || 'Something went wrong. Please try again.');
-   //    if (err.response?.data?.errors) {
-   //       mapApiErrorsToForm(err.response.data.errors);
-   //    }
-   // } finally {
-   //    loadingStates.save = false;
-   // }
+      if (response.data.success) {
+         toast.success(isEditMode.value ? 'successfully updated' : 'successfully created');
+         // setTimeout(() => {
+         //    window.location.href = `${ProductPageURL.Details}/${response.data.results.id}/`;
+         // }, 2000);
+      } else {
+         toast.error(response.data.message || 'Failed to save!');
+         console.error(response.data.message || 'Failed to save!');
+      }
+   } catch (err) {
+      toast.error(err.response?.data?.message || 'Something went wrong. Please try again.');
+      console.log(err.response?.data?.errors?.[0]);
+      if (err.response?.data?.errors?.[0]) {
+         toast.error(err.response?.data?.errors?.[0]);
+      }
+      if (err.response?.data?.errors) {
+         mapApiErrorsToForm(err.response.data.errors);
+      }
+   } finally {
+      loadingStates.save = false;
+   }
 };
 
 const mapApiErrorsToForm = (errors) => {
