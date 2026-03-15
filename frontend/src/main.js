@@ -102,17 +102,6 @@ app.component("role-create-component", RoleCreateComponent);
 app.component("permissions-list-component", PermissionsListComponent);
 
 
-//! Import Supplier Component
-import { 
-    SupplierCreateUpdateComponent,
-    SupplierListComponent,
-    SupplierDetailsComponent,
-} from '../../apps/supplier/assets/js/app';
-app.component("supplier-create-and-update-component", SupplierCreateUpdateComponent);
-app.component("supplier-list-component", SupplierListComponent);
-app.component("supplier-details-component", SupplierDetailsComponent);
-
-
 //! Product Component
 import { 
     BrandListComponent,
