@@ -1,80 +1,3 @@
-# Brands mapping
-brands_map = {
-    "Apple"   : 1,          
-    "Samsung" : 2,        
-    "Google"  : 5,         
-    "OnePlus" : 4,        
-    "Xiaomi"  : 3,         
-    "Dell"    : 12,           
-    "Asus"    : 13,           
-    "Sony"    : 6,           
-    "Bose"    : 27,          
-    "Nike"    : 42,          
-    "Adidas"  : 43,        
-    "Levi's"  : 47,        
-    "IKEA"    : 134,          
-    "Apex"    : 184          
-}
-
-# Categories mapping
-categories_map = {
-    "Smartphones"   : 9,    
-    "Laptops"       : 12,       
-    "Tablets"       : 13,       
-    "Smart Watches" : 14, 
-    "Headphones"    : 15,    
-    "Shoes"         : 22,         
-    "Shirts"        : 20,        
-    "Sofas"         : 31,         
-    "Cricket Bats"  : 49   
-}
-
-# Colors mapping
-colors_map = {
-    "Black"      : 5,
-    "White"      : 6,
-    "Silver"     : 8,
-    "Space Gray" : 236, # New
-    "Gray"       : 7,
-    "Blue"       : 2,
-    "Green"      : 3,
-    "Red"        : 1,
-    "Gold"       : 9,
-    "Beige"      : 35,
-    "Coral"      : 31,
-    "Natural"    : 237 # New
-}
-
-# Sizes mapping
-sizes_map = {
-    "512GB": 1,
-    "1TB": 2,
-    "2TB": 3,
-    "4TB": 4,
-    "256GB": 5,
-    "49mm": 6,
-    "47mm": 7,
-    "Standard": 8,
-    "42": 9,
-    "43": 10,
-    "44": 11,
-    "M": 12,
-    "L": 13,
-    "XL": 14,
-    "3-Seater": 15,
-    "4-Seater": 16,
-    "Short Handle": 17,
-    "Long Handle": 18
-}
-
-# Units mapping
-units_map = {
-    "Piece": 19,
-    "Pair": 20
-}
-
-
-
 products_data = [
     ### Smartphones (category: Smartphones)
     {
@@ -342,8 +265,85 @@ products_data = [
         "is_active": True,
         "is_featured": True,
         "variants": [
-            {"color_name": "Natural", "size_name": "Short Handle", "unit_name": "Piece", "stock": 12, "selling_price": "12999.00"},
-            {"color_name": "Natural", "size_name": "Long Handle", "unit_name": "Piece", "stock": 8, "selling_price": "13999.00"}
+            {"color_name": "Green", "size_name": "Short Handle", "unit_name": "Piece", "stock": 12, "selling_price": "12999.00"},
+            {"color_name": "Green", "size_name": "Long Handle", "unit_name": "Piece", "stock": 8, "selling_price": "13999.00"}
         ]
     }
 ]
+
+
+# Brands mapping
+brands_map = {
+    "Apple"   : 1,          
+    "Samsung" : 2,        
+    "Google"  : 5,         
+    "OnePlus" : 4,        
+    "Xiaomi"  : 3,         
+    "Dell"    : 12,           
+    "Asus"    : 13,           
+    "Sony"    : 6,           
+    "Bose"    : 27,          
+    "Nike"    : 42,          
+    "Adidas"  : 43,        
+    "Levi's"  : 47,        
+    "IKEA"    : 134,          
+    "Apex"    : 184          
+}
+
+# Categories mapping
+categories_map = {
+    "Smartphones"   : 9,    
+    "Laptops"       : 12,       
+    "Tablets"       : 13,       
+    "Smart Watches" : 14, 
+    "Headphones"    : 15,    
+    "Shoes"         : 22,         
+    "Shirts"        : 20,        
+    "Sofas"         : 31,         
+    "Cricket Bats"  : 49   
+}
+
+# Colors mapping
+colors_map = {
+    "Black"      : 5,
+    "White"      : 6,
+    "Silver"     : 8,
+    "Space Gray" : 113,
+    "Gray"       : 7,
+    "Blue"       : 2,
+    "Green"      : 3,
+    "Red"        : 1,
+    "Gold"       : 9,
+    "Beige"      : 35,
+    "Coral"      : 31,
+    "Green"      : 3
+}
+
+# Sizes mapping
+sizes_map = {
+    "512GB": 492,
+    "1TB": 493,
+    "2TB": 494,
+    "4TB": 495,
+    "256GB": 491,
+    "49mm": 609,
+    "38mm": 602,
+    "Standard": 483,
+    "42": 32,
+    "43": 409,
+    "44": 33,
+    "M": 4,
+    "L": 5,
+    "XL": 6,
+    "3-Seater": 666,
+    "4-Seater": 667,
+    "Short Handle": 681,
+    "Long Handle":682 
+}
+
+# Units mapping
+units_map = {
+    "Piece": 29,
+    "Pair": 30
+}
+

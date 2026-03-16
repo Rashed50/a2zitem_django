@@ -783,4 +783,25 @@ sizes_data = [
     {"name": "38\" Monitor",                   "preferred_id": 663},
     {"name": "40\" Monitor",                   "preferred_id": 664},
     {"name": "49\" Monitor",                   "preferred_id": 665},
+    
+    # Sofa Set Sizes (IDs: 666-682)
+    {"name": "3-Seater",                       "preferred_id": 666},
+    {"name": "4-Seater",                       "preferred_id": 667},
+    {"name": "5-Seater",                       "preferred_id": 668},
+    {"name": "6-Seater",                       "preferred_id": 669},
+    {"name": "7-Seater",                       "preferred_id": 670},
+    {"name": "8-Seater",                       "preferred_id": 671},
+    {"name": "9-Seater",                       "preferred_id": 672},
+    {"name": "10-Seater",                      "preferred_id": 673},
+    {"name": "11-Seater",                      "preferred_id": 674},
+    {"name": "12-Seater",                      "preferred_id": 675},
+    {"name": "13-Seater",                      "preferred_id": 676},
+    {"name": "14-Seater",                      "preferred_id": 677},
+    {"name": "15-Seater",                      "preferred_id": 678},
+    {"name": "16-Seater",                      "preferred_id": 679},
+    {"name": "17-Seater",                      "preferred_id": 680},
+    
+    # Bat Handles Sizes (IDs: 681-698)
+    {"name": "Short Handle",                   "preferred_id": 681},
+    {"name": "Long Handle",                    "preferred_id": 682}
 ]
