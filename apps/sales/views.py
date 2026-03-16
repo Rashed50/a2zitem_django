@@ -31,6 +31,7 @@ from core.constants import UserChoices
 ##? Models Import
 User = get_user_model()
 from apps.product.models.product import Product
+from apps.product.models.variant import ProductVariant
 from apps.product.models.brand import Brand
 from apps.product.models.category import Category
 from apps.product.models.color import Color
@@ -53,36 +54,17 @@ class SaleCreatePageView(LoginRequiredMixin, generic.TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        brand_choices    = Brand.objects.filter(is_deleted=False, is_active=True).values_list('id', 'name')
-        coloer_choices   = Color.objects.filter(is_deleted=False, is_active=True).values_list('id', 'name')
-        size_choices     = Size.objects.filter(is_deleted=False, is_active=True).values_list('id', 'name')
-        unit_choices     = UnitOfMeasure.objects.filter(is_deleted=False, is_active=True).values_list('id', 'name')
-        category_choices = Category.objects.filter(
-                is_deleted=False, is_active=True, parent__isnull=True
-            ).values_list('id', 'name')
+        product_choices = ProductVariant.objects\
+            .filter(product__is_deleted=False, product__is_active=True)\
+            .values_list('id', 'sku', 'product__name', 'selling_price')
+            
+        print("===========================")
+        print(product_choices)
+        print("===========================")
         
-        brand_data    = [{'value': choice[0], 'label': str(choice[1])} for choice in brand_choices]
-        color_data    = [{'value': choice[0], 'label': str(choice[1])} for choice in coloer_choices]
-        size_data     = [{'value': choice[0], 'label': str(choice[1])} for choice in size_choices]
-        unit_data     = [{'value': choice[0], 'label': str(choice[1])} for choice in unit_choices]
-        category_data = [{'value': choice[0], 'label': str(choice[1])} for choice in category_choices]
-        status_data = [
-            {'value': 'true', 'label': 'Active'},
-            {'value': 'false', 'label': 'Inactive'},
-        ]
-        
-        # context['brand_json']    = mark_safe(json.dumps(brand_data, ensure_ascii=False))
-        # context['category_json'] = mark_safe(json.dumps(category_data, ensure_ascii=False))
-        # context['status_json']   = mark_safe(json.dumps(status_data, ensure_ascii=False))
-        
-        context["page_data"] = {
-            "brands"     : brand_data,
-            "colors"     : color_data,
-            "sizes"      : size_data,
-            "units"      : unit_data,
-            "categories" : category_data,
-            "statuses"   : status_data,
-        }
+        # context["page_data"] = {
+        #     "products": product_choices
+        # }
         
         # print("===========================")
         # print(brand_data)

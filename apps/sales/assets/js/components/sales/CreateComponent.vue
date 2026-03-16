@@ -33,19 +33,79 @@
                   <!-- Basic Information -->
                   <h4 class="text-blue-600 font-bold text-lg flex items-center gap-2">
                      <i class="fa-solid fa-info-circle"></i>
-                     Basic Information
+                     Customer Information
                   </h4>
                   <div class="responsive-grid gap-md">
                      <!-- Name -->
+                     <InputeComponent label="Name" placeholder="Enter customer name" id="name" name="name" type="text"
+                        v-model="formData.c_name" :error="formErrors.c_name" required />
+
+                     <!-- Email -->
+                     <InputeComponent label="Email" placeholder="Enter customer email" id="email" name="email"
+                        type="email" v-model="formData.c_email" :error="formErrors.c_email" />
+
+                     <!-- Phone -->
+                     <InputeComponent label="Phone" placeholder="Enter customer phone" id="phone" name="phone"
+                        type="text" v-model="formData.c_phone" :error="formErrors.c_phone" required />
+
+                     <!-- Address -->
                      <div class="sm:col-span-2">
-                        <!-- <InputeComponent label="Item Name" placeholder="Enter item name" id="name" name="name"
-                           type="text" v-model="formData.name" :error="formErrors.name" required /> -->
+                        <InputeComponent label="Address" placeholder="Enter customer address" id="address"
+                           name="address" type="text" v-model="formData.c_address" :error="formErrors.c_address" />
                      </div>
 
                      <!-- Brand -->
                      <!-- <CustomMultiSelect label="Brand" v-model="formData.brand_id" :options="brandChoices"
                         label-key="label" value-key="value" placeholder="Select company" :error="formErrors.brand_id"
                         :multiple="false" required /> -->
+                  </div>
+
+
+
+                  <!-- Variants Information -->
+                  <h4 class="text-blue-600 font-bold text-lg flex items-center gap-2">
+                     <i class="fa-solid fa-info-circle"></i>
+                     Product Information
+                  </h4>
+
+                  <!-- Variants Table -->
+                  <div class="overflow-x-auto border rounded-lg">
+                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead class="bg-gray-50 dark:bg-gray-800">
+                           <tr>
+                              <th width="50%"
+                                 class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                 Product
+                              </th>
+                              <th width="15%"
+                                 class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                 Unit Price
+                              </th>
+                              <th width="10%"
+                                 class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                 Quantity
+                              </th>
+                              <th width="15%"
+                                 class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                 Total Value
+                              </th>
+                              <th width="10%"
+                                 class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                 Actions
+                              </th>
+                           </tr>
+                        </thead>
+                        <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+                           
+                        </tbody>
+                        <tfoot class="bg-gray-50 dark:bg-gray-800 font-semibold">
+                           <tr>
+                              <td colspan="3" class="px-4 py-3 text-right">Grand Total:</td>
+                              <td class="px-4 py-3 text-right"></td>
+                              <td></td>
+                           </tr>
+                        </tfoot>
+                     </table>
                   </div>
                </div>
 
@@ -268,6 +328,4 @@ watch(() => props.itemId, (newVal) => {
 
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

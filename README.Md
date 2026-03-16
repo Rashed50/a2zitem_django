@@ -129,28 +129,3 @@ npm run serve
 yarn dev
 ```
 
-# ======= Bulk Import =======
-## Brand Bulk Import
-```bash
-python manage.py BulkBrand
-```
-
-## Category Bulk Import
-```bash
-python manage.py BulkCategory
-```
-
-## Color Bulk Import
-```bash
-python manage.py BulkColor
-```
-
-## Size Bulk Import
-```bash
-python manage.py BulkSize
-```
-
-## Unit Of Measure Bulk Import
-```bash
-python manage.py BulkUnit
-```
