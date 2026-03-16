@@ -260,3 +260,17 @@ class ProductSerializer(serializers.ModelSerializer):
     
                 
                 
+# class ProductMiniSerializer(serializers.ModelSerializer):
+#     category = MiniCategorySerializer(read_only=True)
+#     brand    = MiniBrandSerializer(read_only=True)
+#     class Meta:
+#         model  = Product
+#         fields = [
+#             'id', 
+#             'slug', 
+#             'code',
+#             'name',
+#             'title',
+#             'category',
+#             'brand', 
+#         ]

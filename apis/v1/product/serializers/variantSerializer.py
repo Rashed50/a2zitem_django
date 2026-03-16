@@ -14,12 +14,16 @@ from apis.utils.apiResponse import *
 from apps.product.models.color import Color
 from apps.product.models.size import Size
 from apps.product.models.unit import UnitOfMeasure
+from apps.product.models.product import Product
 from apps.product.models.variant import ProductVariant
 
 ##? Serializers Import
+from apis.v1.attributes.serializers.brandSerializer import MiniBrandSerializer
+from apis.v1.attributes.serializers.categorySerializer import MiniCategorySerializer
 from apis.v1.attributes.serializers.colorSerializer import MiniColorSerializer
 from apis.v1.attributes.serializers.sizeSerializer import MiniSizeSerializer
 from apis.v1.attributes.serializers.unitSerializer import MiniUnitOfMeasureSerializer
+# from apis.v1.product.serializers.productSerializer import ProductMiniSerializer
 
 class ProductVariantSerializer(serializers.ModelSerializer):
     id    = serializers.IntegerField(required=False)
@@ -94,3 +98,41 @@ class ProductVariantSerializer(serializers.ModelSerializer):
             data['stock'] = 0
             
         return data
+    
+   
+   
+class ProductMiniSerializer(serializers.ModelSerializer):
+    category = MiniCategorySerializer(read_only=True)
+    brand    = MiniBrandSerializer(read_only=True)
+    class Meta:
+        model  = Product
+        fields = [
+            'id', 
+            'slug', 
+            'code',
+            'name',
+            'title',
+            'category',
+            'brand', 
+        ]
+    
+class VariantMiniListSerializer(serializers.ModelSerializer):
+    color   = MiniColorSerializer()
+    size    = MiniSizeSerializer()
+    unit    = MiniUnitOfMeasureSerializer()
+    product = ProductMiniSerializer()
+    class Meta:
+        model  = ProductVariant
+        fields = [
+            'id', 
+            'sku', 
+            'color', 
+            'size', 
+            'unit', 
+            'stock', 
+            'min_stock', 
+            'selling_price', 
+            'product',
+        ]
+        
+    

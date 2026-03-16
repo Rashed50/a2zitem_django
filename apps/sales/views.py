@@ -54,21 +54,6 @@ class SaleCreatePageView(LoginRequiredMixin, generic.TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        product_choices = ProductVariant.objects\
-            .filter(product__is_deleted=False, product__is_active=True)\
-            .values_list('id', 'sku', 'product__name', 'selling_price')
-            
-        print("===========================")
-        print(product_choices)
-        print("===========================")
-        
-        # context["page_data"] = {
-        #     "products": product_choices
-        # }
-        
-        # print("===========================")
-        # print(brand_data)
-        # print("===========================")
         return context
 
 

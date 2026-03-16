@@ -61,6 +61,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     ##? Queryset
     def get_queryset(self):
         queryset = Product.objects.filter(is_deleted=False)
+        
         ##? Search
         search = self.request.query_params.get('search', None)
         if search:
@@ -70,7 +71,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
                 | Q(code__icontains=search) 
                 | Q(description__icontains=search) 
                 | Q(brand__name__icontains=search) 
-                | Q(category__name__icontains=search)  
+                | Q(category__name__icontains=search) 
             ).distinct()
         return queryset
     

@@ -182,7 +182,7 @@ export default {
       validated: { type: Boolean, default: false },
       returnObject: { type: Boolean, default: false },
    },
-   emits: ['update:modelValue', 'change', 'focus', 'blur'],
+   emits: ['update:modelValue', 'change', 'focus', 'blur', 'search'],
 
    data() {
       return {
@@ -382,6 +382,10 @@ export default {
          if (this.isComposing) return;
          this.focusedIndex = -1;
          this.forceRender++; // force filteredOptions recompute
+         
+         // Emit search event for external API call
+         this.$emit('search', this.searchQuery);
+         
          this.$nextTick(() => {
             if (!this.isMobile && this.isOpen) this.updatePosition();
          });

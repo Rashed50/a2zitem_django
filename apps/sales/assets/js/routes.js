@@ -17,6 +17,8 @@ export const SalesApiURL = {
     Update: `${API_URL}`,
     Delete: `${API_URL}`,
 };
+
+export const ProductVariationListApiURL = `${BASE_API_URL}/product/variant/mini-list/`;
 //! ====================================================
 
 
