@@ -35,6 +35,7 @@ from apps.product.models.product import Product
 from apis.v1.product.serializers.productSerializer import ProductSerializer
 
 
+##! ===================== [ For Admin ] =====================
 """
 ##TODO:- Product Item Create & List API Views
 ##* List/Create API Views (GET,POST)
@@ -154,3 +155,51 @@ class ProductRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
         self.perform_destroy(instance) 
         return response_delete(item=instance, item_name='Item', request=request)
 
+
+
+##! ================ [ For Customer ] ================
+class CusomerProductListAPIView(generics.ListAPIView): 
+    authentication_classes = [] 
+    permission_classes     = [permissions.AllowAny]
+    pagination_class       = CustomPageNumberPagination 
+    serializer_class       = ProductSerializer
+    
+    ##? Queryset
+    def get_queryset(self):
+        queryset = Product.objects.filter(is_deleted=False)
+        
+        ##? Search
+        search = self.request.query_params.get('search', None)
+        if search:
+            queryset = queryset.filter(
+                Q(name__icontains=search) 
+                | Q(title__icontains=search) 
+                | Q(code__icontains=search) 
+            ).distinct()
+        return queryset
+    
+    ##! List
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        response_data = get_paginated_response(
+            queryset = queryset,
+            request  = request,
+            serializer_class = self.get_serializer
+        )
+        return response_list(response_data, item_name="Item")
+    
+class CustomerProductDetailsAPIView(generics.RetrieveAPIView): 
+    authentication_classes = [] 
+    permission_classes     = [permissions.AllowAny]
+    serializer_class       = ProductSerializer
+    
+    ##? Queryset
+    def get_queryset(self):
+        queryset = Product.objects.filter(is_deleted=False)
+        return queryset
+    
+    ##! Retrieve
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return response_details(serializer.data, item_name="Item")

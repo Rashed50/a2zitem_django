@@ -40,6 +40,7 @@ class Sale(TimestampedModel2):
 
     sale_date  = models.DateTimeField(default=timezone.now, verbose_name=_("Order Date"))
     notes      = models.TextField(blank=True, null=True, verbose_name=_("Notes"))
+    discount   = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, verbose_name=_("Discount"))
 
     grand_total = models.DecimalField(
         max_digits     = 14,
