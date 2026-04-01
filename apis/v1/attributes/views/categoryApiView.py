@@ -36,17 +36,18 @@ from apps.product.models.category import Category
 ##? Serializer Import 
 from apis.v1.attributes.serializers.categorySerializer import (
         MiniCategorySerializer,
+        MiniCategoryTreeSerializer,
         CategoryTreeSerializer,
         CategoryDetailsTreeSerializer,
     )
 
 
 """
-##TODO:- Mini Category Serializer
+##TODO:- Mini Category List API Views
 """
 class MiniCategoryListAPIView(generics.ListCreateAPIView): 
     authentication_classes = [JWTAuthentication] 
-    permission_classes     = [permissions.IsAuthenticated]
+    permission_classes     = [permissions.AllowAny]
     serializer_class       = MiniCategorySerializer
     
     def get_queryset(self):
@@ -73,6 +74,44 @@ class MiniCategoryListAPIView(generics.ListCreateAPIView):
         )
         return response_list(response_data, item_name="Category")
         
+
+
+
+"""
+##TODO:- Mini Category Tree List API Views
+"""
+class MiniCategoryTreeListAPIView(generics.ListCreateAPIView): 
+    authentication_classes = [JWTAuthentication] 
+    permission_classes     = [permissions.AllowAny]
+    serializer_class       = MiniCategoryTreeSerializer
+    
+    def get_queryset(self):
+        queryset = Category.objects.filter(parent__isnull=True)
+        filter_service = filters.CategoryFilterService(
+            search      = self.request.GET.get("search"),
+            is_active   = self.request.GET.get("is_active"),
+            parent_id   = self.request.GET.get("parent_id"),
+            category_id = self.request.GET.get("category_id"),
+            start_date  = self.request.GET.get("start_date"),
+            end_date    = self.request.GET.get("end_date"),
+            ordering    = self.request.GET.get("ordering"),
+        )
+        queryset = filter_service.apply_filters(queryset)
+        return queryset
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        response_data = get_paginated_response(
+            queryset   = queryset,
+            request    = request,
+            pagination = 0,
+            serializer_class = self.get_serializer
+        )
+        return response_list(response_data, item_name="Category")
+        
+
+
+
 
 
 """

@@ -29,6 +29,7 @@ from apis.v1.attributes.views.categoryApiView import (
         CategoryListCreateAPIView, 
         CategoryRetrieveUpdateDestroyAPIView,  
         MiniCategoryListAPIView,
+        MiniCategoryTreeListAPIView,
     )
 
 urlpatterns = [ 
@@ -70,6 +71,7 @@ urlpatterns = [
             path('', CategoryListCreateAPIView.as_view()),  
             path('<int:pk>/', CategoryRetrieveUpdateDestroyAPIView.as_view()), 
             path('mini-list/', MiniCategoryListAPIView.as_view()),
+            path('mini-tree-list/', MiniCategoryTreeListAPIView.as_view()),
         ]) 
     ),
 ] 

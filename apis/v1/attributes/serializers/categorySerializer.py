@@ -16,6 +16,8 @@ from apps.product.models.category import Category
 ##? Serializers Import
 from apis.v1.common.user.serializers import UserMiniListSerializer
 
+
+##TODO:- Serializers Initialization
 class MiniCategorySerializer(serializers.ModelSerializer):
     created_by = serializers.CharField(
         source  = 'created_by.name',
@@ -24,8 +26,8 @@ class MiniCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model  = Category
         fields = ["id", "slug", "name", "created_at", "created_by"]
-
-##TODO:- Serializers Initialization
+        
+        
 class CategoryTreeSerializer(serializers.ModelSerializer):
     created_by = UserMiniListSerializer(read_only=True)
     updated_by = UserMiniListSerializer(read_only=True)
@@ -87,7 +89,6 @@ class CategoryTreeSerializer(serializers.ModelSerializer):
         return instance
 
 
-
 class CategoryDetailsTreeSerializer(serializers.ModelSerializer):
     created_by     = UserMiniListSerializer(read_only=True)
     updated_by     = UserMiniListSerializer(read_only=True)
@@ -123,3 +124,22 @@ class CategoryDetailsTreeSerializer(serializers.ModelSerializer):
         # return [{"id": cat.id, "slug": cat.slug, "name": cat.name} for cat in children]
         return MiniCategorySerializer(children, many=True, context=self.context).data
         
+
+
+
+
+
+
+
+class MiniCategoryTreeSerializer(serializers.ModelSerializer):
+    children = serializers.SerializerMethodField()
+
+    class Meta:
+        model  = Category
+        fields = ['id', 'name', 'slug', 'parent', 'children']
+
+    def get_children(self, obj):
+        children = obj.get_children()
+        if children.exists():
+            return MiniCategoryTreeSerializer(children, many=True).data
+        return []

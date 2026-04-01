@@ -41,7 +41,8 @@ from apis.v1.attributes.serializers.brandSerializer import BrandSerializer, Mini
 """
 class MiniBrandListApiView(generics.ListAPIView):
     authentication_classes = [JWTAuthentication] 
-    permission_classes     = [permissions.IsAuthenticated]
+    # permission_classes     = [permissions.IsAuthenticated]
+    permission_classes     = [permissions.AllowAny]
     serializer_class       = MiniBrandSerializer
     
     def get_queryset(self):
