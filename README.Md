@@ -45,11 +45,17 @@ python.exe -m pip install --upgrade pip
 
 
 
+
 ## 5. Install Requirement Txt Files
 ```bash
 pip install -r requirements.txt
 ```
 
+## create requiremetn txt file 
+```bash
+pip freeze > requirements.txt
+
+```
 
 
 ## 6. Create and Copy .env file
@@ -127,5 +133,10 @@ npm run serve
 ```
 ```bash
 yarn dev
+```
+
+```
+python environment
+source /home/a2zite/virtualenv/backendfiles/3.11/bin/activate && cd /home/a2zite/backendfiles
 ```
 
