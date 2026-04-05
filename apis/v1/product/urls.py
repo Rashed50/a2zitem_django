@@ -4,9 +4,10 @@ app_name = 'product_api'
 
 ##? APIs Import 
 from apis.v1.product.views.productApiView import (
-    ProductListCreateAPIView, 
+    ProductListCreateAPIView,
     ProductRetrieveUpdateDestroyAPIView,
     ProductImageCreateAPIView,
+    ProductImageDeleteAPIView,
     CusomerProductListAPIView,
     CustomerProductDetailsAPIView
 )
@@ -20,6 +21,8 @@ urlpatterns = [
 
     ## POST (Create)
     path('image/', ProductImageCreateAPIView.as_view()),
+    ## DELETE (Delete Image)
+    path('image/<int:pk>/', ProductImageDeleteAPIView.as_view()),
     
     ##? Variant
     path(

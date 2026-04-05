@@ -11,6 +11,8 @@ export const ProductApiURL = {
     Details: `${API_URL}`,
     Update: `${API_URL}`,
     Delete: `${API_URL}`,
+    ImageUpload: `${API_URL}/image/`,
+    ImageDelete: `${API_URL}/image`,
 }
 export const ProductPageURL = {
     List: `${PAGE_URL}`,

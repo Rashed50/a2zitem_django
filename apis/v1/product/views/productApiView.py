@@ -32,8 +32,8 @@ from apis.v1.product.services import queries, filters
 User = get_user_model() 
 from apps.product.models.product import Product, ProductImage
 
-##? Serializer Import 
-from apis.v1.product.serializers.productSerializer import ProductSerializer
+##? Serializer Import
+from apis.v1.product.serializers.productSerializer import ProductSerializer, ProductImageSerializer
 
 
 ##! ===================== [ For Admin ] =====================
@@ -209,6 +209,26 @@ class ProductImageCreateAPIView(APIView):
             "message": f"Successfully created {len(created_images)} image(s)",
             "data": serializer.data
         }, status=status.HTTP_201_CREATED)
+
+class ProductImageDeleteAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes     = [HasPermission]
+    
+    def get_permissions(self):
+        if self.request.method == "DELETE":
+            self.required_perms = ["product.delete_productimage"]
+        else:
+            self.required_perms = ["product.view_product"]
+        return super().get_permissions()
+    
+    def delete(self, request, pk):
+        try:
+            product_image = ProductImage.objects.get(id=pk)
+        except ProductImage.DoesNotExist:
+            return Response({"error": "Product image not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        product_image.delete()
+        return Response({"message": "Product image deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
 
 ##! ================ [ For Customer ] ================
 class CusomerProductListAPIView(generics.ListAPIView): 
