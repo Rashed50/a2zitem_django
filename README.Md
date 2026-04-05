@@ -51,7 +51,7 @@ python.exe -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-## create requiremetn txt file 
+## create Requirements txt file 
 ```bash
 pip freeze > requirements.txt
 
@@ -135,8 +135,11 @@ npm run serve
 yarn dev
 ```
 
+
+## Generate static files for publishing in c-panel,
+source /home/a2zite/virtualenv/backend_files/3.11/bin/activate && cd /home/a2zite/backend_files
+
 ```
-python environment
-source /home/a2zite/virtualenv/backendfiles/3.11/bin/activate && cd /home/a2zite/backendfiles
+python manage.py collectstatic
 ```
 

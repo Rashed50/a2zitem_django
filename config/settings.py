@@ -25,12 +25,12 @@ LIVE  = env.bool('LIVE', default=False)
 
 
 ##! Allow Hosts
-# ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = env.list(
-    'ALLOWED_HOSTS',
-    # default = [] ## ⚠️ Only for development!
-    default=['localhost', '127.0.0.1', '0.0.0.0']
-)
+ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = env.list(
+#     'ALLOWED_HOSTS',
+#     # default = [] ## ⚠️ Only for development!
+#     default=['localhost', '127.0.0.1', '0.0.0.0','a2zbackend.a2zitem.com']
+# )
 
 
 
@@ -43,6 +43,7 @@ if not CORS_ALLOW_ALL_ORIGINS:
         "http://localhost:3000", ## React/Vue development server
         "http://localhost:5173", 
         "http://127.0.0.1:3000",
+  
     ])
 
 
@@ -221,48 +222,50 @@ DB_PASSWORD = env('DB_PASSWORD', default=None)
 DB_HOST     = env('DB_HOST', default=None)
 DB_PORT     = env('DB_PORT', default=None)
 
-if all([DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT]):
-    # DATABASES = {
-    #     "default": {
-    #         "ENGINE"   : "django.db.backends.postgresql",
-    #         "NAME"     : DB_NAME,
-    #         "USER"     : DB_USER,
-    #         "PASSWORD" : DB_PASSWORD,
-    #         "HOST"     : DB_HOST,
-    #         "PORT"     : DB_PORT,
-    #     }
-    # }
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': DB_NAME,
-            'USER': DB_USER,
-            'PASSWORD': DB_PASSWORD,
-            'HOST': DB_HOST,   # Or the IP address where MySQL is hosted
-            'PORT': DB_PORT,        # MySQL port (default is 3306)
-        }
+# if all([DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT]):
+#     DATABASES = {
+#         "default": {
+#             "ENGINE"   : "django.db.backends.postgresql",
+#             "NAME"     : DB_NAME,
+#             "USER"     : DB_USER,
+#             "PASSWORD" : DB_PASSWORD,
+#             "HOST"     : DB_HOST,
+#             "PORT"     : DB_PORT,
+#         }
+#     }
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.mysql',
+#             'NAME': DB_NAME,
+#             'USER': DB_USER,
+#             'PASSWORD': DB_PASSWORD,
+#             'HOST': DB_HOST,   # Or the IP address where MySQL is hosted
+#             'PORT': DB_PORT,        # MySQL port (default is 3306)
+#         }
+#     }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE' : 'django.db.backends.sqlite3',
+#             'NAME'   : os.path.join(BASE_DIR, 'db.sqlite3'),
+#             'OPTIONS': {
+#                 'timeout': 20,
+#                 'check_same_thread': False,  # Multi-threading support
+#             }
+#         }
+#     }
+
+DATABASES = {
+    "default": {
+        #"ENGINE"   : "django.db.backends.postgresql",
+        'ENGINE': 'django.db.backends.mysql',
+        "NAME"     : DB_NAME,
+        "USER"     : DB_USER,
+        "PASSWORD" : DB_PASSWORD,
+        "HOST"     : DB_HOST,
+        "PORT"     : DB_PORT,
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE' : 'django.db.backends.sqlite3',
-            'NAME'   : os.path.join(BASE_DIR, 'db.sqlite3'),
-            'OPTIONS': {
-                'timeout': 20,
-                'check_same_thread': False,  # Multi-threading support
-            }
-        }
-    }
-    # DATABASES = {
-    #     'default': {
-    #         'ENGINE': 'django.db.backends.mysql',
-    #         'NAME': DB_NAME,
-    #         'USER': DB_USER,
-    #         'PASSWORD': DB_PASSWORD,
-    #         'HOST': DB_HOST,   # Or the IP address where MySQL is hosted
-    #         'PORT': DB_PORT,        # MySQL port (default is 3306)
-    #     }
-    # }
+}
     
 
 
