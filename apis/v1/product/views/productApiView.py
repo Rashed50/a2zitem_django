@@ -18,6 +18,7 @@ from rest_framework.validators import ValidationError
 from rest_framework.filters import SearchFilter, OrderingFilter 
 from rest_framework_simplejwt.authentication import JWTAuthentication 
 from django_filters.rest_framework import DjangoFilterBackend 
+from rest_framework.parsers import MultiPartParser, FormParser
 
 ##? Utils Import 
 from apis.utils.apiResponse import * 
@@ -29,10 +30,10 @@ from apis.v1.product.services import queries, filters
 
 ##? Model Import 
 User = get_user_model() 
-from apps.product.models.product import Product
+from apps.product.models.product import Product, ProductImage
 
-##? Serializer Import 
-from apis.v1.product.serializers.productSerializer import ProductSerializer
+##? Serializer Import
+from apis.v1.product.serializers.productSerializer import ProductSerializer, ProductImageSerializer
 
 
 ##! ===================== [ For Admin ] =====================
@@ -156,6 +157,78 @@ class ProductRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
         return response_delete(item=instance, item_name='Item', request=request)
 
 
+"""
+##TODO:- Product Image Create
+##* Create API Views (POST)
+"""
+
+class ProductImageCreateAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes     = [HasPermission]
+    parser_classes         = [MultiPartParser, FormParser]
+    
+    def get_permissions(self):
+        if self.request.method == "POST":
+            self.required_perms = ["product.add_productimage"]
+        else:
+            self.required_perms = ["product.view_product"]
+        return super().get_permissions()
+    
+    def post(self, request, format=None):
+        product_id = request.data.get('product')
+        images     = request.FILES.getlist('images')  
+        
+        if not product_id:
+            return Response({
+                "error": "Product ID is required"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not images:
+            return Response({
+                "error": "At least one image is required"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            product = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            return Response({
+                "error": f"Product with id {product_id} does not exist"
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        created_images = []
+        for image in images:
+            product_image = ProductImage.objects.create(
+                product=product,
+                image=image,
+                alt_text=request.data.get('alt_text', '')  
+            )
+            created_images.append(product_image)
+        
+        serializer = ProductImageSerializer(created_images, many=True)
+        return Response({
+            "message": f"Successfully created {len(created_images)} image(s)",
+            "data": serializer.data
+        }, status=status.HTTP_201_CREATED)
+
+class ProductImageDeleteAPIView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes     = [HasPermission]
+    
+    def get_permissions(self):
+        if self.request.method == "DELETE":
+            self.required_perms = ["product.delete_productimage"]
+        else:
+            self.required_perms = ["product.view_product"]
+        return super().get_permissions()
+    
+    def delete(self, request, pk):
+        try:
+            product_image = ProductImage.objects.get(id=pk)
+        except ProductImage.DoesNotExist:
+            return Response({"error": "Product image not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        product_image.delete()
+        return Response({"message": "Product image deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
 
 ##! ================ [ For Customer ] ================
 class CusomerProductListAPIView(generics.ListAPIView): 

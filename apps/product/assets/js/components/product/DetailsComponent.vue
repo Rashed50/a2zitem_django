@@ -67,6 +67,85 @@
                   </div>
                </div>
 
+               <div v-if="detailsData.images && detailsData.images.length > 0">
+                  <h4 class="text-blue-600 font-bold text-lg mb-3 flex items-center justify-between">
+                     <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-images"></i>
+                        Product Image Gallery
+                     </div>
+                     <ActionButton 
+                        action="add" 
+                        size="sm" 
+                        @click="triggerImageUpload" 
+                        label="Add Image" 
+                        icon="fa-solid fa-plus"
+                        :disabled="isUploadingImage"
+                     />
+                  </h4>
+
+                  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                     <div
+                        v-for="image in detailsData.images"
+                        :key="image.id"
+                        class="group relative overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer bg-gray-100 dark:bg-gray-700"
+                     >
+                        <img
+                           :src="image.image"
+                           :alt="`Product image ${image.id}`"
+                           class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300"
+                           @click="openImageModal(image.image)"
+                        />
+                        
+                        <!-- Delete Button - Top Right -->
+                        <div
+                           class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0"
+                        >
+                           <button
+                              @click.stop="deleteImage(image.id)"
+                              :disabled="isDeletingImage === image.id"
+                              class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-full w-8 h-8 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                              title="Delete image"
+                           >
+                              <i v-if="isDeletingImage === image.id" class="fa-solid fa-spinner fa-spin text-xs"></i>
+                              <i v-else class="fa-solid fa-trash text-xs"></i>
+                           </button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <div v-else>
+                  <div class="flex items-center justify-between mb-3">
+                     <h4 class="text-blue-600 font-bold text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-images"></i>
+                        Product Image Gallery
+                     </h4>
+                     <ActionButton 
+                        action="add" 
+                        size="sm" 
+                        @click="triggerImageUpload" 
+                        label="Add Image" 
+                        icon="fa-solid fa-plus"
+                        :disabled="isUploadingImage"
+                     />
+                  </div>
+                  <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-8 text-center">
+                     <i class="fa-solid fa-image text-4xl text-gray-400 mb-3"></i>
+                     <p class="text-gray-500 dark:text-gray-400 text-sm">No images uploaded yet</p>
+                     <p class="text-gray-400 dark:text-gray-500 text-xs mt-1">Click "Add Image" to upload product images</p>
+                  </div>
+               </div>
+
+               <!-- Hidden file input -->
+               <input
+                  ref="imageUploadInput"
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  class="hidden"
+                  @change="handleImageUpload"
+               />
+
                <div>
                   <h4 class="text-blue-600 font-bold text-lg mb-4 flex items-center gap-2">
                      <i class="fa-solid fa-boxes-stacked"></i>
@@ -167,6 +246,9 @@ const loadingStates = reactive({
 });
 const error = ref(null);
 const detailsData = ref({});
+const imageUploadInput = ref(null);
+const isUploadingImage = ref(false);
+const isDeletingImage = ref(null);
 
 // ===================================================================
 // =========================== 4. COMPUTED ============================
@@ -224,6 +306,82 @@ const fetchDetailsData = async () => {
 
 const goUpdatePage = () => {
    window.location.href = `${ProductPageURL.Update}/${props.itemId}/`;
+}
+
+const openImageModal = (imageUrl) => {
+   // Open image in new tab for viewing
+   window.open(imageUrl, '_blank');
+}
+
+const triggerImageUpload = () => {
+   imageUploadInput.value?.click();
+}
+
+const handleImageUpload = async (event) => {
+   const files = event.target.files;
+   
+   if (!files || files.length === 0) {
+      return;
+   }
+
+   isUploadingImage.value = true;
+   
+   try {
+      const formData = new FormData();
+      formData.append('product', props.itemId);
+      
+      for (let i = 0; i < files.length; i++) {
+         formData.append('images', files[i]);
+      }
+
+      const response = await axios.post(
+         ProductApiURL.ImageUpload,
+         formData,
+         {
+            headers: {
+               'Content-Type': 'multipart/form-data',
+            },
+         }
+      );
+
+      if (response.status === 201) {
+         toast.success(`${files.length} image(s) uploaded successfully`);
+         // Refresh the details data to show new images
+         await fetchDetailsData();
+      }
+   } catch (err) {
+      console.error('Image upload error:', err);
+      toast.error('Failed to upload images. Please try again.');
+   } finally {
+      isUploadingImage.value = false;
+      // Reset the input value to allow selecting the same file again
+      event.target.value = '';
+   }
+}
+
+const deleteImage = async (imageId) => {
+   if (!confirm('Are you sure you want to delete this image?')) {
+      return;
+   }
+
+   isDeletingImage.value = imageId;
+   
+   try {
+      const response = await axios.delete(
+         `${ProductApiURL.ImageDelete}/${imageId}/`
+      );
+
+      if (response.status === 204 || response.status === 200) {
+         toast.success('Image deleted successfully');
+         // Refresh the details data
+         await fetchDetailsData();
+      }
+   } catch (err) {
+      console.error('Image delete error:', err);
+      toast.error('Failed to delete image. Please try again.');
+   } finally {
+      isDeletingImage.value = null;
+   }
 }
 
 // Helper Labels ----------------------------------------------------

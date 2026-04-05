@@ -23,6 +23,13 @@ from apis.v1.attributes.serializers.brandSerializer import MiniBrandSerializer
 from apis.v1.attributes.serializers.categorySerializer import MiniCategorySerializer
 from apis.v1.product.serializers.variantSerializer import ProductVariantSerializer
 
+class ProductImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model  = ProductImage
+        fields = [
+            'id',
+            'image',
+        ]
 
 ##TODO:- Serializers Initialization
 class ProductSerializer(serializers.ModelSerializer):
@@ -30,6 +37,7 @@ class ProductSerializer(serializers.ModelSerializer):
     updated_by = UserMiniListSerializer(read_only=True)
     category   = MiniCategorySerializer(read_only=True)
     brand      = MiniBrandSerializer(read_only=True)
+    images     = ProductImageSerializer(many=True, read_only=True)
     
     category_hierarchy = serializers.SerializerMethodField(read_only=True)
     category_path      = serializers.SerializerMethodField(read_only=True)
@@ -70,6 +78,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'category_hierarchy', 'category_path',
             
             'description',
+            'images',
             'variants',
         ]
         read_only_fields = [

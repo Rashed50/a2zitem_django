@@ -6,7 +6,7 @@ from django.utils.html import format_html
 from mptt.admin import DraggableMPTTAdmin
 
 ##? Models Import
-from apps.product.models.product import Product
+from apps.product.models.product import Product, ProductImage
 from apps.product.models.variant import ProductVariant
 from apps.product.models.brand import Brand
 from apps.product.models.color import Color
@@ -70,6 +70,12 @@ class ProductVariantAdmin(admin.ModelAdmin):
     search_fields = ['id', 'product__name', 'color__name', 'size__name']
     autocomplete_fields = ['product', 'color', 'size', 'unit',]
     
+@admin.register(ProductImage)
+class ProductImageAdmin(admin.ModelAdmin):
+    list_display = ['id', 'product__name', 'image', 'created_at']
+    search_fields = ['id', 'product__name']
+    autocomplete_fields = ['product',]
+
 
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
