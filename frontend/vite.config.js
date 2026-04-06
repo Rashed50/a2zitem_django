@@ -28,9 +28,12 @@ export default defineConfig({
       emptyOutDir: true,
       cssCodeSplit: false,
       assetsDir: "assets",
-      manifest: true,
+      //manifest: true,
+      manifest: 'manifest.json',
+      chunkSizeWarningLimit: 2000, 
       rollupOptions: {
          input: path.resolve(__dirname, "src/main.js"),
+
          output: {
             entryFileNames: "assets/main.js",
             chunkFileNames: "assets/[name].js",
