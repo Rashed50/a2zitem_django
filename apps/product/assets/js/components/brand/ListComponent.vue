@@ -161,7 +161,7 @@
 
                         <!-- Logo -->
                         <FileInputComponent label="Brand Logo" v-model="addForm.logo" :current-image-url="addForm?.logo"
-                           :error="addFormErrors.logo" :accept="['image/*']" help-text="Square logo (1:1 ratio)"
+                           :accept="['image/*']" help-text="Square logo (1:1 ratio)"
                            :max-size="2 * 1024 * 1024" />
 
                         <!-- Is Active -->
@@ -363,7 +363,7 @@ const resetAddFrom = () => {
 }
 const handleAddItem = async () => {
    addFormErrors.value = {}
-   const requiredFields = ['name', 'logo'];
+   const requiredFields = ['name'];
    let hasError = false;
    requiredFields.forEach((field) => {
       if (!addForm.value[field]) {
