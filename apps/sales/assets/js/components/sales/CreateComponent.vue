@@ -122,27 +122,24 @@
                                        <span v-if="getSelectedVariant(index)?.color_name">
                                           Color: {{ getSelectedVariant(index)?.color_name }}
                                        </span>
-                                       <span v-if="getSelectedVariant(index)?.size_name">
+                                       <!-- <span v-if="getSelectedVariant(index)?.size_name">
                                           Size: {{ getSelectedVariant(index)?.size_name }}
                                        </span>
                                        <span v-if="getSelectedVariant(index)?.unit_name">
                                           Unit: {{ getSelectedVariant(index)?.unit_name }}
-                                       </span>
+                                       </span> -->
+                                        <span v-if="formData.variants[index].selling_price">Selling Price: {{ formData.variants[index].selling_price.toFixed(2) }}</span>
                                        <span v-if="getSelectedVariant(index)?.stock !== undefined" 
                                           :class="getSelectedVariant(index)?.stock <= 0 ? 'text-red-500 font-semibold' : 'text-green-600'">
                                           Stock: {{ getSelectedVariant(index)?.stock }}
                                        </span>
+                                      
                                     </div>
                                  </div>
                               </td>
-                              <!-- Unit Price -->
+                              <!-- sell Price -->                             
                               <td class="px-4 py-2">
-                                 <span v-if="formData.variants[index].unit_price" class="font-semibold text-gray-700 dark:text-gray-300">
-                                    ৳ {{ parseFloat(formData.variants[index].unit_price).toFixed(2) }}
-                                 </span>
-                                 <span v-else class="text-gray-400 dark:text-gray-500 italic">
-                                    -
-                                 </span>
+                                 <InputeComponent type="number" v-model="formData.variants[index].unit_price" placeholder="Sell Price" />
                               </td>
 
                               <!-- Quantity -->
@@ -382,6 +379,7 @@ const mapApiErrorsToForm = (errors) => {
 const createDefaultVariant = () => ({
    variant_id: null,
    unit_price: 0,
+   selling_price: 0,
    quantity: 1,
    total: 0,
    search_key: Date.now() + Math.random(), // Unique key for each row's search
@@ -468,7 +466,7 @@ watch(
          const selected = list.find(p => p.value === variant.variant_id);
 
          if (selected) {
-            variant.unit_price = selected.price;
+            variant.selling_price = selected.price;
          }
 
          variant.total = variant.unit_price * variant.quantity;

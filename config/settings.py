@@ -115,6 +115,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',  # এটি staticfiles এর আগে বসাতে হবে
+
     'django.contrib.staticfiles',
     
     'corsheaders',
@@ -145,6 +147,8 @@ if not LIVE:
 ##! Middleware Setup
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # SecurityMiddleware-এর পরেই বসান
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',                    ##? CROS Header Middleware
     "django.middleware.locale.LocaleMiddleware",                ##? Language Middleware
@@ -323,6 +327,7 @@ if os.path.exists(theme_static_path):
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # compression ও versioning এর জন্য
 
 
 MEDIA_URL = '/media/'

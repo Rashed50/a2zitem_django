@@ -30,31 +30,8 @@
             <form @submit="handleSubmit" enctype="multipart/form-data">
                <!-- Card Body -->
                <div class="flex-1 overflow-y-auto px-3 py-3 sm:px-6 sm:py-6 space-y-3">
-                  <!-- Basic Information -->
-                  <h4 class="text-blue-600 font-bold text-lg flex items-center gap-2">
-                     <i class="fa-solid fa-info-circle"></i>
-                     Basic Information
-                  </h4>
-                  <div class="responsive-grid gap-md">
-                     <!-- Name -->
-                     <div class="sm:col-span-2">
-                        <InputeComponent label="Item Name" placeholder="Enter item name" id="name" name="name"
-                           type="text" v-model="formData.name" :error="formErrors.name" required />
-                     </div>
 
-                     <!-- Brand -->
-                     <CustomMultiSelect label="Brand" v-model="formData.brand_id" :options="brandChoices"
-                        label-key="label" value-key="value" placeholder="Select company" :error="formErrors.brand_id"
-                        :multiple="false" required />
-
-                     <!-- Is Active -->
-                     <div>
-                        <label for="is_active" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">
-                           Active
-                        </label>
-                        <Checkbox label="Is active ?" v-model="formData.is_active" />
-                     </div>
-                  </div>
+                  
 
                   <!-- Category -->
                   <h4 class="text-blue-600 font-bold text-lg flex items-center gap-2">
@@ -78,6 +55,27 @@
                      </div>
                   </div>
 
+                  <div class="responsive-grid gap-md">
+                     <!-- Name -->
+                     <div class="sm:col-span-2">
+                        <InputeComponent label="Item Name" placeholder="Enter item name" id="name" name="name"
+                           type="text" v-model="formData.name" :error="formErrors.name" required />
+                     </div>
+
+                     <!-- Brand -->
+                     <CustomMultiSelect label="Brand" v-model="formData.brand_id" :options="brandChoices"
+                        label-key="label" value-key="value" placeholder="Select company" :error="formErrors.brand_id"
+                        :multiple="false" required />
+
+                     <!-- Is Active -->
+                     <div>
+                        <label for="is_active" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">
+                           Active
+                        </label>
+                        <Checkbox label="Is active ?" v-model="formData.is_active" />
+                     </div>
+                  </div>
+
                   <!-- Variants Information -->
                   <h4 class="text-blue-600 font-bold text-lg flex items-center gap-2">
                      <i class="fa-solid fa-info-circle"></i>
@@ -89,24 +87,28 @@
                      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-800">
                            <tr>
-                              <th width="15%"
+                              <th width="20%"
                                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                  Colour</th>
+                              <!-- <th width="15%"
+                                 class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                 Size </th>
                               <th width="15%"
                                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                 Size</th>
-                              <th width="15%"
-                                 class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                 Unit</th>
+                                 Unit</th> -->
                               <th width="10%"
                                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                 Quantity</th>
+                                 Qty</th>
                               <th
-                                 width="10%"
+                                 width="15%"
                                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                 Unit Price</th>
+                                 Purchase Price</th>
                               <th
-                                 width="10%"
+                                 width="15%"
+                                 class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                 Sell Price</th>
+                              <th
+                                 width="20%"
                                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                  Total Value</th>
                               <th
@@ -123,12 +125,12 @@
                                     label-key="label" value-key="value" placeholder="Select Colour"
                                     :error="formErrors[`variants_${index}_color_id`]" :multiple="false" required />
                               </td>
-                              <td class="px-4 py-2">
+                              <td class="px-4 py-2" v-show="false">
                                  <CustomMultiSelect v-model="variant.size_id" :options="sizeChoices" label-key="label"
                                     value-key="value" placeholder="Select Size"
                                     :error="formErrors[`variants_${index}_size_id`]" :multiple="false" required />
                               </td>
-                              <td class="px-4 py-2">
+                              <td class="px-4 py-2" v-show="false">
                                  <CustomMultiSelect v-model="variant.unit_id" :options="unitChoices" label-key="label"
                                     value-key="value" placeholder="Select Unit"
                                     :error="formErrors[`variants_${index}_unit_id`]" :multiple="false" required />
@@ -138,10 +140,16 @@
                                     :error="formErrors[`variants_${index}_quantity`]"
                                     @update:modelValue="calculateTotal(index)" min="0" />
                               </td>
+
                               <td class="px-4 py-2">
+                                 <InputeComponent type="number" v-model="variant.purchase_price" placeholder="Price"
+                                    :error="formErrors[`variants_${index}_purchase_price`]"
+                                    @update:modelValue="calculateTotal(index)" min="0" />
+                              </td>
+                               <td class="px-4 py-2">
                                  <InputeComponent type="number" v-model="variant.selling_price" placeholder="Price"
                                     :error="formErrors[`variants_${index}_selling_price`]"
-                                    @update:modelValue="calculateTotal(index)" min="0" />
+                                   min="0" />
                               </td>
                               <td class="px-4 py-2 text-right font-medium">
                                  {{ formatCurrency(variant.total_value || 0) }}
@@ -238,9 +246,10 @@ const error = ref(null);
 // Create a default variant structure
 const createDefaultVariant = () => ({
    color_id: null,
-   size_id: null,
-   unit_id: null,
+   size_id: 1,
+   unit_id: 1,
    quantity: 0,
+   purchase_price: 0,
    selling_price: 0,
    total_value: 0
 });
@@ -317,7 +326,7 @@ const formatCurrency = (value) => {
 const calculateTotal = (index) => {
    const variant = formData.value.variants[index];
    const quantity = parseFloat(variant.quantity) || 0;
-   const price = parseFloat(variant.selling_price) || 0;
+   const price = parseFloat(variant.purchase_price) || 0;
    variant.total_value = quantity * price;
 };
 
@@ -348,15 +357,16 @@ const fetchDetails = async () => {
          formData.value.brand_id = detailsData.brand?.id;
          formData.value.title = detailsData.title;
          formData.value.description = detailsData.description;
-
+         
          // Load variants if available
          if (detailsData.variants && detailsData.variants.length > 0) {
             formData.value.variants = detailsData.variants.map(v => ({
                id: v.id,
                color_id: v.color?.id,
-               size_id: v.size?.id,
+               size_id:  v.size?.id,
                unit_id: v.unit?.id,
                quantity: v.stock || 0,
+               purchase_price: v.purchase_price || 0,
                selling_price: v.selling_price || 0,
                total_value: (v.stock || 0) * (v.selling_price || 0)
             }));
@@ -552,6 +562,7 @@ const handleSubmit = async (e) => {
          size_id: v.size_id,
          unit_id: v.unit_id,
          stock: v.quantity,
+         purchase_price: v.purchase_price,
          selling_price: v.selling_price
       }))
    };

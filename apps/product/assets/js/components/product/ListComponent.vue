@@ -62,11 +62,13 @@
                         <div v-for="variant in row.variants" :key="variant.id"
                            class="flex items-center justify-between text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
                            <span class="font-medium">
-                              {{ variant.color?.name }} / {{ variant.size?.name }}
+                             Colour:  {{ variant.color?.name }} 
+                               <!-- {{ variant.size?.name }} -->
                            </span>
 
                            <span class="text-gray-500">
-                              {{ variant.stock }}-{{ variant.unit?.symbol }}
+                             Stock: {{ variant.stock }}
+                              <!-- {{ variant.unit?.symbol }} -->
                            </span>
 
                            <span class="text-green-600 font-semibold">
