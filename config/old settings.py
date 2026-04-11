@@ -97,7 +97,6 @@ CUSTOM_APPS = [
 THIRD_PARTY_APPS = [
     'django_cleanup.apps.CleanupConfig',   ## Django Cleanup
     'mptt',                                ## MPTT [ Recursive Tree ]
-    'storages',                            ## AWS S3 Storages
 ]
 
 ## Only add tailwind and theme if they exist
@@ -119,6 +118,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',  # এটি staticfiles এর আগে বসাতে হবে
 
     'django.contrib.staticfiles',
+    
     'corsheaders',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
@@ -271,17 +271,6 @@ DATABASES = {
     }
 }
     
-    
-# DATABASES = {
-#     'default': {
-#         'ENGINE' : 'django.db.backends.sqlite3',
-#         'NAME'   : os.path.join(BASE_DIR, 'db.sqlite3'),
-#         'OPTIONS': {
-#             'timeout': 20,
-#             'check_same_thread': False,  # Multi-threading support
-#         }
-#     }
-# }
 
 
 
@@ -341,14 +330,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # compression ও versioning এর জন্য
 
 
-##? Media Files Setup
-## For Localstorage
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-## For AWS S3 Bucket
-MEDIA_URL = f"https://{env('AWS_STORAGE_BUCKET_NAME')}.s3.amazonaws.com/media/"
-
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 
@@ -419,7 +402,6 @@ LOGOUT_REDIRECT_URL = 'auth:login'       # Redirect after logout
 ##! ================= Package ===================================
 from config.packege.drf import *
 from config.packege.jwt import *
-from config.packege.aws_s3 import *
 
 
 
