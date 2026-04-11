@@ -140,6 +140,6 @@ yarn dev
 source /home/a2zite/virtualenv/backend_files/3.11/bin/activate && cd /home/a2zite/backend_files
 
 ```
-python manage.py collectstatic
+python manage.py collectstatic --noinput --clear
 ```
 

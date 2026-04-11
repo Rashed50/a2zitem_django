@@ -2,7 +2,6 @@ import os
 import platform               ##? Detect OS
 from pathlib import Path 
 from django.utils.translation import gettext_lazy as _
-
 from config.env import BASE_DIR, env
 
 
@@ -108,7 +107,6 @@ try:
 except ImportError:
     print("Tailwind not installed, skipping...")
 
-
 ##? Deffault Apps + Django Apps
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -117,7 +115,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',  # এটি staticfiles এর আগে বসাতে হবে
-
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework_simplejwt',
@@ -148,7 +145,6 @@ if not LIVE:
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # SecurityMiddleware-এর পরেই বসান
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',                    ##? CROS Header Middleware
     "django.middleware.locale.LocaleMiddleware",                ##? Language Middleware
@@ -181,14 +177,12 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-                os.path.join(BASE_DIR, 'templates'),
-                
+                os.path.join(BASE_DIR, 'templates'),                
                 ##? Apps Template Setup [For Admin Panel]
                 os.path.join(BASE_DIR, 'apps/components/templates'),
                 os.path.join(BASE_DIR, 'apps/auth/templates'),
                 os.path.join(BASE_DIR, 'apps/roles/templates'),
-                os.path.join(BASE_DIR, 'apps/dashboard/templates'),
-                
+                os.path.join(BASE_DIR, 'apps/dashboard/templates'),                
                 ##? Client Template Setup
                 os.path.join(BASE_DIR, 'clientpage/templates'),
             ],
@@ -201,8 +195,7 @@ TEMPLATES = [
                 'core.context_processors.sidebar_color.sidebar_color',  
                 'core.context_processors.jwt_token.jwt_access_token', 
                 'core.context_processors.user_groups.user_groups_processor', 
-                ##?-------------------------------------------------------
-                
+                ##?-------------------------------------------------------                
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -229,24 +222,15 @@ DB_PORT     = env('DB_PORT', default=None)
 # if all([DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT]):
 #     DATABASES = {
 #         "default": {
-#             "ENGINE"   : "django.db.backends.postgresql",
+#             "ENGINE"   : "django.db.backends.postgresql", # postgresql port (default is 5432)
+#             #'ENGINE': 'django.db.backends.mysql', # MySQL port (default is 3306)
 #             "NAME"     : DB_NAME,
 #             "USER"     : DB_USER,
 #             "PASSWORD" : DB_PASSWORD,
 #             "HOST"     : DB_HOST,
-#             "PORT"     : DB_PORT,
+#             "PORT"     : DB_PORT,  
 #         }
-#     }
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.mysql',
-#             'NAME': DB_NAME,
-#             'USER': DB_USER,
-#             'PASSWORD': DB_PASSWORD,
-#             'HOST': DB_HOST,   # Or the IP address where MySQL is hosted
-#             'PORT': DB_PORT,        # MySQL port (default is 3306)
-#         }
-#     }
+#     } 
 # else:
 #     DATABASES = {
 #         'default': {
@@ -261,29 +245,15 @@ DB_PORT     = env('DB_PORT', default=None)
 
 DATABASES = {
     "default": {
-        #"ENGINE"   : "django.db.backends.postgresql",
-        'ENGINE': 'django.db.backends.mysql',
+       # "ENGINE"   : "django.db.backends.postgresql", # postgresql port (default is 5432)
+        'ENGINE': 'django.db.backends.mysql', # MySQL port (default is 3306)
         "NAME"     : DB_NAME,
         "USER"     : DB_USER,
         "PASSWORD" : DB_PASSWORD,
         "HOST"     : DB_HOST,
-        "PORT"     : DB_PORT,
+        "PORT"     : DB_PORT,  
     }
-}
-    
-    
-# DATABASES = {
-#     'default': {
-#         'ENGINE' : 'django.db.backends.sqlite3',
-#         'NAME'   : os.path.join(BASE_DIR, 'db.sqlite3'),
-#         'OPTIONS': {
-#             'timeout': 20,
-#             'check_same_thread': False,  # Multi-threading support
-#         }
-#     }
-# }
-
-
+} 
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -334,8 +304,6 @@ theme_static_path = os.path.join(BASE_DIR, 'theme', 'static')
 if os.path.exists(theme_static_path):
     STATICFILES_DIRS.append(theme_static_path)
     
-
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # compression ও versioning এর জন্য
