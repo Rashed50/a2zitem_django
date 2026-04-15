@@ -259,29 +259,29 @@ DB_PORT     = env('DB_PORT', default=None)
 #         }
 #     }
 
-DATABASES = {
-    "default": {
-        #"ENGINE"   : "django.db.backends.postgresql",
-        'ENGINE': 'django.db.backends.mysql',
-        "NAME"     : DB_NAME,
-        "USER"     : DB_USER,
-        "PASSWORD" : DB_PASSWORD,
-        "HOST"     : DB_HOST,
-        "PORT"     : DB_PORT,
-    }
-}
-    
-    
 # DATABASES = {
-#     'default': {
-#         'ENGINE' : 'django.db.backends.sqlite3',
-#         'NAME'   : os.path.join(BASE_DIR, 'db.sqlite3'),
-#         'OPTIONS': {
-#             'timeout': 20,
-#             'check_same_thread': False,  # Multi-threading support
-#         }
+#     "default": {
+#         #"ENGINE"   : "django.db.backends.postgresql",
+#         'ENGINE': 'django.db.backends.mysql',
+#         "NAME"     : DB_NAME,
+#         "USER"     : DB_USER,
+#         "PASSWORD" : DB_PASSWORD,
+#         "HOST"     : DB_HOST,
+#         "PORT"     : DB_PORT,
 #     }
 # }
+    
+    
+DATABASES = {
+    'default': {
+        'ENGINE' : 'django.db.backends.sqlite3',
+        'NAME'   : os.path.join(BASE_DIR, 'db.sqlite3'),
+        'OPTIONS': {
+            'timeout': 20,
+            'check_same_thread': False,  # Multi-threading support
+        }
+    }
+}
 
 
 

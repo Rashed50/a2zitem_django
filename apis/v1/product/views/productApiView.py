@@ -34,6 +34,11 @@ from apps.product.models.product import Product, ProductImage
 
 ##? Serializer Import
 from apis.v1.product.serializers.productSerializer import ProductSerializer, ProductImageSerializer
+from apis.v1.product.serializers.CustomerSerializer import (
+        ProductListSerializer as CustomerProductListSerializer,
+        ProductDetailsSerializer as CustomerProductDetailsSerializer
+    )
+
 
 
 ##! ===================== [ For Admin ] =====================
@@ -235,7 +240,7 @@ class CusomerProductListAPIView(generics.ListAPIView):
     authentication_classes = [] 
     permission_classes     = [permissions.AllowAny]
     pagination_class       = CustomPageNumberPagination 
-    serializer_class       = ProductSerializer
+    serializer_class       = CustomerProductListSerializer
     
     ##? Queryset
     def get_queryset(self):
@@ -264,7 +269,7 @@ class CusomerProductListAPIView(generics.ListAPIView):
 class CustomerProductDetailsAPIView(generics.RetrieveAPIView): 
     authentication_classes = [] 
     permission_classes     = [permissions.AllowAny]
-    serializer_class       = ProductSerializer
+    serializer_class       = CustomerProductDetailsSerializer
     
     ##? Queryset
     def get_queryset(self):
