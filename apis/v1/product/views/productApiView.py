@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model, get_permission_codename 
 
 from django.db import models, transaction, IntegrityError 
-from django.db.models import Q, F, Count, Value, Prefetch 
+from django.db.models import Q, F, Min, Max, Count, Value, Prefetch 
 from django.db.models.functions import Concat 
 
 from django.utils import timezone 
@@ -245,16 +245,74 @@ class CusomerProductListAPIView(generics.ListAPIView):
     ##? Queryset
     def get_queryset(self):
         queryset = Product.objects.filter(is_deleted=False)
-        
-        ##? Search
-        search = self.request.query_params.get('search', None)
+
+        ## Search
+        search = self.request.query_params.get('search')
         if search:
             queryset = queryset.filter(
-                Q(name__icontains=search) 
-                | Q(title__icontains=search) 
-                | Q(code__icontains=search) 
-            ).distinct()
-        return queryset
+                Q(name__icontains=search) |
+                Q(title__icontains=search) |
+                Q(code__icontains=search) |
+                Q(category__name__icontains=search) |
+                Q(brand__name__icontains=search)
+            )
+
+        ## Category filter
+        category_id = self.request.query_params.get('category_id')
+        if category_id:
+            queryset = queryset.filter(category_id=category_id)
+
+        ## Brand filter
+        brand_id = self.request.query_params.get('brand_id')
+        if brand_id:
+            queryset = queryset.filter(brand_id=brand_id)
+
+        ## Stock filter
+        in_stock = self.request.query_params.get('in_stock')
+        if in_stock is not None:
+            if str(in_stock).lower() in ['1', 'true']:
+                queryset = queryset.filter(variants__stock__gt=0)
+            elif str(in_stock).lower() in ['0', 'false']:
+                queryset = queryset.filter(variants__stock__lte=0)
+
+        ## Price Range 
+        min_price = self.request.query_params.get('min_price')
+        max_price = self.request.query_params.get('max_price')
+
+        if min_price or max_price:
+            queryset = queryset.annotate(
+                min_selling_price=Min('variants__selling_price')
+            )
+
+            if min_price:
+                queryset = queryset.filter(min_selling_price__gte=min_price)
+
+            if max_price:
+                queryset = queryset.filter(min_selling_price__lte=max_price)
+                
+        ## Sorting
+        ordering = self.request.query_params.get('ordering')
+
+        if ordering:
+            if ordering == 'price_low':
+                queryset = queryset.order_by('variants__selling_price')
+                
+            elif ordering == 'price_high':
+                queryset = queryset.order_by('-variants__selling_price')
+                
+            elif ordering == 'latest':
+                queryset = queryset.order_by('-id')
+                
+            elif ordering == 'oldest':
+                queryset = queryset.order_by('id')
+                
+            elif ordering == 'name_asc':
+                queryset = queryset.order_by('name')
+                
+            elif ordering == 'name_desc':
+                queryset = queryset.order_by('-name')   
+
+        return queryset.distinct()
     
     ##! List
     def list(self, request, *args, **kwargs):
